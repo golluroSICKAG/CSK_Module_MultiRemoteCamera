@@ -1,0 +1,38 @@
+<layout-row id="RowLayout1">
+	<layout-column id="ColumnLayout1" style="align-items: stretch">
+		<h4 id="Heading41">Connected cameras:</h4>
+		<curie-table id="DynamicTable1" selectable select-mode="highlight_row"
+			data="monitoringState">
+			<curie-table-column id="cameraName" header="cameraName">
+			</curie-table-column>
+			<curie-table-column id="cameraModel" header="cameraModel">
+			</curie-table-column>
+			<curie-table-column id="IP" header="IP"></curie-table-column>
+			<curie-table-column id="cameraType" header="cameraType">
+			</curie-table-column>
+			<curie-table-column id="triggerMode" header="triggerMode">
+			</curie-table-column>
+			<curie-table-column id="shutterTime" header="shutterTime">
+			</curie-table-column>
+			<curie-table-column id="gainFactor" header="gainFactor">
+			</curie-table-column>
+			<curie-table-column id="loadOnReboot" header="loadOnReboot">
+			</curie-table-column>
+			<curie-table-column id="monitoring" header="monitoring">
+			</curie-table-column>
+			<curie-table-column id="monitoringState" header="monitoringState">
+			</curie-table-column>
+			<crown-edpws-binding property="data"
+				name="CSK_MultiRemoteCamera/OnNewCameraOverviewTable"
+				update-on-resume>
+			</crown-edpws-binding>
+		</curie-table>
+		<stacked-view id="SV_PageCalled">
+			<crown-get property="value"
+				crown-function="CSK_MultiRemoteCamera/pageCalled"
+				auto-update-ms="0" protocol="crownMSGPACK">
+			</crown-get>
+		</stacked-view>
+	</layout-column>
+  
+</layout-row>

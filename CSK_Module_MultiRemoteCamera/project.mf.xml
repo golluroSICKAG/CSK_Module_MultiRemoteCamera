@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest>
+    <application name="CSK_Module_MultiRemoteCamera">
+        <crown name="CSK_Module_MultiRemoteCamera">
+            <desc>This is an automatically generated CROWN (description not necessary).</desc>
+        </crown>
+        <crown name="CSK_MultiRemoteCamera">
+            <trait>released</trait>
+            <desc>Module to provide RemoteCamera configuration functionality. +
+Multiple instances can be created and image processing will run in multiple threads on the device. +
+Incoming images can be forwarded to other apps / modules (see "setProcessingMode") +
+{empty} +
+**Typical features to use: ** +
+{empty} +
+1) If multiple camera instances are available, selecte a specific camera via "setSelectedCam" +
+2) Set camera IP via "setCameraIP" +
+3) Select if GigE Vision camera or not via "setGigEVision" +
+3) Opt. use set-Function like setResizeFactor, setShutterTime, ... +
+3) Set processing mode via "setProcessingMode" +
+4) Start camera via "connectCamera" +
+{empty} +
+There is also the possibility to edit GigE Vision camera parameters (check also available UI). +</desc>
+            <enum name="CameraModel" trait="released">
+                <desc>Camera type.</desc>
+                <item desc="SICK Pico/MidiCam2" name="SICK_Gen2">SICK Pico/MidiCam2</item>
+                <item desc="Basler a2A1920-51gc" name="Basler">Basler a2A1920-51gc</item>
+            </enum>
+            <enum name="ColorType" trait="released">
+                <desc>Camera color type.</desc>
+                <item desc="Gray values" name="MONO8">MONO8</item>
+                <item desc="Raw data (Bayer pattern)." name="RAW8">RAW8</item>
+                <item desc="Color" name="COLOR8">COLOR8</item>
+            </enum>
+            <enum name="ProcessingMode" trait="released">
+                <desc>Processing in same module or in another app.</desc>
+                <item desc="'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app)." name="BOTH">BOTH</item>
+                <item desc="Handle image only in this module." name="SCRIPT">SCRIPT</item>
+                <item desc="Forward incoming images as event, so that other apps/modules can handle them." name="APP">APP</item>
+            </enum>
+            <enum name="AcquisitionMode" trait="released">
+                <desc>Acquisition / trigger mode of the camera.</desc>
+                <item desc="Software trigger (e.g. via UI button or incoming command like TCPIP command)." name="SOFTWARE_TRIGGER">SOFTWARE_TRIGGER</item>
+                <item desc="Trigger via digital input." name="HARDWARE_TRIGGER">HARDWARE_TRIGGER</item>
+                <item desc="Continuous image acquisition with fixed framerate." name="FIXED_FREQUENCY">FIXED_FREQUENCY</item>
+            </enum>
+            <enum name="ImageFormat" trait="released">
+                <desc>Format to save images.</desc>
+                <item desc="BMP" name="bmp">bmp</item>
+                <item desc="JPG" name="jpg">jpg</item>
+                <item desc="PNG" name="png">png</item>
+            </enum>
+            <serves>
+                <event name="OnNewGain">
+                    <desc>Notify gain of currently selected camera instance.</desc>
+                    <param desc="Gain" multiplicity="1" name="gain" type="float"/>
+                </event>
+                <event name="OnNewShutterTime">
+                    <desc>Notify shutter time of currently selected camera instance.</desc>
+                    <param desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
+                </event>
+                <event name="OnNewFramerate">
+                    <desc>Notify framerate of currently selected camera instance.</desc>
+                    <param desc="Framerate" multiplicity="1" name="framerate" type="int"/>
+                </event>
+                <event name="OnNewResizeFactor">
+                    <desc>Notify resize factor of internal image processing function of currently selected camera.</desc>
+                    <param desc="Factor (0.1. - 1.0)." multiplicity="1" name="factor" type="float"/>
+                </event>
+                <event name="OnNewAcquisitionMode">
+                    <desc>Notify acquisition mode of currently selected camera.</desc>
+                    <param desc="Acquisition mode" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewFOVX">
+                    <desc>Notify field of view in x-direction of currently selected camera.</desc>
+                    <param desc="Min/Max" multiplicity="+" name="range" type="int"/>
+                </event>
+                <event name="OnNewFOVY">
+                    <desc>Notify field of view in y-direction of currently selected camera.</desc>
+                    <param desc="Min/Max" multiplicity="+" name="range" type="int"/>
+                </event>
+                <event name="OnSWTriggerActive">
+                    <desc>Notify if SOFTWARE_TRIGGER camera mode is active (e.g. to visualize relevant UI elements).</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewHardwareTriggerDelay">
+                    <desc>Notify hardware trigger delay of currently selected camera instance.</desc>
+                    <param desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
+                </event>
+                <event name="OnHWTriggerActive">
+                    <desc>Notify if hardware trigger is active for currently selected camera.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnCameraConnected">
+                    <desc>Notify camera connection status.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnScanCamera">
+                    <desc>Notify if scanning for connected camera is active.</desc>
+                    <param desc="Status" multiplicity="1" name="active" type="bool"/>
+                </event>
+                <event name="OnNewIPCheck">
+                    <desc>Notify if inserted IP has correct format.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnCurrentCameraIP">
+                    <desc>Notify IP of currently selected camera.</desc>
+                    <param desc="IP" multiplicity="1" name="ip" type="string"/>
+                </event>
+                <event name="OnNewSelectedCam">
+                    <desc>Notify no. of currently selected camera instance.</desc>
+                    <param desc="Camera no." multiplicity="1" name="cameraNo" type="int"/>
+                </event>
+                <event name="OnRegisterCameraNUM">
+                    <desc>Example of dynamically created event to register camera intsance to image processing function. +
+NUM will be replaced by the number of instance (e.g. "OnRegisterCamera1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param alias="Image.Provider.RemoteCamera" desc="Camera instance to register." multiplicity="1" name="camera" type="handle"/>
+                </event>
+                <event name="OnDeregisterCameraNUM">
+                    <desc>Example of dynamically created event to deregister camera intsance to image processing function. +
+NUM will be replaced by the number of instance (e.g. "OnDeregisterCamera1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param alias="Image.Provider.RemoteCamera" desc="Camera instance to deregister." multiplicity="1" name="camera" type="handle"/>
+                </event>
+                <event name="OnNewViewerID">
+                    <desc>Notify currently used viewerID (e.g. to show correct viewer in UI).</desc>
+                    <param desc="viewerID" multiplicity="1" name="viewerID" type="string"/>
+                </event>
+                <event name="OnNewImageProcessingParameter">
+                    <desc>Event to share processing parameters to the instances.</desc>
+                    <param desc="Number of the instance to receive the parameter." multiplicity="1" name="cameraNo" type="int"/>
+                    <param desc="Name of the parameter." multiplicity="1" name="parameter" type="string"/>
+                    <param desc="Value to set." multiplicity="?" name="value" type="auto"/>
+                </event>
+                <event name="OnNewImageCameraNUM">
+                    <trait>released</trait>
+                    <desc>Example of dynamically created event to transfer incoming image of camera instance. +
+NUM will be replaced by the number of instance (e.g. "OnNewImageCamera1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param alias="Image" desc="Image" multiplicity="1" name="image" type="object"/>
+                    <param desc="Timestamp is created directly after module received new image." multiplicity="?" name="timestamp" type="int"/>
+                </event>
+                <event name="OnNewStatusDigitalTriggerPause">
+                    <desc>Notify if digital trigger input should be ignored for currently selected camera instance.
+(e.g. used to freeze/inspect latest incoming image).</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewGigEVisionStatus">
+                    <desc>Notify if currently selected camera is GigEVision.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewGigEVisionParameters">
+                    <desc>Notify available GigEVision parameter list received from connected camera.</desc>
+                    <param desc="Parameter list" multiplicity="1" name="parameters" type="string"/>
+                </event>
+                <event name="OnNewColorMode">
+                    <desc>Notify color mode of currently selected camera.</desc>
+                    <param desc="Color mode" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnPersistentDataModuleAvailable">
+                    <desc>Notify status if features of CSK_PersistentData module are available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewParameterName">
+                    <desc>Notify name of the parameters if saved/loaded via the CSK_PersistentData module for currently selected camera instance.</desc>
+                    <param desc="Name" multiplicity="1" name="parametersName" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionCurrentParameter">
+                    <desc>Notify currently selected GigEVision parameter name to edit.</desc>
+                    <param desc="Parameter name" multiplicity="1" name="name" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionParameterType">
+                    <desc>Notify type of currently selected GigEVision parameter.</desc>
+                    <param desc="Value Type (e.g. 'String'/'Float'/'Integer')." multiplicity="1" name="valueType" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionValue">
+                    <desc>Notify value of currently selected GigEVision parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="string"/>
+                </event>
+                <event name="OnNewSavingImagesPath">
+                    <desc>Notify path to save images of currently selected camera.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewLoggingMessage">
+                    <desc>Notify latest logging message of this module.</desc>
+                    <param desc="Latest log message." multiplicity="1" name="message" type="string"/>
+                </event>
+                <event name="OnNewStatusTempImageActive">
+                    <desc>Notify if latest image of currently selected camera instance should be temporarily be saved to store them eventually.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewImageQueueCamera">
+                    <desc>Notify queue size of module internal image processing function of currently selected camera.</desc>
+                    <param desc="Size" multiplicity="1" name="value" type="string"/>
+                </event>
+                <event name="OnNewStatusLoadParameterOnReboot">
+                    <desc>Notify status if parameters should be loaded on app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewFPSCamera">
+                    <desc>Notify latest calculated FPS of currently selected camera.</desc>
+                    <param desc="Frames per second." multiplicity="1" name="fps" type="string"/>
+                </event>
+                <event name="OnNewStatusViewerActive">
+                    <desc>Notify if UI viewer of currently selected camera instance should show image.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewCameraOverviewTable">
+                    <desc>Notify content for camera overview in UI.</desc>
+                    <param desc="Data content for table." multiplicity="1" name="data" type="string"/>
+                </event>
+                <event name="OnNewProcessingMode">
+                    <desc>Notify processing mode of currently selected camera.</desc>
+                    <param desc="Mode (BOTH, SCRIPT or APP)." multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewCameraList">
+                    <desc>Notify list of camera instances.</desc>
+                    <param desc="List of camera instances." multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewStatusSaveAllImagesActive">
+                    <desc>Notify if all images should be saved.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewImageFilePrefix">
+                    <desc>Notify image file prefix to use.</desc>
+                    <param desc="Prefix (followed by internal counter)" multiplicity="1" name="prefix" type="string"/>
+                </event>
+                <event name="OnNewValueToForwardNUM">
+                    <desc>Example of dynamically created event to Forward thread internal values to e.g. be notified with single event related to UI. +
+NUM will be replaced by the number of instance (e.g. "OnNewValueToForward1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param desc="Related, general event." multiplicity="1" name="event" type="string"/>
+                    <param desc="Value to notify." multiplicity="1" name="value" type="auto"/>
+                </event>
+                <event name="OnNewImageSaveFormat">
+                    <desc>Notify format to save images.</desc>
+                    <param desc="BMP / JPEG / PNG" multiplicity="1" name="format" type="string"/>
+                </event>
+                <event name="OnNewFormatCompression">
+                    <desc>Notify value of compression for image compression.</desc>
+                    <param desc="INFO: Depends on format (see AppEngine function Image.save)." multiplicity="1" name="compression" type="float"/>
+                </event>
+                <event name="OnNewMonitoringState">
+                    <desc>Notify if currently selected camera is available or not.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewSwitchMode">
+                    <desc>Notify if currently selected camera is in SwitchMode.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewMonitoring">
+                    <desc>Notify if currently selected camera is monitored.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewMonitoringStateCams">
+                    <desc>Notify if the cameras is available or not.</desc>
+                    <param desc="camera number" multiplicity="1" name="cameraNr" type="int"/>
+                    <param desc="state" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewGigEVisionTableContent">
+                    <desc>Notify list of available GigE Vision parameters (for UI table view).</desc>
+                    <param desc="List" multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionConfigTableContent">
+                    <desc>Notify list of custom GigE Vision configs (for UI table view).</desc>
+                    <param desc="" multiplicity="1" name="content" type="string"/>
+                </event>
+                <event name="OnUserLevelOperatorActive">
+                    <trait>released</trait>
+                    <desc>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Operator userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelMaintenanceActive">
+                    <trait>released</trait>
+                    <desc>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Maintenance userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelServiceActive">
+                    <trait>released</trait>
+                    <desc>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Service userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelAdminActive">
+                    <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Admin userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewCameraModel">
+                    <desc>Camera-Model which is connected. Like Midicam2 or Basler-Camera.</desc>
+                    <param desc="Model of the camera." multiplicity="1" name="cameraModel" type="string"/>
+                </event>
+                <event name="OnNewNumberOfCameras">
+                    <desc>Notify number of camera instances.</desc>
+                    <param desc="Number of cameras." multiplicity="1" name="numberOfCameras" type="string"/>
+                </event>
+                <event name="OnNewImageSizeToShare">
+                    <desc>Notify if image size changed to other modules.</desc>
+                    <param desc="Name of event providing images." multiplicity="1" name="eventname" type="string"/>
+                </event>
+                <event name="OnNewStatusWaitingForCameraBootUp">
+                    <desc>Notify if module is curently waiting for camera boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <function name="pageCalled">
+                    <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
+                    <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="emptyString" type="string"/>
+                </function>
+                <function name="setShutterTime">
+                    <desc>Set shutter time of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
+                </function>
+                <function name="setGain">
+                    <desc>Set gain of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Gain" multiplicity="1" name="gain" type="float"/>
+                </function>
+                <function name="setFramerate">
+                    <desc>Set framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Framerate (frames per second)." multiplicity="1" name="framerate" type="int"/>
+                </function>
+                <function name="setResizeFactor">
+                    <desc>Set resize factor used in module internal image processing of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Factor (0.1 - 1.0)." multiplicity="1" name="factor" type="float"/>
+                </function>
+                <function name="setAcquisitionMode">
+                    <desc>Set acquisition mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Acquisition mode" multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.AcquisitionMode" type="enum"/>
+                </function>
+                <function name="setFOVX">
+                    <desc>Set Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedCam"). +
+Needs to be activated via "setFOV" after this.</desc>
+                    <param desc="Array with Min/Max value." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="setFOVY">
+                    <desc>Set Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedCam"). +
+Needs to be activated via "setFOV" after this.</desc>
+                    <param desc="Array with Min/Max value." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="setFOV">
+                    <desc>Activate preconfigured field of view of currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="cameraSoftwareTrigger">
+                    <desc>Trigger SW trigger on currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="setHardwareTriggerDelay">
+                    <desc>Set trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
+                </function>
+                <function name="connectCamera">
+                    <desc>Connect to currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="setCameraIP">
+                    <desc>Set IP of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="IP" multiplicity="1" name="ip" type="string"/>
+                </function>
+                <function name="getCameraIP">
+                    <desc>Get IP of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="IP" multiplicity="1" name="ip" type="string"/>
+                </function>
+                <function name="getAcquisitionMode">
+                    <desc>Get acquisition mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Acquisition mode (e.g. 'FIXED_FREQUENCY' / 'SOFTWARE_TRIGGER' / 'HARDWARE_TRIGGER')." multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="getFramerate">
+                    <desc>Get framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Framerate (frames per second)." multiplicity="1" name="framerate" type="int"/>
+                </function>
+                <function name="getResizeFactor">
+                    <desc>Get resize factor used in module internal image processing of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Factor (0.1 - 1.0)." multiplicity="1" name="factor" type="float"/>
+                </function>
+                <function name="getGain">
+                    <desc>Get gain of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Gain" multiplicity="1" name="gain" type="float"/>
+                </function>
+                <function name="getShutterTime">
+                    <desc>Get shutter time of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
+                </function>
+                <function name="getHardwareTriggerDelay">
+                    <desc>Get trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
+                </function>
+                <function name="getFOVX">
+                    <desc>Get Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Array with min/max values." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="getFOVY">
+                    <desc>Get Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Array with min/max values." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="startCamera">
+                    <desc>Start currently selected camera (see 'setSelectedCam').</desc>
+                </function>
+                <function name="stopCamera">
+                    <desc>Stop currently selected camera (see 'setSelectedCam').</desc>
+                </function>
+                <function name="setColorMode">
+                    <desc>Set color mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Color mode" multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.ColorType" type="enum"/>
+                </function>
+                <function name="getColorMode">
+                    <desc>Get color mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Color mode (e.g. MONO8, COLOR8, RAW8)." multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="setSelectedCam">
+                    <desc>Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</desc>
+                    <param desc="camera intance no. to select." multiplicity="1" name="camNo" type="int"/>
+                </function>
+                <function name="getSelectedCam">
+                    <desc>Get currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Camera instance no." multiplicity="1" name="camNo" type="int"/>
+                </function>
+                <function name="setDigitalTriggerPause">
+                    <desc>Use preset trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="getGigEVision">
+                    <desc>Get info if currently selected camera instance is a GigEVision camera (see "setSelectedCam").</desc>
+                    <return desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setGigEVision">
+                    <desc>Select if currently selected camera instance is a GigEVision camera.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setParameterName">
+                    <desc>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</desc>
+                    <param desc="Name of the parameter." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="sendParameters">
+                    <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
+                </function>
+                <function name="loadParameters">
+                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                </function>
+                <function name="setGigEVisionParameterName">
+                    <desc>Set GigEVision ParameterName to add for custom GigE Vision setting (see "addGigEVisionConfig").</desc>
+                    <param desc="Name of GigEVision parameter." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="setGigEVisionParameterValue">
+                    <desc>Set GigEVision ParameterValue to add  for custom GigE Vision setting (see "addGigEVisionConfig").</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="string"/>
+                </function>
+                <function name="setSavingPath">
+                    <desc>Set path to save images via "saveImage".</desc>
+                    <param desc="Path on device (e.g. &quot;public/images&quot;)." multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setTempImageActive">
+                    <desc>Set status if images should be temporarily be saved to save them later on via "saveImage".</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="triggerImageSaving">
+                    <desc>Notify event for selected camera to trigger the saving of the latest temporarily saved image.</desc>
+                </function>
+                <function name="setLoadOnReboot">
+                    <desc>Configure if this module should load its saved parameters at app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setViewerActive">
+                    <desc>Set status if modules UI viewer should show the images.</desc>
+                    <param desc="Set to FALSE to save processing time if visualization is not necessary in modules UI." multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setProcessingMode">
+                    <desc>ProcessingMode to define processing in this app or in a other app.</desc>
+                    <param desc="Mode to use." multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.ProcessingMode" type="enum"/>
+                </function>
+                <function name="setSaveAllImages">
+                    <desc>Set if all incoming images should be saved for currently selected camera.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setImageFilePrefix">
+                    <desc>Set prefix for filename of saved images for currently selected camera.</desc>
+                    <param desc="Prefix (followed by internal counter)." multiplicity="1" name="prefix" type="string"/>
+                </function>
+                <function name="setImageSaveFormat">
+                    <desc>Set format to store images with.</desc>
+                    <param desc="Image format" multiplicity="1" name="format" ref="CSK_MultiRemoteCamera.ImageFormat" type="enum"/>
+                </function>
+                <function name="setImageSaveFormatCompression">
+                    <desc>Set compression to save images (depends on format type).</desc>
+                    <param desc="See AppEngine CROWN Image.save" multiplicity="1" name="comp" type="float"/>
+                </function>
+                <function name="getProcessingMode">
+                    <desc>Get processing mode of currently selected camera.</desc>
+                    <return desc="Mode (APP, SCRIPT, BOTH)." multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="setSwitchMode">
+                    <desc>Set Switch-Mode for using multiple cameras via switch. This parameter will influence the "DeviceLinkThroughputLimit"-Parameter. +
+INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) after adding new camera instances, so that the "DeviceLinkThroughputLimit" can be recalculated by the total amount of used cameras.</desc>
+                    <param desc="Status. 'TRUE' if switch is used." multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setCameraMonitoring">
+                    <desc>Function to select if camera status should be monitored on CameraOverView UI.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </function>
+                <function name="cameraSpecificSoftwareTrigger">
+                    <desc>Trigger a camera snapshot with camera selection.</desc>
+                    <param desc="Camera to trigger." multiplicity="1" name="cameraNo" type="int"/>
+                </function>
+                <function name="disconnectCamera">
+                    <desc>Function to disconnect currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="selectGigEVisionParameterNameViaUITable">
+                    <desc>Select GigE Vision Parameter to edit in UI.</desc>
+                    <param desc="Selected table entry." multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="addGigEVisionConfig">
+                    <desc>Add preselected value to custom GigE Vision config (see "setGigEVisionParameter..." functions).</desc>
+                </function>
+                <function name="removeGigEVisionConfig">
+                    <desc>Remove preselected value from custom GigE Vision config (see "setGigEVisionParameterName" functions).</desc>
+                </function>
+                <function name="selectGigEVisionConfigViaUITable">
+                    <desc>Select GigE Vision parameter within custom config in UI table view (see also "removeGigEVisionConfig").</desc>
+                    <param desc="Selected entry within config table." multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="updateConfig">
+                    <desc>Update camera config (e.g. to activate new custom GigE Vision config).</desc>
+                </function>
+                <function name="selectGigEVisionConfig">
+                    <desc>Select config entry in table of custom GigE Vision config (see also "removeGigEVisionConfig").</desc>
+                    <param desc="Selected entry within config table." multiplicity="1" name="selection" type="int"/>
+                </function>
+                <function name="getInstancesAmount">
+                    <desc>Get amount of created remote camera instances.</desc>
+                    <return desc="Amount" multiplicity="1" name="amount" type="int"/>
+                </function>
+                <function name="addInstance">
+                    <desc>Function to add an additional camera instance.</desc>
+                </function>
+                <function name="resetInstances">
+                    <desc>Function to reset instances to one single camera instance. +
+IMPORTANT: As instances start their own threads, the module needs to be restarted if new instances are needed... (see AppEngine docu for "Script.startScript").</desc>
+                </function>
+                <function name="restartAllCameras">
+                    <desc>Function to restart all camera instances.</desc>
+                </function>
+                <function name="setCameraModel">
+                    <desc>Connected camera-model like Midicam2 or Basler-Camera.</desc>
+                    <param desc="Camera model" multiplicity="1" name="camModel" ref="CSK_MultiRemoteCamera.CameraModel" type="enum"/>
+                </function>
+            </serves>
+        </crown>
+        <meta key="author">SICK AG</meta>
+        <meta key="version">5.0.0</meta>
+        <meta key="priority">low</meta>
+        <meta key="copy-protected">false</meta>
+        <meta key="read-protected">false</meta>
+        <meta key="crown2-flow-engine">false</meta>
+        <meta key="LuaLoadAllEngineAPI">false</meta>
+        <entry default="CSK_Module_MultiRemoteCamera.lua" path="scripts"/>
+    </application>
+</manifest>

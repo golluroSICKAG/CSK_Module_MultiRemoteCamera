@@ -1,0 +1,24 @@
+{
+  "version": "1.0", 
+  "pages": [
+    {
+    "category": "My Category",
+      "pages": [
+        {
+          "path": "CSK_Module_MultiRemoteCamera/CSK_Module_MultiRemoteCamera.html",
+          "name": "CSK_Module_MultiRemoteCamera"
+        },
+
+        {
+          "path": "CSK_Module_MultiRemoteCamera/CSK_Module_MultiRemoteCamera_CameraOverview.html",
+          "name": "CSK_Module_MultiRemoteCamera_CamOverview"
+        },
+
+        {
+          "path": "CSK_Module_MultiRemoteCamera/CSK_Module_MultiRemoteCamera_GigEVisionParameters.html",
+          "name": "CSK_Module_MultiRemoteCamera_GigE_VisionParameter"
+        }
+      ]
+    }
+  ]
+}
