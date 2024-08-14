@@ -2,9 +2,9 @@
 
 Module to setup a single or multiple camera(s) connected to a SIM or SAE.  
 
-![](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_MultiRemoteCamera/blob/main/docu/media/UI_Screenshot_Main.png)  
+![](./docu/media/UI_Screenshot_Main.png)  
 
-![](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_MultiRemoteCamera/blob/main/docu/media/UI_Screenshot_GigEVision.png)
+![](./docu/media/UI_Screenshot_GigEVision.png)
 
 ## How to Run
 
@@ -16,10 +16,14 @@ For further information check out the [documentation](https://raw.githack.com/SI
 
 Tested on  
 
-1. SIM1012        - Firmware 2.2.0
-2. SIM2500        - Firmware 1.3.0
-3. SIM4000        - Firmware 1.10.2
-4. SICK AppEngine - Firmware 1.3.2
+|Device|Firmware|Module version
+|--|--|--|
+|SIM1012|V2.4.2|V6.0.0|
+|SIM1012|V2.2.0|<V6.0.0|
+|SIM2500|V1.3.0|<V6.0.0|
+|SIM4000|V1.10.2|<V6.0.0|
+|SICK AppEngine|V1.7.0|V6.0.0|
+|SICK AppEngine|V1.3.2|<V6.0.0|
 
 This module is part of the SICK AppSpace Coding Starter Kit developing approach.  
 It is programmed in an object oriented way. Some of these modules use kind of "classes" in Lua to make it possible to reuse code / classes in other projects.  

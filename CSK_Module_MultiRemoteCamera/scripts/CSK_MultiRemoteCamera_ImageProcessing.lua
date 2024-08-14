@@ -61,14 +61,14 @@ local function saveImage(img)
           File.mkdir('/public/images/camera' .. cameraNumberString)
         end
         local list = File.list("/public/images/camera" .. cameraNumberString)
-        _G.logger:info(nameOfModule .. ': Try to save new image in public folder from camera No.' .. cameraNumberString)
+        _G.logger:fine(nameOfModule .. ': Try to save new image in public folder from camera No.' .. cameraNumberString)
         local suc
         if list == nil then
           suc = Image.save(img, "public/images/camera" .. cameraNumberString .. "/" .. imageProcessingParams.imageFilePrefix .. "1." .. imageProcessingParams.imageSaveFormat, compression)
         else
           suc = Image.save(img, "public/images/camera" .. cameraNumberString .. "/" .. imageProcessingParams.imageFilePrefix .. tostring(#list+1) .. "." .. imageProcessingParams.imageSaveFormat, compression)
         end
-        _G.logger:info(nameOfModule .. ': Succes of saving new image in public folder:' .. tostring(suc))
+        _G.logger:fine(nameOfModule .. ': Succes of saving new image in public folder:' .. tostring(suc))
       else
         _G.logger:info(nameOfModule .. ": Disk nearly full! Will save no image from camera No." .. cameraNumberString)
       end
@@ -81,14 +81,14 @@ local function saveImage(img)
         local freeSpace = File.getDiskFree("/sdcard/0/")
         if freeSpace >10000000 then
           local list = File.list("/sdcard/0/images/camera" .. cameraNumberString)
-          _G.logger:info(nameOfModule .. ': Try to save new image on SD card from camera No.' .. cameraNumberString)
+          _G.logger:fine(nameOfModule .. ': Try to save new image on SD card from camera No.' .. cameraNumberString)
           local suc
           if list == nil then
             suc = Image.save(img, "/sdcard/0/images/camera" .. cameraNumberString .. "/" .. imageProcessingParams.imageFilePrefix .. "1." .. imageProcessingParams.imageSaveFormat, compression)
           else
             suc = Image.save(img, "/sdcard/0/images/camera" .. cameraNumberString .. "/" .. imageProcessingParams.imageFilePrefix .. tostring(#list+1) .. "." .. imageProcessingParams.imageSaveFormat, compression)
           end
-          _G.logger:info(nameOfModule .. ': Succes of saving new image on SD card:' .. tostring(suc))
+          _G.logger:fine(nameOfModule .. ': Succes of saving new image on SD card:' .. tostring(suc))
         else
           _G.logger:info(nameOfModule .. ": Disk nearly full! Will save no image from camera No." .. cameraNumberString)
         end
@@ -106,7 +106,7 @@ end
 ---@param sensorData SensorData Sensor data
 local function handleOnNewImageProcessing(image, sensorData)
   local tic = DateTime.getTimestamp()
-  --_G.logger:info(nameOfModule .. ": New Image cam" .. cameraNumberString) --> For debugging
+  --_G.logger:fine(nameOfModule .. ": New Image cam" .. cameraNumberString) --> For debugging
 
   -- Release temp Image
   if lastImage ~= nil then
@@ -122,7 +122,7 @@ local function handleOnNewImageProcessing(image, sensorData)
   local resImage = image
 
   if imageQueueSize >= imageProcessingParams.maxImageQueueSize then
-    _G.logger:info(nameOfModule .. ": Warning! ImageQueue of camera " .. cameraNumberString .. "is >= " .. tostring(imageProcessingParams.maxImageQueueSize) .. "! Stop processing images! Data loss possible...")
+    _G.logger:warning(nameOfModule .. ": Warning! ImageQueue of camera " .. cameraNumberString .. "is >= " .. tostring(imageProcessingParams.maxImageQueueSize) .. "! Stop processing images! Data loss possible...")
   else
 
     if imageProcessingParams.saveAllImages then
@@ -149,7 +149,7 @@ local function handleOnNewImageProcessing(image, sensorData)
     if imageProcessingParams.mode == 'APP'  or imageProcessingParams.mode == 'BOTH' then
 
       -- OPTION B --> Forward image to other modules
-      _G.logger:info(nameOfModule .. ": Sending image = " .. cameraNumberString) --> For debugging
+      _G.logger:fine(nameOfModule .. ": Sending image = " .. cameraNumberString) --> For debugging
       --print("Time till sending image =" .. tostring(DateTime.getTimestamp()-tic)) -- For debugging only
       Script.notifyEvent('MultiRemoteCamera_OnNewImageCamera' .. cameraNumberString, resImage, tic)
     end
@@ -173,7 +173,7 @@ end
 --- Function to register on "OnNewImage"-event of image provider
 ---@param camera handle Image Provider
 local function registerCamera(camera)
-  _G.logger:info(nameOfModule .. ": Register camera " .. cameraNumberString)
+  _G.logger:fine(nameOfModule .. ": Register camera " .. cameraNumberString)
   Image.Provider.RemoteCamera.register(camera, "OnNewImage", handleOnNewImageProcessing)
   imageQueue:setFunction(handleOnNewImageProcessing)
   Script.releaseObject(camera)
@@ -183,7 +183,7 @@ Script.register("CSK_MultiRemoteCamera.OnRegisterCamera" .. cameraNumberString, 
 --- Function to deregister on "OnNewImage"-event of image provider
 ---@param camera handle Image Provider
 local function deregisterCamera(camera)
-  _G.logger:info(nameOfModule .. ": DeRegister camera " .. cameraNumberString)
+  _G.logger:fine(nameOfModule .. ": DeRegister camera " .. cameraNumberString)
   Image.Provider.RemoteCamera.deregister(camera, "OnNewImage", handleOnNewImageProcessing)
   imageQueue:clear()
   Script.releaseObject(camera)
@@ -206,7 +206,7 @@ local function handleOnNewImageProcessingParameter(cameraNo, parameter, value)
       saveImage(lastImage)
     else
       if not parameter == 'activeInUI' then
-        _G.logger:info(nameOfModule .. ": Update parameter '" .. parameter .. "' of cameraNo." .. tostring(cameraNo) .. " to value = " .. tostring(value))
+        _G.logger:fine(nameOfModule .. ": Update parameter '" .. parameter .. "' of cameraNo." .. tostring(cameraNo) .. " to value = " .. tostring(value))
       end
       imageProcessingParams[parameter] = value
     end

@@ -12,18 +12,20 @@ Incoming images can be forwarded to other apps / modules (see "setProcessingMode
 {empty} +
 **Typical features to use: ** +
 {empty} +
-1) If multiple camera instances are available, selecte a specific camera via "setSelectedCam" +
+1) If multiple camera instances are available, selecte a specific camera via "setSelectedInstance" +
 2) Set camera IP via "setCameraIP" +
 3) Select if GigE Vision camera or not via "setGigEVision" +
-3) Opt. use set-Function like setResizeFactor, setShutterTime, ... +
-3) Set processing mode via "setProcessingMode" +
-4) Start camera via "connectCamera" +
+4) If it is a GigE Vision camera, select camera model via 'setCameraModel'. +
+5) Opt. use set-Function like setResizeFactor, setShutterTime, ... +
+6) Set processing mode via "setProcessingMode" +
+7) Start camera via "connectCamera" +
 {empty} +
 There is also the possibility to edit GigE Vision camera parameters (check also available UI). +</desc>
             <enum name="CameraModel" trait="released">
-                <desc>Camera type.</desc>
-                <item desc="SICK Pico/MidiCam2" name="SICK_Gen2">SICK Pico/MidiCam2</item>
-                <item desc="Basler a2A1920-51gc" name="Basler">Basler a2A1920-51gc</item>
+                <desc>Camera type. For some camera models it will internally use some predefined GigE Vision parameters. Otherwise use 'Custom'.</desc>
+                <item desc="Use SICK Pico/MidiCam2 specific GigE Vision parameters." name="SICK_Gen2">SICK Pico/MidiCam2</item>
+                <item desc="Use Basler a2A1920-51gc specific GigE Vision parameters." name="Basler">Basler a2A1920-51gc</item>
+                <item desc="Only custom GigE Vision config will be used. No camera / device specific predefined settings." name="Custom">CustomConfig</item>
             </enum>
             <enum name="ColorType" trait="released">
                 <desc>Camera color type.</desc>
@@ -300,120 +302,145 @@ INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific
                     <desc>Notify if module is curently waiting for camera boot up.</desc>
                     <param desc="Status" multiplicity="1" name="status" type="bool"/>
                 </event>
+                <event name="OnNewStatusCustomCamera">
+                    <desc>Notify if camera model 'Custom' is selected.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewSWTriggerEvent">
+                    <desc>Notify event to trigger camera if in SW mode.</desc>
+                    <param desc="Name of event." multiplicity="1" name="eventName" type="string"/>
+                </event>
+                <event name="OnNewStatusFlowConfigPriority">
+                    <desc>Notify if FlowConfig should have priority for FlowConfig relevant configurations.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusCSKStyle">
+                    <desc>Notify UI style to use for CSK modules.</desc>
+                    <param desc="UI style" multiplicity="1" name="theme" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleVersion">
+                    <desc>Notify version of module.</desc>
+                    <param desc="Version" multiplicity="1" name="version" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleIsActive">
+                    <desc>Notify if module can be used on device.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
                 <function name="pageCalled">
                     <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
                     <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="emptyString" type="string"/>
                 </function>
                 <function name="setShutterTime">
-                    <desc>Set shutter time of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set shutter time of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
                 </function>
                 <function name="setGain">
-                    <desc>Set gain of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set gain of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="Gain" multiplicity="1" name="gain" type="float"/>
                 </function>
                 <function name="setFramerate">
-                    <desc>Set framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="Framerate (frames per second)." multiplicity="1" name="framerate" type="int"/>
                 </function>
                 <function name="setResizeFactor">
-                    <desc>Set resize factor used in module internal image processing of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set resize factor used in module internal image processing of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="Factor (0.1 - 1.0)." multiplicity="1" name="factor" type="float"/>
                 </function>
                 <function name="setAcquisitionMode">
-                    <desc>Set acquisition mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set acquisition mode of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="Acquisition mode" multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.AcquisitionMode" type="enum"/>
                 </function>
                 <function name="setFOVX">
-                    <desc>Set Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedCam"). +
+                    <desc>Set Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedInstance"). +
 Needs to be activated via "setFOV" after this.</desc>
                     <param desc="Array with Min/Max value." multiplicity="+" name="values" type="int"/>
                 </function>
                 <function name="setFOVY">
-                    <desc>Set Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedCam"). +
+                    <desc>Set Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedInstance"). +
 Needs to be activated via "setFOV" after this.</desc>
                     <param desc="Array with Min/Max value." multiplicity="+" name="values" type="int"/>
                 </function>
                 <function name="setFOV">
-                    <desc>Activate preconfigured field of view of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Activate preconfigured field of view of currently selected camera instance (see "setSelectedInstance").</desc>
                 </function>
                 <function name="cameraSoftwareTrigger">
-                    <desc>Trigger SW trigger on currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Trigger SW trigger on currently selected camera instance (see "setSelectedInstance").</desc>
                 </function>
                 <function name="setHardwareTriggerDelay">
-                    <desc>Set trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
                 </function>
                 <function name="connectCamera">
-                    <desc>Connect to currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Connect to currently selected camera instance (see "setSelectedInstance").</desc>
                 </function>
                 <function name="setCameraIP">
-                    <desc>Set IP of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set IP of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="IP" multiplicity="1" name="ip" type="string"/>
                 </function>
                 <function name="getCameraIP">
-                    <desc>Get IP of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get IP of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="IP" multiplicity="1" name="ip" type="string"/>
                 </function>
                 <function name="getAcquisitionMode">
-                    <desc>Get acquisition mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get acquisition mode of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Acquisition mode (e.g. 'FIXED_FREQUENCY' / 'SOFTWARE_TRIGGER' / 'HARDWARE_TRIGGER')." multiplicity="1" name="mode" type="string"/>
                 </function>
                 <function name="getFramerate">
-                    <desc>Get framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Framerate (frames per second)." multiplicity="1" name="framerate" type="int"/>
                 </function>
                 <function name="getResizeFactor">
-                    <desc>Get resize factor used in module internal image processing of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get resize factor used in module internal image processing of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Factor (0.1 - 1.0)." multiplicity="1" name="factor" type="float"/>
                 </function>
                 <function name="getGain">
-                    <desc>Get gain of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get gain of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Gain" multiplicity="1" name="gain" type="float"/>
                 </function>
                 <function name="getShutterTime">
-                    <desc>Get shutter time of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get shutter time of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
                 </function>
                 <function name="getHardwareTriggerDelay">
-                    <desc>Get trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
                 </function>
                 <function name="getFOVX">
-                    <desc>Get Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Array with min/max values." multiplicity="+" name="values" type="int"/>
                 </function>
                 <function name="getFOVY">
-                    <desc>Get Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Array with min/max values." multiplicity="+" name="values" type="int"/>
                 </function>
                 <function name="startCamera">
-                    <desc>Start currently selected camera (see 'setSelectedCam').</desc>
+                    <desc>Start currently selected camera (see "setSelectedInstance").</desc>
                 </function>
                 <function name="stopCamera">
-                    <desc>Stop currently selected camera (see 'setSelectedCam').</desc>
+                    <desc>Stop currently selected camera (see "setSelectedInstance").</desc>
                 </function>
                 <function name="setColorMode">
-                    <desc>Set color mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Set color mode of currently selected camera instance (see "setSelectedInstance").</desc>
                     <param desc="Color mode" multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.ColorType" type="enum"/>
                 </function>
                 <function name="getColorMode">
-                    <desc>Get color mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get color mode of currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Color mode (e.g. MONO8, COLOR8, RAW8)." multiplicity="1" name="mode" type="string"/>
                 </function>
                 <function name="setSelectedCam">
-                    <desc>Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</desc>
+                    <desc>[DEPRECATED] See 'setSelectedInstance'. +
+Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</desc>
                     <param desc="camera intance no. to select." multiplicity="1" name="camNo" type="int"/>
                 </function>
                 <function name="getSelectedCam">
-                    <desc>Get currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Get currently selected camera instance (see "setSelectedInstance").</desc>
                     <return desc="Camera instance no." multiplicity="1" name="camNo" type="int"/>
                 </function>
                 <function name="setDigitalTriggerPause">
-                    <desc>Use preset trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Use preset trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedInstance").</desc>
                 </function>
                 <function name="getGigEVision">
-                    <desc>Get info if currently selected camera instance is a GigEVision camera (see "setSelectedCam").</desc>
+                    <desc>Get info if currently selected camera instance is a GigEVision camera (see "setSelectedInstance").</desc>
                     <return desc="Status" multiplicity="1" name="status" type="bool"/>
                 </function>
                 <function name="setGigEVision">
@@ -426,9 +453,7 @@ Needs to be activated via "setFOV" after this.</desc>
                 </function>
                 <function name="sendParameters">
                     <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
-                </function>
-                <function name="loadParameters">
-                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                    <param desc="[Optional] Set to TRUE if the data should NOT be saved immediately after sending." multiplicity="?" name="noDataSave" type="bool"/>
                 </function>
                 <function name="setGigEVisionParameterName">
                     <desc>Set GigEVision ParameterName to add for custom GigE Vision setting (see "addGigEVisionConfig").</desc>
@@ -495,7 +520,7 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
                     <param desc="Camera to trigger." multiplicity="1" name="cameraNo" type="int"/>
                 </function>
                 <function name="disconnectCamera">
-                    <desc>Function to disconnect currently selected camera instance (see "setSelectedCam").</desc>
+                    <desc>Function to disconnect currently selected camera instance (see 'setSelectedInstance').</desc>
                 </function>
                 <function name="selectGigEVisionParameterNameViaUITable">
                     <desc>Select GigE Vision Parameter to edit in UI.</desc>
@@ -533,13 +558,77 @@ IMPORTANT: As instances start their own threads, the module needs to be restarte
                     <desc>Function to restart all camera instances.</desc>
                 </function>
                 <function name="setCameraModel">
-                    <desc>Connected camera-model like Midicam2 or Basler-Camera.</desc>
-                    <param desc="Camera model" multiplicity="1" name="camModel" ref="CSK_MultiRemoteCamera.CameraModel" type="enum"/>
+                    <desc>Connected camera-model like Midicam2, Basler-Camera or CustomConfig. +
+According to the selected model it will use some predefined GigE Vision parameters. Otherwise select ' CustomConfig'.</desc>
+                    <param desc="Camera model." multiplicity="1" name="camModel" ref="CSK_MultiRemoteCamera.CameraModel" type="enum"/>
+                </function>
+                <function name="setSelectedInstance">
+                    <desc>Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</desc>
+                    <param desc="camera intance no. to select." multiplicity="1" name="camNo" type="int"/>
+                </function>
+                <function name="setSWTriggerEvent">
+                    <desc>Function to set event to trigger new image in SW mode.</desc>
+                    <param desc="Name of event." multiplicity="1" name="event" type="string"/>
+                </function>
+                <function name="setFlowConfigPriority">
+                    <desc>Function to configure if FlowConfig should have priority for FlowConfig relevant configuration.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="getStatusModuleActive">
+                    <desc>Function to get status if module is active.</desc>
+                    <return desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="clearFlowConfigRelevantConfiguration">
+                    <desc>Function to clear FlowConfig relevant configurations.</desc>
+                </function>
+                <function name="loadParameters">
+                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                    <return desc="Success to load parameters." multiplicity="1" name="success" type="bool"/>
+                </function>
+                <function name="getParameters">
+                    <trait>released</trait>
+                    <desc>Function to get all parameters of the client in JSON format.</desc>
+                    <param desc="Number of instance to get parameters from." multiplicity="1" name="instanceNo" type="int"/>
+                    <return desc="JSON string with all parameters." multiplicity="1" name="jsonParameters" type="string"/>
+                </function>
+                <function name="resetModule">
+                    <desc>Function to reset main configuration of module.</desc>
                 </function>
             </serves>
         </crown>
+        <crown name="MultiRemoteCamera_FC">
+            <trait>released</trait>
+            <desc>Crown to provide CSK_FlowConfig relevant features.</desc>
+            <serves/>
+            <crown name="OnNewImage">
+                <trait>released</trait>
+                <desc>Provide image acquired by camera.</desc>
+                <serves>
+                    <event name="OnNewImage">
+                        <include>data-flow</include>
+                        <desc>Provide image acquired by camera.</desc>
+                        <param desc="Handle to internally used FlowConfig instance." multiplicity="1" name="handle" type="handle"/>
+                        <param desc="'CSK_MultiRemoteCamera.OnNewImageCamera[InstanceNUM]'&#10;&#10;Parameter:&#10;1: Image (IMAGE)&#10;2: Timestampe (INT)" multiplicity="1" name="OnNewImage" type="string"/>
+                    </event>
+                    <function name="create">
+                        <trait>released</trait>
+                        <desc>Internally used CSK_FlowConfig create function.</desc>
+                        <param desc="Numeric identifier of camera instance (must be &gt;=1)." multiplicity="1" name="Instance" type="int"/>
+                        <return desc="Handle to internally used FlowConfig instance." multiplicity="1" name="handle" type="handle"/>
+                    </function>
+                    <function name="register">
+                        <trait>released</trait>
+                        <desc>Internally used CSK_FlowConfig register function.</desc>
+                        <param desc="Handle to internally used FlowConfig instance." multiplicity="1" name="handle" type="handle"/>
+                        <param desc="Internal parameter (not used)." multiplicity="1" name="eventname" type="string"/>
+                        <param desc="Internally used callback function." multiplicity="1" name="callback" type="string"/>
+                        <return desc="Success of register process." multiplicity="1" name="success" type="bool"/>
+                    </function>
+                </serves>
+            </crown>
+        </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">5.0.0</meta>
+        <meta key="version">6.0.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
