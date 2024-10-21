@@ -222,34 +222,6 @@
                                                                                 </layout-column>
                                                                                 <layout-column id="ColumnLayout81"
                                                                                     style="align-items: stretch">
-                                                                                    <layout-row id="RowLayout63"
-                                                                                        style="align-items: center; justify-content: flex-end">
-                                                                                        <davinci-value-display
-                                                                                            id="VD_Flowconfig"
-                                                                                            value="Flow Config priority:">
-                                                                                        </davinci-value-display>
-                                                                                        <davinci-checkbox id="Checkbox1"
-                                                                                            title="Load configured parameters from CSK_PersistentData on app start.">
-                                                                                            <span></span>
-                                                                                            <crown-edpws-binding
-                                                                                                property="checked"
-                                                                                                name="CSK_MultiRemoteCamera/OnNewStatusLoadParameterOnReboot"
-                                                                                                update-on-resume>
-                                                                                            </crown-edpws-binding>
-                                                                                            <crown-binding
-                                                                                                event="change"
-                                                                                                name="CSK_MultiRemoteCamera/setLoadOnReboot"
-                                                                                                path="param/args/status"
-                                                                                                auto-commit>
-                                                                                            </crown-binding>
-                                                                                            <crown-edpws-binding
-                                                                                                property="disabled"
-                                                                                                name="CSK_MultiRemoteCamera/OnPersistentDataModuleAvailable"
-                                                                                                update-on-resume
-                                                                                                converter="function(value) {return !value;}">
-                                                                                            </crown-edpws-binding>
-                                                                                        </davinci-checkbox>
-                                                                                    </layout-row>
                                                                                 </layout-column>
                                                                             </layout-row>
                                                                         </layout-column>
