@@ -16,7 +16,7 @@ For further information check out the [documentation](https://raw.githack.com/SI
 
 Tested on  
 
-|Device|Firmware|Module version
+|Device|Firmware|Module version|
 |--|--|--|
 |SIM1012|V2.4.2|V6.0.0|
 |SIM1012|V2.2.0|<V6.0.0|

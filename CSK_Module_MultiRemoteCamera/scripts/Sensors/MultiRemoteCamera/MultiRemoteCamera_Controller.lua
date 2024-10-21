@@ -272,7 +272,7 @@ end
 --- Function to send all relevant values to UI on resume
 local function handleOnExpiredTmrCamera()
 
-  Script.notifyEvent("MultiRemoteCamera_OnNewStatusModuleVersion", multiRemoteCamera_Model.version)
+  Script.notifyEvent("MultiRemoteCamera_OnNewStatusModuleVersion", 'v' .. multiRemoteCamera_Model.version)
   Script.notifyEvent("MultiRemoteCamera_OnNewStatusCSKStyle", multiRemoteCamera_Model.styleForUI)
   Script.notifyEvent("MultiRemoteCamera_OnNewStatusModuleIsActive", _G.availableAPIs.default and _G.availableAPIs.imageProvider)
 
@@ -399,7 +399,11 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getSelectedCam", getSelectedCam)
 
 local function getInstancesAmount ()
-  return #multiRemoteCamera_Instances
+  if multiRemoteCamera_Instances then
+    return #multiRemoteCamera_Instances
+  else
+    return 0
+  end
 end
 Script.serveFunction('CSK_MultiRemoteCamera.getInstancesAmount', getInstancesAmount )
 
