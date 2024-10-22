@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Function to 'resetModule' to default setup
 
 ### Improvements
+- Try to ping IP of camera before trying to connect (prevents internal error)
 - New UI design available (e.g. selectable via CSK_Module_PersistentData v4.1.0 or higher), see 'OnNewStatusCSKStyle'
 - check if instance exists if selected
 - 'loadParameters' returns its success

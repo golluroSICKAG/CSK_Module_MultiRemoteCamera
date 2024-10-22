@@ -218,7 +218,14 @@ function multiRemoteCamera:connectCamera()
 
   self.CameraProvider:setIPAddress(self.parameters.cameraIP)
   Script.notifyEvent("MultiRemoteCamera_OnScanCamera", true)
-  self.isConnected = self.CameraProvider:connect()
+
+  local pingCheck = Ethernet.ping(self.parameters.cameraIP)
+  if pingCheck then
+    self.isConnected = self.CameraProvider:connect()
+  else
+    _G.logger:info(nameOfModule .. ': No ping to camera possible')
+    self.isConnected = false
+  end
 
   Script.notifyEvent('MultiRemoteCamera_OnCameraConnected', self.isConnected)
   _G.logger:info(nameOfModule .. ': Connection to camera = ' .. tostring(self.isConnected))
