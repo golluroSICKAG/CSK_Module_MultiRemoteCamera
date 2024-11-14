@@ -721,6 +721,7 @@ Script.serveFunction("CSK_MultiRemoteCamera.getResizeFactor", getResizeFactor)
 local function setProcessingMode(mode)
   _G.logger:fine(nameOfModule .. ": Set processing mode = " .. tostring(mode))
   multiRemoteCamera_Instances[selectedInstance].parameters.processingMode = mode
+  Script.notifyEvent('MultiRemoteCamera_OnNewProcessingMode', mode)
   multiRemoteCamera_Instances[selectedInstance].imageProcessingParams:update('mode', multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'mode', multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
 end

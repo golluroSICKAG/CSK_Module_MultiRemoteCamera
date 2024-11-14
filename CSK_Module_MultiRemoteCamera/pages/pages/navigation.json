@@ -2,7 +2,6 @@
   "version": "1.0", 
   "pages": [
     {
-    "category": "My Category",
       "pages": [
         {
           "path": "CSK_Module_MultiRemoteCamera/CSK_Module_MultiRemoteCamera.html",

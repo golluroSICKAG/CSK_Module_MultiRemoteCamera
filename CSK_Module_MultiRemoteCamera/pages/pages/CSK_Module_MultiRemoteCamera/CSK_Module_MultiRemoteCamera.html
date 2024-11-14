@@ -293,11 +293,23 @@
                                                     viewer-id="multiRemoteCameraViewer1" protocol="auto"
                                                     style="width: 100%; height: 100%">
                                                 </sick-viewer2d>
-                                                <davinci-callout id="C_ViewerInfo" type="info">
-                                                    <span>
+                                                <stacked-view id="SV_ViewerInfo">
+                                                    <stacked-pane id="SP_ViewerInfoActive" value="APP">
+                                                        <davinci-callout id="C_ViewerInfo" type="info">
+                                                            <span>
 												This viewer will only work with ImageProcessingMode BOTH or SCRIPT
 												</span>
-                                                </davinci-callout>
+                                                        </davinci-callout>
+                                                    </stacked-pane>
+                                                    <stacked-pane id="SP_NoViewerInfo1" value="BOTH">
+                                                    </stacked-pane>
+                                                    <stacked-pane id="SP_NoViewerInfo2" value="SCRIPT">
+                                                    </stacked-pane>
+                                                    <crown-edpws-binding property="value"
+                                                        name="CSK_MultiRemoteCamera/OnNewProcessingMode"
+                                                        update-on-resume>
+                                                    </crown-edpws-binding>
+                                                </stacked-view>
                                             </layout-column>
                                         </layout-row>
                                     </layout-column>
@@ -569,7 +581,7 @@
                                                                                                 style="align-items: stretch">
                                                                                                 <davinci-value-display
                                                                                                     id="VD_CameraColorType"
-                                                                                                    value="Color type">
+                                                                                                    value="Color type:">
                                                                                                 </davinci-value-display>
                                                                                             </layout-column>
                                                                                             <layout-column
@@ -624,15 +636,15 @@
                                                                                         style="align-items: stretch">
                                                                                         <davinci-value-display
                                                                                             id="VD_ProcessingMode"
-                                                                                            value="ImageProcessing Mode"
-                                                                                            title="Processing in this app or in a other app. Mode to use: 'SCRIPT' = Handle image only in this app // 'APP'= Forward incoming images as event, so that other apps/modules can handle them // 'BOTH'= 'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app.)">
+                                                                                            value="ImageProcessing Mode:"
+                                                                                            title="Processing in this app or in another app. Mode to use: 'SCRIPT' = Handle image only in this app // 'APP'= Forward incoming images as event, so that other apps/modules can handle them // 'BOTH'= 'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app.)">
                                                                                         </davinci-value-display>
                                                                                     </layout-column>
                                                                                     <layout-column id="ColumnLayout53"
                                                                                         style="align-items: stretch">
                                                                                         <davinci-drop-down
                                                                                             id="DD_ProcessingMode"
-                                                                                            title="Processing in this app or in a other app. Mode to use: 'SCRIPT' = Handle image only in this app // 'APP'= Forward incoming images as event, so that other apps/modules can handle them // 'BOTH'= 'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app.)">
+                                                                                            title="Processing in this app or in another app. Mode to use: 'SCRIPT' = Handle image only in this app // 'APP'= Forward incoming images as event, so that other apps/modules can handle them // 'BOTH'= 'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app.)">
                                                                                             <davinci-option
                                                                                                 id="Option15"
                                                                                                 value="BOTH">
@@ -821,7 +833,7 @@
                                                                                                                 style="align-items: stretch">
                                                                                                                 <davinci-value-display
                                                                                                                     id="VD_TriggerMode"
-                                                                                                                    value="Trigger Mode">
+                                                                                                                    value="Trigger Mode:">
                                                                                                                 </davinci-value-display>
                                                                                                             </layout-column>
                                                                                                             <layout-column
@@ -994,7 +1006,7 @@
                                                                                                                 style="align-items: stretch">
                                                                                                                 <davinci-value-display
                                                                                                                     id="VD_ShutterTime"
-                                                                                                                    value="Shutter Time [µs]">
+                                                                                                                    value="Shutter Time [µs]:">
                                                                                                                 </davinci-value-display>
                                                                                                             </layout-column>
                                                                                                             <layout-column
@@ -1037,7 +1049,7 @@
                                                                                                                 style="align-items: stretch">
                                                                                                                 <davinci-value-display
                                                                                                                     id="VD_Framerate"
-                                                                                                                    value="Framerate [fps]">
+                                                                                                                    value="Framerate [fps]:">
                                                                                                                 </davinci-value-display>
                                                                                                             </layout-column>
                                                                                                             <layout-column
@@ -1080,7 +1092,7 @@
                                                                                                                 style="align-items: stretch">
                                                                                                                 <davinci-value-display
                                                                                                                     id="VD_Gain"
-                                                                                                                    value="Gain Factor">
+                                                                                                                    value="Gain Factor:">
                                                                                                                 </davinci-value-display>
                                                                                                             </layout-column>
                                                                                                             <layout-column
@@ -1126,7 +1138,7 @@
                                                                                                                 style="align-items: stretch">
                                                                                                                 <davinci-value-display
                                                                                                                     id="VD_FOV_X"
-                                                                                                                    value="FOV in [%] X">
+                                                                                                                    value="FOV in [%] X:">
                                                                                                                 </davinci-value-display>
                                                                                                             </layout-column>
                                                                                                             <layout-column
@@ -1168,7 +1180,7 @@
                                                                                                                 style="align-items: stretch">
                                                                                                                 <davinci-value-display
                                                                                                                     id="VD_FOVY"
-                                                                                                                    value="FOV in [%] Y">
+                                                                                                                    value="FOV in [%] Y:">
                                                                                                                 </davinci-value-display>
                                                                                                             </layout-column>
                                                                                                             <layout-column
@@ -1220,7 +1232,7 @@
                                                                                                                         type="outline"
                                                                                                                         icon-position="append"
                                                                                                                         icon="navigation/check"
-                                                                                                                        title="Set precofnigured FOV"
+                                                                                                                        title="Set preconfigured FOV"
                                                                                                                         style="align-self: center; width: 32%">
                                                                                                                         <span></span>
                                                                                                                         <crown-binding
@@ -1279,7 +1291,7 @@
                                                                                         style="align-items: stretch">
                                                                                         <davinci-value-display
                                                                                             id="VD_VisFactor"
-                                                                                            value="ImageProcessing Resolution Scale Factor"
+                                                                                            value="ImageProcessing Resolution Scale Factor:"
                                                                                             title="Rescale image before further processing">
                                                                                         </davinci-value-display>
                                                                                     </layout-column>
@@ -1352,7 +1364,7 @@
                                                                                     style="justify-content: space-between">
                                                                                     <davinci-value-display
                                                                                         id="VD_SaveAllImages"
-                                                                                        value="Save all images">
+                                                                                        value="Save all images:">
                                                                                     </davinci-value-display>
                                                                                     <davinci-toggle-switch
                                                                                         id="SW_SaveAllImages">
@@ -1381,7 +1393,7 @@
                                                                                     style="justify-content: space-between">
                                                                                     <davinci-value-display
                                                                                         id="VD_SingeSaveMode"
-                                                                                        value="Single Image save mode"
+                                                                                        value="Single Image save mode:"
                                                                                         title="This will temporarily keep the latest image to optionally save it.">
                                                                                     </davinci-value-display>
                                                                                     <davinci-toggle-switch
