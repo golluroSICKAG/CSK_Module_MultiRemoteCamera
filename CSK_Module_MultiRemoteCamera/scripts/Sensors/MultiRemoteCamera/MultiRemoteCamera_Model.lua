@@ -25,6 +25,22 @@ end
 local multiRemoteCamera = {}
 multiRemoteCamera.__index = multiRemoteCamera
 
+multiRemoteCamera.styleForUI = 'None' -- Optional parameter to set UI style
+multiRemoteCamera.version = Engine.getCurrentAppVersion() -- Version of module
+
+--**************************************************************************
+--********************** End Global Scope **********************************
+--**************************************************************************
+--**********************Start Function Scope *******************************
+--**************************************************************************
+
+--- Function to react on UI style change
+local function handleOnStyleChanged(theme)
+  multiRemoteCamera.styleForUI = theme
+  Script.notifyEvent("MultiRemoteCamera_OnNewStatusCSKStyle", multiRemoteCamera.styleForUI)
+end
+Script.register('CSK_PersistentData.OnNewStatusCSKStyle', handleOnStyleChanged)
+
 --- Function to create new instance
 ---@param cameraNo int Number of instance
 ---@return table[] self Instance of multiRemoteCamera
@@ -48,13 +64,12 @@ function multiRemoteCamera.create(cameraNo)
   self.parameterLoadOnReboot = false -- Status if parameter dataset should be loaded on app/device reboot
 
   self.isConnected = false -- Is camera connected/available
-  self.activeInUI = false -- Is current camera selected via UI (see "setSelectedCam")
+  self.activeInUI = false -- Is current camera selected via UI (see "setSelectedInstance")
   self.digTriggerStatus = false -- digital trigger modus active
   self.gigEVisionParameterList = '' -- JSON list of available GigE Vision parameters
   self.gigEVisionCurrentParameter = '' -- current selected GigE Vision parameter
   self.gigEVisionParameterType = 'Integer' -- type of current selected GigE Vision parameter
   self.gigEVisionParameterValue = '-' -- Value of current selected GigE Vision parameter
-  self.triggerFlow = Flow.create() -- Flow to trigger camera via cFlow
   self.cameraIsPingAble = false -- Status of latest ping check
   self.scriptIsStarted = false -- Status of processing script startedin own thread
 
@@ -67,7 +82,12 @@ function multiRemoteCamera.create(cameraNo)
   self.gigEVisionSelectedConfig = nil -- Selected entry of custom GigEVision setting
   self.gigEVisionConfigUITable = nil -- Content of custom GigEVision setting for UI table
 
+  self.customCameraActive = false -- TRUE if camera model == 'CUSTOM'
+
+  self.triggerFunction = nil -- Internally used function to SW trigger the camera
+
   self.parameters = {}
+  self.parameters.flowConfigPriority = CSK_FlowConfig ~= nil or false -- Status if FlowConfig should have priority for FlowConfig relevant configurations
   self.parameters.cameraNo = cameraNo -- Instance no of this camera
   self.parameters.camSum = cameraNo -- Amount of all cameras
   self.parameters.switchMode = false -- Is camera connected via switch to SIM?
@@ -77,11 +97,12 @@ function multiRemoteCamera.create(cameraNo)
   else
     self.parameters.gigEvision = false
   end
-  self.parameters.cameraIP = '192.168.1.10' .. tostring(cameraNo) -- IP of camera
+  self.parameters.cameraIP = '192.168.1.10' .. tostring(cameraNo-1) -- IP of camera
   self.parameters.shutterTime = 20000 -- Shutter time to use
   self.parameters.gain = 1.0 -- Gain
   self.parameters.framerate = 1 -- Frame rate in "FIXED_FREQUENCY" mode
   self.parameters.acquisitionMode = 'SOFTWARE_TRIGGER' -- 'FIXED_FREQUENCY' / 'SOFTWARE_TRIGGER' / 'HARDWARE_TRIGGER'
+  self.parameters.swTriggerEvent = '' -- Opt. event to trigger camera in SW mode
   self.parameters.hardwareTriggerDelay = 0 -- Opt. delay for HW trigger
   self.parameters.triggerDelayBlockName = nil -- Name of specific delay bock within cFlow
   self.parameters.colorMode = 'MONO8' --'COLOR8' / 'MONO8' / 'RAW8'
@@ -92,8 +113,7 @@ function multiRemoteCamera.create(cameraNo)
   self.parameters.processingFile = 'CSK_MultiRemoteCamera_ImageProcessing' -- Script to use for processing in thread
   self.parameters.monitorCamera = false -- Opt. monitor camera status in "CameraOverview" UI
   self.parameters.customGigEVisionConfig = {} -- Custom GigEVision setting, content are 3 tables ".parameter", ".type", ".value"
-  self.parameters.cameraModel = "PicoMidiCam2" --a2A1920-51gcBAS
-
+  self.parameters.cameraModel = "PicoMidiCam2" -- 'a2A1920-51gcBAS', 'CustomConfig'
 
   -- Image processing parameters
   self.parameters.processingMode = "BOTH" -- 'SCRIPT', 'APP', 'BOTH' --> see "setProcessingMode"
@@ -198,7 +218,14 @@ function multiRemoteCamera:connectCamera()
 
   self.CameraProvider:setIPAddress(self.parameters.cameraIP)
   Script.notifyEvent("MultiRemoteCamera_OnScanCamera", true)
-  self.isConnected = self.CameraProvider:connect()
+
+  local pingCheck = Ethernet.ping(self.parameters.cameraIP)
+  if pingCheck then
+    self.isConnected = self.CameraProvider:connect()
+  else
+    _G.logger:info(nameOfModule .. ': No ping to camera possible')
+    self.isConnected = false
+  end
 
   Script.notifyEvent('MultiRemoteCamera_OnCameraConnected', self.isConnected)
   _G.logger:info(nameOfModule .. ': Connection to camera = ' .. tostring(self.isConnected))
@@ -213,7 +240,7 @@ function multiRemoteCamera:connectCamera()
     end
 
   else
-    _G.logger:info(nameOfModule .. ": Not possible to connect to Camera No. ".. tostring(self.parameters.cameraNo))
+    _G.logger:warning(nameOfModule .. ": Not possible to connect to Camera No. ".. tostring(self.parameters.cameraNo))
   end
   CSK_MultiRemoteCamera.pageCalled()
 end
@@ -244,78 +271,87 @@ end
 --- Function to set new camera config
 function multiRemoteCamera:setNewConfig()
   if self.isConnected == true then
-    _G.logger:info(nameOfModule .. ": Set new config:")
+    _G.logger:fine(nameOfModule .. ": Set new config:")
     self.CameraProvider:stop()
 
     if self.parameters.gigEvision then
       self.CameraConfig = Image.Provider.RemoteCamera.GigEVisionConfig.create()
 
-      _G.logger:info(nameOfModule .. ": GigEVision Config")
-      _G.logger:info(nameOfModule .. ": Mode = " .. self.parameters.acquisitionMode)
-      _G.logger:info(nameOfModule .. ": Camera-Model: " .. self.parameters.cameraModel)
+      _G.logger:fine(nameOfModule .. ": GigEVision Config")
+      _G.logger:fine(nameOfModule .. ": Camera-Model: " .. self.parameters.cameraModel)
+      _G.logger:fine(nameOfModule .. ": Mode = " .. self.parameters.acquisitionMode)
+      
+      if self.parameters.cameraModel ~= "CustomConfig" then
+        self.customCameraActive = false
+      _G.logger:fine(nameOfModule .. ": Camera-Model: " .. self.parameters.cameraModel)
+      _G.logger:fine(nameOfModule .. ": Mode = " .. self.parameters.acquisitionMode)
 
-      if self.parameters.cameraModel == "PicoMidiCam2" then
-        self.CameraConfig:setParameterString("AcquisitionMode", "Continuous")
-        self.CameraConfig:setParameterString("TriggerSelector", "ExposureStart")
+        if self.parameters.cameraModel == "PicoMidiCam2" then
+          self.CameraConfig:setParameterString("AcquisitionMode", "Continuous")
+          self.CameraConfig:setParameterString("TriggerSelector", "ExposureStart")
 
-        if self.parameters.acquisitionMode == 'FIXED_FREQUENCY' then
-          self.CameraConfig:setParameterString("TriggerMode", "Off")
-          self.CameraConfig:setParameterFloat("AcquisitionFrameRate", self.parameters.framerate)
+          if self.parameters.acquisitionMode == 'FIXED_FREQUENCY' then
+            self.CameraConfig:setParameterString("TriggerMode", "Off")
+            self.CameraConfig:setParameterFloat("AcquisitionFrameRate", self.parameters.framerate)
 
-        elseif self.parameters.acquisitionMode == 'HARDWARE_TRIGGER' then
-          self.CameraConfig:setParameterString("TriggerMode", "On")
-          self.CameraConfig:setParameterString("TriggerSource", "Line0")
-          self.CameraConfig:setParameterString("TriggerActivation", "RisingEdge")
+          elseif self.parameters.acquisitionMode == 'HARDWARE_TRIGGER' then
+            self.CameraConfig:setParameterString("TriggerMode", "On")
+            self.CameraConfig:setParameterString("TriggerSource", "Line0")
+            self.CameraConfig:setParameterString("TriggerActivation", "RisingEdge")
 
-        elseif self.parameters.acquisitionMode == 'SOFTWARE_TRIGGER' and self.parameters.gigEvision then
-          self.CameraConfig:setParameterString("TriggerSource", "Software")
-          self.CameraConfig:setParameterString("TriggerMode", "On")
+          elseif self.parameters.acquisitionMode == 'SOFTWARE_TRIGGER' and self.parameters.gigEvision then
+            self.CameraConfig:setParameterString("TriggerSource", "Software")
+            self.CameraConfig:setParameterString("TriggerMode", "On")
+          end
+
+        elseif self.parameters.cameraModel == "a2A1920-51gcBAS" then
+          self.CameraConfig:setParameterString("AcquisitionMode", "Continuous")
+          self.CameraConfig:setParameterString("TriggerSelector", "FrameStart")
+          self.CameraConfig:setParameterString("BslLightSourcePreset", "Daylight5000K")
+          self.CameraConfig:setParameterString("BalanceWhiteAuto", "Off")
+
+          if self.parameters.acquisitionMode == 'FIXED_FREQUENCY' then 
+            self.CameraConfig:setParameterString("TriggerMode", "Off") 
+            self.CameraConfig:setParameterInteger("AcquisitionFrameRateEnable", 1)
+            self.CameraConfig:setParameterFloat("AcquisitionFrameRate", 
+            self.parameters.framerate) 
+
+          elseif self.parameters.acquisitionMode == 'HARDWARE_TRIGGER' then
+            self.CameraConfig:setParameterString("TriggerMode", "On")
+            self.CameraConfig:setParameterString("LineSelector", "Line1")
+            self.CameraConfig:setParameterString("LineMode", "Input")
+            self.CameraConfig:setParameterString("TriggerSource", "Line1")
+            self.CameraConfig:setParameterString("TriggerActivation", "RisingEdge")
+
+          elseif self.parameters.acquisitionMode == 'SOFTWARE_TRIGGER' then
+            self.CameraConfig:setParameterString("TriggerMode", "On")
+            self.CameraConfig:setParameterString("TriggerSource", "Software")
+          end
         end
 
-      elseif self.parameters.cameraModel == "a2A1920-51gcBAS" then
-        self.CameraConfig:setParameterString("AcquisitionMode", "Continuous")
-        self.CameraConfig:setParameterString("TriggerSelector", "FrameStart")
-        self.CameraConfig:setParameterString("BslLightSourcePreset", "Daylight5000K")
-        self.CameraConfig:setParameterString("BalanceWhiteAuto", "Off")
+        -- Cameras on single ethernet switch mode
+        if self.parameters.switchMode then
+          -- Available network load divided by the amount of connected cameras = value for DeviceLinkThroughputLimit in MBit/s
+          -- Insert value in byte/s (value for DeviceLinkThroughputLimit divided by 8bit)
+          if deviceType == "SIM1012" or deviceType == "SIM1004" then
+            self.CameraConfig:setParameterInteger("DeviceLinkThroughputLimit", 300000000 / self.parameters.camSum / 8)
+          else
+            self.CameraConfig:setParameterInteger("DeviceLinkThroughputLimit", 1000000000 / self.parameters.camSum / 8)
+          end
 
-        if self.parameters.acquisitionMode == 'FIXED_FREQUENCY' then 
-          self.CameraConfig:setParameterString("TriggerMode", "Off") 
-          self.CameraConfig:setParameterInteger("AcquisitionFrameRateEnable", 1) 
-          self.CameraConfig:setParameterFloat("AcquisitionFrameRate", 
-          self.parameters.framerate) 
-
-        elseif self.parameters.acquisitionMode == 'HARDWARE_TRIGGER' then 
-          self.CameraConfig:setParameterString("TriggerMode", "On") 
-          self.CameraConfig:setParameterString("LineSelector", "Line1") 
-          self.CameraConfig:setParameterString("LineMode", "Input") 
-          self.CameraConfig:setParameterString("TriggerSource", "Line1") 
-          self.CameraConfig:setParameterString("TriggerActivation", "RisingEdge") 
-
-        elseif self.parameters.acquisitionMode == 'SOFTWARE_TRIGGER' then
-          self.CameraConfig:setParameterString("TriggerMode", "On") 
-          self.CameraConfig:setParameterString("TriggerSource", "Software")
-        end
-      end
-
-      -- Cameras on single ethernet switch mode
-      if self.parameters.switchMode then
-        -- Available network load divided by the amount of connected cameras = value for DeviceLinkThroughputLimit in MBit/s
-        -- Insert value in byte/s (value for DeviceLinkThroughputLimit divided by 8bit)
-        if deviceType == "SIM1012" or deviceType == "SIM1004" then
-          self.CameraConfig:setParameterInteger("DeviceLinkThroughputLimit", 300000000 / self.parameters.camSum / 8)
+        -- Set this value even if not in switch mode to prevent image errors
         else
-          self.CameraConfig:setParameterInteger("DeviceLinkThroughputLimit", 1000000000 / self.parameters.camSum / 8)
+          if deviceType == "SIM1012" or deviceType == "SIM1004" then
+            self.CameraConfig:setParameterInteger("DeviceLinkThroughputLimit", 300000000 / 8)
+          end
         end
 
-      -- Set this value even if not in switch mode to prevent image errors
+        if deviceType ~= "SIM4000" then
+          self.CameraConfig:setParameterInteger("[Stream]GevStreamReceiveSocketSize", 4194304)
+        end
+
       else
-        if deviceType == "SIM1012" or deviceType == "SIM1004" then
-          self.CameraConfig:setParameterInteger("DeviceLinkThroughputLimit", 300000000 / 8)
-        end
-      end
-
-      if deviceType ~= "SIM4000" then
-        self.CameraConfig:setParameterInteger("[Stream]GevStreamReceiveSocketSize", 4194304)
+        self.customCameraActive = true
       end
 
       -- Custom GigE Vision config
@@ -331,38 +367,41 @@ function multiRemoteCamera:setNewConfig()
             suc = self.CameraConfig:setParameterFloat(self.parameters.customGigEVisionConfig[i].parameter, tonumber(self.parameters.customGigEVisionConfig[i].value))
           end
 
-          _G.logger:info(nameOfModule .. ": Success of new GigEVision value for parameter " .. self.parameters.customGigEVisionConfig[i].parameter .. ", value = " .. tostring(self.parameters.customGigEVisionConfig[i].value) .. " = " .. tostring(suc))
+          _G.logger:fine(nameOfModule .. ": Success of new GigEVision value for parameter " .. self.parameters.customGigEVisionConfig[i].parameter .. ", value = " .. tostring(self.parameters.customGigEVisionConfig[i].value) .. " = " .. tostring(suc))
         end
       end
 
     else --No GigEVision Camera
       self.CameraConfig = Image.Provider.RemoteCamera.I2DConfig.create()
 
-      _G.logger:info(nameOfModule .. ": I2D Config")
+      _G.logger:fine(nameOfModule .. ": I2D Config")
 
       if self.parameters.switchMode then
         self.CameraConfig:setPacketInterval(self.parameters.camSum * 20)
       end
 
-      _G.logger:info(nameOfModule .. ": Mode = " .. self.parameters.acquisitionMode)
+      _G.logger:fine(nameOfModule .. ": Mode = " .. self.parameters.acquisitionMode)
 
       if self.parameters.acquisitionMode == 'FIXED_FREQUENCY' then
         self.CameraConfig:setFrameRate(self.parameters.framerate)
-        _G.logger:info(nameOfModule .. ": Framerate = " .. self.parameters.framerate)
+        _G.logger:fine(nameOfModule .. ": Framerate = " .. self.parameters.framerate)
       elseif self.parameters.acquisitionMode == 'HARDWARE_TRIGGER' then
         self.CameraConfig:setHardwareTriggerMode("LO_HI")
       end
       self.CameraConfig:setColorMode(self.parameters.colorMode)
-      _G.logger:info(nameOfModule .. ": ColorMode = " .. self.parameters.colorMode)
+      _G.logger:fine(nameOfModule .. ": ColorMode = " .. self.parameters.colorMode)
       self.CameraConfig:setAcquisitionMode(self.parameters.acquisitionMode)
     end
 
-    self.CameraConfig:setShutterTime(self.parameters.shutterTime)
-    self.CameraConfig:setGainFactor(self.parameters.gain)
-    self.CameraConfig:setFieldOfView(self.parameters.xStartFOV, self.parameters.xEndFOV, self.parameters.yStartFOV, self.parameters.yEndFOV)
+    if self.parameters.cameraModel ~= "CustomConfig" then
 
-    _G.logger:info(nameOfModule .. ": Shutter time = " .. tostring(self.parameters.shutterTime))
-    _G.logger:info(nameOfModule .. ": Gain = " .. tostring(self.parameters.gain))
+      self.CameraConfig:setShutterTime(self.parameters.shutterTime)
+      self.CameraConfig:setGainFactor(self.parameters.gain)
+      self.CameraConfig:setFieldOfView(self.parameters.xStartFOV, self.parameters.xEndFOV, self.parameters.yStartFOV, self.parameters.yEndFOV)
+
+      _G.logger:fine(nameOfModule .. ": Shutter time = " .. tostring(self.parameters.shutterTime))
+      _G.logger:fine(nameOfModule .. ": Gain = " .. tostring(self.parameters.gain))
+    end
 
     local configSuc = self.CameraProvider:setConfig(self.CameraConfig)
     if configSuc then
@@ -381,7 +420,7 @@ function multiRemoteCamera:setNewConfig()
     end
 
   else
-    _G.logger:info(nameOfModule .. ": Did not set new config to camera No. " .. tostring(self.parameters.cameraNo) .. ", because no camera is connected.")
+    _G.logger:warning(nameOfModule .. ": Did not set new config to camera No. " .. tostring(self.parameters.cameraNo) .. ", because no camera is connected.")
   end
 end
 

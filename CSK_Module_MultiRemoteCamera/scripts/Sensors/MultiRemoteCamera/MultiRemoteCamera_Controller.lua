@@ -47,6 +47,9 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnRegisterCameraNUM", "MultiRemoteCamer
 
 -- Real events
 --------------------------------------------------
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusModuleVersion', 'MultiRemoteCamera_OnNewStatusModuleVersion')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusCSKStyle', 'MultiRemoteCamera_OnNewStatusCSKStyle')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusModuleIsActive', 'MultiRemoteCamera_OnNewStatusModuleIsActive')
 
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusWaitingForCameraBootUp', 'MultiRemoteCamera_OnNewStatusWaitingForCameraBootUp')
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewCameraList", "MultiRemoteCamera_OnNewCameraList")
@@ -70,12 +73,11 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnNewFOVX", "MultiRemoteCamera_OnNewFOV
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewFOVY", "MultiRemoteCamera_OnNewFOVY")
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewImageSizeToShare', 'MultiRemoteCamera_OnNewImageSizeToShare')
 Script.serveEvent("CSK_MultiRemoteCamera.OnSWTriggerActive", "MultiRemoteCamera_OnSWTriggerActive")
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewSWTriggerEvent', 'MultiRemoteCamera_OnNewSWTriggerEvent')
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusDigitalTriggerPause", "MultiRemoteCamera_OnNewStatusDigitalTriggerPause")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewHardwareTriggerDelay", "MultiRemoteCamera_OnNewHardwareTriggerDelay")
 Script.serveEvent("CSK_MultiRemoteCamera.OnHWTriggerActive", "MultiRemoteCamera_OnHWTriggerActive")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewImageProcessingParameter", "MultiRemoteCamera_OnNewImageProcessingParameter")
-Script.serveEvent("CSK_MultiRemoteCamera.OnPersistentDataModuleAvailable", "MultiRemoteCamera_OnPersistentDataModuleAvailable")
-Script.serveEvent("CSK_MultiRemoteCamera.OnNewParameterName", "MultiRemoteCamera_OnNewParameterName")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewGigEVisionTableContent", "MultiRemoteCamera_OnNewGigEVisionTableContent")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewGigEVisionConfigTableContent", "MultiRemoteCamera_OnNewGigEVisionConfigTableContent")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewGigEVisionCurrentParameter", "MultiRemoteCamera_OnNewGigEVisionCurrentParameter")
@@ -89,7 +91,6 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnNewImageQueueCamera", "MultiRemoteCam
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewFPSCamera", "MultiRemoteCamera_OnNewFPSCamera")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusSaveAllImagesActive", "MultiRemoteCamera_OnNewStatusSaveAllImagesActive")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusTempImageActive", "MultiRemoteCamera_OnNewStatusTempImageActive")
-Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusLoadParameterOnReboot", "MultiRemoteCamera_OnNewStatusLoadParameterOnReboot")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewCameraOverviewTable", "MultiRemoteCamera_OnNewCameraOverviewTable")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewProcessingMode", "MultiRemoteCamera_OnNewProcessingMode")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewSwitchMode", "MultiRemoteCamera_OnNewSwitchMode")
@@ -97,12 +98,19 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoring", "MultiRemoteCamera_On
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoringState", "MultiRemoteCamera_OnNewMonitoringState") --for UI
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoringStateCams", "MultiRemoteCamera_OnNewMonitoringStateCams")
 
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusFlowConfigPriority', 'MultiRemoteCamera_OnNewStatusFlowConfigPriority')
+Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusLoadParameterOnReboot", "MultiRemoteCamera_OnNewStatusLoadParameterOnReboot")
+Script.serveEvent("CSK_MultiRemoteCamera.OnPersistentDataModuleAvailable", "MultiRemoteCamera_OnPersistentDataModuleAvailable")
+Script.serveEvent("CSK_MultiRemoteCamera.OnNewParameterName", "MultiRemoteCamera_OnNewParameterName")
+
 Script.serveEvent("CSK_MultiRemoteCamera.OnUserLevelOperatorActive", "MultiRemoteCamera_OnUserLevelOperatorActive")
 Script.serveEvent("CSK_MultiRemoteCamera.OnUserLevelMaintenanceActive", "MultiRemoteCamera_OnUserLevelMaintenanceActive")
 Script.serveEvent("CSK_MultiRemoteCamera.OnUserLevelServiceActive", "MultiRemoteCamera_OnUserLevelServiceActive")
 Script.serveEvent("CSK_MultiRemoteCamera.OnUserLevelAdminActive", "MultiRemoteCamera_OnUserLevelAdminActive")
 
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewCameraModel', 'MultiRemoteCamera_OnNewCameraModel')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusCustomCamera', 'MultiRemoteCamera_OnNewStatusCustomCamera')
+
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewNumberOfCameras', 'MultiRemoteCamera_OnNewNumberOfCameras')
 
 --************************* UI Events End **********************************
@@ -264,65 +272,76 @@ end
 --- Function to send all relevant values to UI on resume
 local function handleOnExpiredTmrCamera()
 
-  updateUserLevel()
-  Script.notifyEvent('MultiRemoteCamera_OnNewNumberOfCameras', string.format("%s", #multiRemoteCamera_Instances))
-  Script.notifyEvent('MultiRemoteCamera_OnNewStatusWaitingForCameraBootUp', bootUpStatus)
-  Script.notifyEvent('MultiRemoteCamera_OnNewCameraList', helperFuncs.createStringListBySize(#multiRemoteCamera_Instances))
-  Script.notifyEvent('MultiRemoteCamera_OnNewSelectedCam', selectedInstance)
-  Script.notifyEvent('MultiRemoteCamera_OnNewViewerID', 'multiRemoteCameraViewer' .. tostring(selectedInstance))
-  Script.notifyEvent('MultiRemoteCamera_OnCameraConnected', multiRemoteCamera_Instances[selectedInstance].isConnected)
-  Script.notifyEvent('MultiRemoteCamera_OnScanCamera', false)
-  Script.notifyEvent('MultiRemoteCamera_OnCurrentCameraIP', multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP)
-  Script.notifyEvent('MultiRemoteCamera_OnNewColorMode', multiRemoteCamera_Instances[selectedInstance].parameters.colorMode)
-  Script.notifyEvent('MultiRemoteCamera_OnNewStatusViewerActive', viewerActive)
-  Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'viewerActive', viewerActive)
-  Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionStatus', multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision)
-  if multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision then
-    Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionParameters', multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterList)
-    Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionCurrentParameter', multiRemoteCamera_Instances[selectedInstance].gigEVisionCurrentParameter)
-    Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionParameterType', multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterType)
-    Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionValue', tostring(multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterValue))
-    if multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterUITable then
-      Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionTableContent', multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterUITable)
-    end
-    if multiRemoteCamera_Instances[selectedInstance].gigEVisionConfigUITable then
-      Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionConfigTableContent', multiRemoteCamera_Instances[selectedInstance].gigEVisionConfigUITable)
-    end
-  end
-  Script.notifyEvent('MultiRemoteCamera_OnNewMonitoring', multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera)
-  Script.notifyEvent('MultiRemoteCamera_OnNewSwitchMode', multiRemoteCamera_Instances[selectedInstance].parameters.switchMode)
+  Script.notifyEvent("MultiRemoteCamera_OnNewStatusModuleVersion", 'v' .. multiRemoteCamera_Model.version)
+  Script.notifyEvent("MultiRemoteCamera_OnNewStatusCSKStyle", multiRemoteCamera_Model.styleForUI)
+  Script.notifyEvent("MultiRemoteCamera_OnNewStatusModuleIsActive", _G.availableAPIs.default and _G.availableAPIs.imageProvider)
 
-  Script.notifyEvent('MultiRemoteCamera_OnNewShutterTime', multiRemoteCamera_Instances[selectedInstance].parameters.shutterTime)
-  Script.notifyEvent('MultiRemoteCamera_OnNewGain', multiRemoteCamera_Instances[selectedInstance].parameters.gain)
-  Script.notifyEvent('MultiRemoteCamera_OnNewFramerate', multiRemoteCamera_Instances[selectedInstance].parameters.framerate)
-  Script.notifyEvent('MultiRemoteCamera_OnNewResizeFactor', multiRemoteCamera_Instances[selectedInstance].imageProcessingParams:get('resizeFactor'))
-  Script.notifyEvent('MultiRemoteCamera_OnNewAcquisitionMode', multiRemoteCamera_Instances[selectedInstance].parameters.acquisitionMode)
-  Script.notifyEvent('MultiRemoteCamera_OnNewImageQueueCamera', '-')
-  Script.notifyEvent('MultiRemoteCamera_OnNewFPSCamera', '-')
-  Script.notifyEvent('MultiRemoteCamera_OnNewFOVX', {multiRemoteCamera_Instances[selectedInstance].parameters.xStartFOV, multiRemoteCamera_Instances[selectedInstance].parameters.xEndFOV})
-  Script.notifyEvent('MultiRemoteCamera_OnNewFOVY', {multiRemoteCamera_Instances[selectedInstance].parameters.yStartFOV, multiRemoteCamera_Instances[selectedInstance].parameters.yEndFOV})
-  checkTriggerMode(multiRemoteCamera_Instances[selectedInstance].parameters.acquisitionMode)
-  Script.notifyEvent('MultiRemoteCamera_OnNewHardwareTriggerDelay', multiRemoteCamera_Instances[selectedInstance].parameters.hardwareTriggerDelay)
-  Script.notifyEvent('MultiRemoteCamera_OnNewStatusDigitalTriggerPause', multiRemoteCamera_Instances[selectedInstance].digTriggerStatus)
-  Script.notifyEvent('MultiRemoteCamera_OnNewParameterName', multiRemoteCamera_Instances[selectedInstance].parametersName)
-  Script.notifyEvent('MultiRemoteCamera_OnPersistentDataModuleAvailable', multiRemoteCamera_Instances[selectedInstance].persistentModuleAvailable)
-  Script.notifyEvent('MultiRemoteCamera_OnNewStatusSaveAllImagesActive', multiRemoteCamera_Instances[selectedInstance].parameters.saveAllImages)
-  Script.notifyEvent('MultiRemoteCamera_OnNewStatusTempImageActive', multiRemoteCamera_Instances[selectedInstance].parameters.tempSaveImage)
-  Script.notifyEvent('MultiRemoteCamera_OnNewSavingImagesPath', multiRemoteCamera_Instances[selectedInstance].parameters.savingImagePath)
-  Script.notifyEvent('MultiRemoteCamera_OnNewImageFilePrefix', multiRemoteCamera_Instances[selectedInstance].parameters.imageFilePrefix)
-  Script.notifyEvent('MultiRemoteCamera_OnNewImageSaveFormat', multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat)
-  if multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat == 'jpg' then
-    Script.notifyEvent('MultiRemoteCamera_OnNewFormatCompression', multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveJpgFormatCompression)
-  elseif multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat == 'png' then
-    Script.notifyEvent('MultiRemoteCamera_OnNewFormatCompression', multiRemoteCamera_Instances[selectedInstance].parameters.imageSavePngFormatCompression)
+  if _G.availableAPIs.default and _G.availableAPIs.imageProvider then
+
+    updateUserLevel()
+
+    Script.notifyEvent('MultiRemoteCamera_OnNewNumberOfCameras', string.format("%s", #multiRemoteCamera_Instances))
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusWaitingForCameraBootUp', bootUpStatus)
+    Script.notifyEvent('MultiRemoteCamera_OnNewCameraList', helperFuncs.createStringListBySize(#multiRemoteCamera_Instances))
+    Script.notifyEvent('MultiRemoteCamera_OnNewSelectedCam', selectedInstance)
+    Script.notifyEvent('MultiRemoteCamera_OnNewViewerID', 'multiRemoteCameraViewer' .. tostring(selectedInstance))
+    Script.notifyEvent('MultiRemoteCamera_OnCameraConnected', multiRemoteCamera_Instances[selectedInstance].isConnected)
+    Script.notifyEvent('MultiRemoteCamera_OnScanCamera', false)
+    Script.notifyEvent('MultiRemoteCamera_OnCurrentCameraIP', multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP)
+    Script.notifyEvent('MultiRemoteCamera_OnNewColorMode', multiRemoteCamera_Instances[selectedInstance].parameters.colorMode)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusViewerActive', viewerActive)
+    Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'viewerActive', viewerActive)
+    Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionStatus', multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision)
+    if multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision then
+      Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionParameters', multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterList)
+      Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionCurrentParameter', multiRemoteCamera_Instances[selectedInstance].gigEVisionCurrentParameter)
+      Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionParameterType', multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterType)
+      Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionValue', tostring(multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterValue))
+      if multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterUITable then
+        Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionTableContent', multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterUITable)
+      end
+      if multiRemoteCamera_Instances[selectedInstance].gigEVisionConfigUITable then
+        Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionConfigTableContent', multiRemoteCamera_Instances[selectedInstance].gigEVisionConfigUITable)
+      end
+    end
+    Script.notifyEvent('MultiRemoteCamera_OnNewMonitoring', multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera)
+    Script.notifyEvent('MultiRemoteCamera_OnNewSwitchMode', multiRemoteCamera_Instances[selectedInstance].parameters.switchMode)
+
+    Script.notifyEvent('MultiRemoteCamera_OnNewShutterTime', multiRemoteCamera_Instances[selectedInstance].parameters.shutterTime)
+    Script.notifyEvent('MultiRemoteCamera_OnNewGain', multiRemoteCamera_Instances[selectedInstance].parameters.gain)
+    Script.notifyEvent('MultiRemoteCamera_OnNewFramerate', multiRemoteCamera_Instances[selectedInstance].parameters.framerate)
+    Script.notifyEvent('MultiRemoteCamera_OnNewResizeFactor', multiRemoteCamera_Instances[selectedInstance].imageProcessingParams:get('resizeFactor'))
+    Script.notifyEvent('MultiRemoteCamera_OnNewAcquisitionMode', multiRemoteCamera_Instances[selectedInstance].parameters.acquisitionMode)
+    Script.notifyEvent('MultiRemoteCamera_OnNewImageQueueCamera', '-')
+    Script.notifyEvent('MultiRemoteCamera_OnNewFPSCamera', '-')
+    Script.notifyEvent('MultiRemoteCamera_OnNewFOVX', {multiRemoteCamera_Instances[selectedInstance].parameters.xStartFOV, multiRemoteCamera_Instances[selectedInstance].parameters.xEndFOV})
+    Script.notifyEvent('MultiRemoteCamera_OnNewFOVY', {multiRemoteCamera_Instances[selectedInstance].parameters.yStartFOV, multiRemoteCamera_Instances[selectedInstance].parameters.yEndFOV})
+    checkTriggerMode(multiRemoteCamera_Instances[selectedInstance].parameters.acquisitionMode)
+    Script.notifyEvent('MultiRemoteCamera_OnNewSWTriggerEvent', multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent)
+    Script.notifyEvent('MultiRemoteCamera_OnNewHardwareTriggerDelay', multiRemoteCamera_Instances[selectedInstance].parameters.hardwareTriggerDelay)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusDigitalTriggerPause', multiRemoteCamera_Instances[selectedInstance].digTriggerStatus)
+    Script.notifyEvent('MultiRemoteCamera_OnNewParameterName', multiRemoteCamera_Instances[selectedInstance].parametersName)
+    Script.notifyEvent('MultiRemoteCamera_OnPersistentDataModuleAvailable', multiRemoteCamera_Instances[selectedInstance].persistentModuleAvailable)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusSaveAllImagesActive', multiRemoteCamera_Instances[selectedInstance].parameters.saveAllImages)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusTempImageActive', multiRemoteCamera_Instances[selectedInstance].parameters.tempSaveImage)
+    Script.notifyEvent('MultiRemoteCamera_OnNewSavingImagesPath', multiRemoteCamera_Instances[selectedInstance].parameters.savingImagePath)
+    Script.notifyEvent('MultiRemoteCamera_OnNewImageFilePrefix', multiRemoteCamera_Instances[selectedInstance].parameters.imageFilePrefix)
+    Script.notifyEvent('MultiRemoteCamera_OnNewImageSaveFormat', multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat)
+    if multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat == 'jpg' then
+      Script.notifyEvent('MultiRemoteCamera_OnNewFormatCompression', multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveJpgFormatCompression)
+    elseif multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat == 'png' then
+      Script.notifyEvent('MultiRemoteCamera_OnNewFormatCompression', multiRemoteCamera_Instances[selectedInstance].parameters.imageSavePngFormatCompression)
+    end
+    Script.notifyEvent('MultiRemoteCamera_OnNewLoggingMessage', "")
+    Script.notifyEvent("MultiRemoteCamera_OnNewStatusFlowConfigPriority", multiRemoteCamera_Instances[selectedInstance].parameters.flowConfigPriority)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusLoadParameterOnReboot', multiRemoteCamera_Instances[selectedInstance].parameterLoadOnReboot)
+    Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'activeInUI', true)
+    Script.notifyEvent('MultiRemoteCamera_OnNewProcessingMode', multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
+    Script.notifyEvent('MultiRemoteCamera_OnNewMonitoringState', multiRemoteCamera_Instances[selectedInstance].cameraIsPingAble)
+    Script.notifyEvent('MultiRemoteCamera_OnNewCameraModel', multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusCustomCamera', multiRemoteCamera_Instances[selectedInstance].customCameraActive)
+    handleUpdateCameraOverviewPage()
   end
-  Script.notifyEvent('MultiRemoteCamera_OnNewLoggingMessage', "")
-  Script.notifyEvent('MultiRemoteCamera_OnNewStatusLoadParameterOnReboot', multiRemoteCamera_Instances[selectedInstance].parameterLoadOnReboot)
-  Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'activeInUI', true)
-  Script.notifyEvent('MultiRemoteCamera_OnNewProcessingMode', multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
-  Script.notifyEvent('MultiRemoteCamera_OnNewMonitoringState', multiRemoteCamera_Instances[selectedInstance].cameraIsPingAble)
-  Script.notifyEvent('MultiRemoteCamera_OnNewCameraModel', multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
-  handleUpdateCameraOverviewPage()
 end
 Timer.register(tmrCamera, "OnExpired", handleOnExpiredTmrCamera)
 
@@ -334,7 +353,7 @@ local function handleOnExpiredTmrMonitorCameras()
      Script.notifyEvent('MultiRemoteCamera_OnNewMonitoringStateCams', i, multiRemoteCamera_Instances[i].cameraIsPingAble)
 
      if multiRemoteCamera_Instances[i].cameraIsPingAble then
-        _G.logger:info(nameOfModule .. ": Ping camera " .. tostring(i) .." with ip: " .. multiRemoteCamera_Instances[i].parameters.cameraIP .." : " .. tostring(multiRemoteCamera_Instances[i].cameraIsPingAble))
+        _G.logger:fine(nameOfModule .. ": Ping camera " .. tostring(i) .." with ip: " .. multiRemoteCamera_Instances[i].parameters.cameraIP .." : " .. tostring(multiRemoteCamera_Instances[i].cameraIsPingAble))
      else
         _G.logger:warning(nameOfModule .. ": Ping camera " .. tostring(i) .." with ip: " .. multiRemoteCamera_Instances[i].parameters.cameraIP .." : " .. tostring(multiRemoteCamera_Instances[i].cameraIsPingAble))
         tmrCamera:start() -- Update UI
@@ -345,10 +364,10 @@ end
 Timer.register(tmrMonitorCameras, "OnExpired", handleOnExpiredTmrMonitorCameras)
 
 local function pageCalled()
-  if _G.availableAPIs.imageProvider then
+  if _G.availableAPIs.default and _G.availableAPIs.imageProvider then
     updateUserLevel() -- try to hide user specific content asap
-    tmrCamera:start()
   end
+  tmrCamera:start()
   return ''
 end
 Script.serveFunction("CSK_MultiRemoteCamera.pageCalled", pageCalled)
@@ -360,14 +379,19 @@ local function setFlowHandle(handle)
 end
 funcs.setFlowHandle = setFlowHandle
 
-local function setSelectedCam(camNo)
-  selectedInstance = camNo
-  _G.logger:info(nameOfModule .. ": New selected camera = " .. tostring(selectedInstance))
-  multiRemoteCamera_Instances[selectedInstance].activeInUI = true
-  Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'activeInUI', true)
-  tmrCamera:start()
+local function setSelectedInstance(camNo)
+  if #multiRemoteCamera_Instances >= camNo then
+    selectedInstance = camNo
+    _G.logger:fine(nameOfModule .. ": New selected camera = " .. tostring(selectedInstance))
+    multiRemoteCamera_Instances[selectedInstance].activeInUI = true
+    Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'activeInUI', true)
+    tmrCamera:start()
+  else
+    _G.logger:warning(nameOfModule .. ": Selected instance does not exist.")
+  end
 end
-Script.serveFunction("CSK_MultiRemoteCamera.setSelectedCam", setSelectedCam)
+Script.serveFunction("CSK_MultiRemoteCamera.setSelectedCam", setSelectedInstance)
+Script.serveFunction("CSK_MultiRemoteCamera.setSelectedInstance", setSelectedInstance)
 
 local function getSelectedCam()
   return selectedInstance
@@ -375,12 +399,16 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getSelectedCam", getSelectedCam)
 
 local function getInstancesAmount ()
-  return #multiRemoteCamera_Instances
+  if multiRemoteCamera_Instances then
+    return #multiRemoteCamera_Instances
+  else
+    return 0
+  end
 end
 Script.serveFunction('CSK_MultiRemoteCamera.getInstancesAmount', getInstancesAmount )
 
 local function addInstance()
-  _G.logger:info(nameOfModule .. ": Add instance")
+  _G.logger:fine(nameOfModule .. ": Add instance")
   table.insert(multiRemoteCamera_Instances, multiRemoteCamera_Model.create(#multiRemoteCamera_Instances+1))
 
   multiRemoteCamera_Instances[#multiRemoteCamera_Instances].parameters.switchMode = multiRemoteCamera_Instances[1].parameters.switchMode
@@ -402,7 +430,7 @@ Script.serveFunction('CSK_MultiRemoteCamera.addInstance', addInstance)
 
 local function resetInstances()
   _G.logger:info(nameOfModule .. ": Reset instances.")
-  setSelectedCam(1)
+  setSelectedInstance(1)
   local totalAmount = #multiRemoteCamera_Instances
   while totalAmount > 1 do
     Script.releaseObject(multiRemoteCamera_Instances[totalAmount])
@@ -416,13 +444,19 @@ Script.serveFunction('CSK_MultiRemoteCamera.resetInstances', resetInstances)
 -- ********************* UI Setting / Submit Functions Start ********************
 
 local function setCameraModel (camModel)
-  _G.logger:info(nameOfModule .. ": Set camera model = " .. tostring(camModel))
+  _G.logger:fine(nameOfModule .. ": Set camera model = " .. tostring(camModel))
   multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel = camModel
+  if camModel == 'CustomConfig' then
+    multiRemoteCamera_Instances[selectedInstance].customCameraActive = true
+  else
+    multiRemoteCamera_Instances[selectedInstance].customCameraActive = false
+  end
+  Script.notifyEvent('MultiRemoteCamera_OnNewStatusCustomCamera', multiRemoteCamera_Instances[selectedInstance].customCameraActive)
 end
 Script.serveFunction('CSK_MultiRemoteCamera.setCameraModel', setCameraModel )
 
 local function setCameraIP(ip)
-  _G.logger:info(nameOfModule .. ": Setting new IP = " .. ip .. ' for camera No.' .. tostring(selectedInstance))
+  _G.logger:fine(nameOfModule .. ": Setting new IP = " .. ip .. ' for camera No.' .. tostring(selectedInstance))
   if checkIP(ip) == true then
     multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP = ip
     Script.notifyEvent('MultiRemoteCamera_OnNewIPCheck', false)
@@ -439,7 +473,7 @@ Script.serveFunction("CSK_MultiRemoteCamera.getCameraIP", getCameraIP)
 
 local function connectCamera()
   -- Try to connect the camera
-  _G.logger:info(nameOfModule .. ": Try to connecto to camera no. " .. tostring(selectedInstance))
+  _G.logger:info(nameOfModule .. ": Try to connect to camera no. " .. tostring(selectedInstance))
   multiRemoteCamera_Instances[selectedInstance]:connectCamera()
   if multiRemoteCamera_Instances[selectedInstance].isConnected and multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera then
     handleOnExpiredTmrMonitorCameras ()
@@ -477,7 +511,7 @@ local function setGigEVision(status)
   elseif status == false and _G.availableAPIs.I2D == false then
     multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision = true
   end
-  _G.logger:info(nameOfModule .. ": Set GigEVision of camera no. " .. tostring(selectedInstance) .. ": " .. tostring(multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision))
+  _G.logger:fine(nameOfModule .. ": Set GigEVision of camera no. " .. tostring(selectedInstance) .. ": " .. tostring(multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision))
 
   Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionStatus', multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision)
 end
@@ -493,13 +527,13 @@ local function setSwitchMode (status)
     multiRemoteCamera_Instances[i].parameters.switchMode = status
     multiRemoteCamera_Instances[i]:setNewConfig()
   end
-  _G.logger:info(nameOfModule .. ": Set camera switch mode for all cameras = " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": Set camera switch mode for all cameras = " .. tostring(status))
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setSwitchMode", setSwitchMode)
 
 local function setCameraMonitoring (state)
   multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera = state
-  _G.logger:info(nameOfModule .. ": Status of camera monitoring of camera no. " .. tostring(selectedInstance) .. " = " .. tostring(state))
+  _G.logger:fine(nameOfModule .. ": Status of camera monitoring of camera no. " .. tostring(selectedInstance) .. " = " .. tostring(state))
   if state == true and multiRemoteCamera_Instances[selectedInstance].isConnected then
     handleOnExpiredTmrMonitorCameras ()
     tmrMonitorCameras:start()
@@ -520,7 +554,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.setCameraMonitoring", setCameraMonitoring)
 
 local function setColorMode(mode)
-  _G.logger:info(nameOfModule .. ": Set color mode = " .. tostring(mode))
+  _G.logger:fine(nameOfModule .. ": Set color mode = " .. tostring(mode))
   multiRemoteCamera_Instances[selectedInstance]:setColorMode(mode)
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setColorMode", setColorMode)
@@ -530,12 +564,40 @@ local function getColorMode()
 end
 Script.serveFunction("CSK_MultiRemoteCamera.getColorMode", getColorMode)
 
+local function cameraSoftwareTrigger()
+  _G.logger:info(nameOfModule .. ": SW trigger")
+  multiRemoteCamera_Instances[selectedInstance].CameraProvider:snapshot()
+end
+Script.serveFunction("CSK_MultiRemoteCamera.cameraSoftwareTrigger", cameraSoftwareTrigger)
+
+local function cameraSpecificSoftwareTrigger(cameraNo)
+  _G.logger:info(nameOfModule .. ": SW trigger camera no." .. tostring(cameraNo))
+  multiRemoteCamera_Instances[cameraNo].CameraProvider:snapshot()
+end
+Script.serveFunction("CSK_MultiRemoteCamera.cameraSpecificSoftwareTrigger", cameraSpecificSoftwareTrigger)
+
+local function setSWTriggerEvent(event)
+  Script.deregister(multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent, multiRemoteCamera_Instances[selectedInstance].triggerFunction)
+  multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent = event
+
+  if multiRemoteCamera_Instances[selectedInstance].parameters.acquisitionMode == 'SOFTWARE_TRIGGER' then
+    _G.logger:info(nameOfModule .. ": Set SW trigger event to " .. tostring(event))
+    local function triggerCamera()
+      cameraSpecificSoftwareTrigger(selectedInstance)
+    end
+    multiRemoteCamera_Instances[selectedInstance].triggerFunction = triggerCamera
+    Script.register(event, multiRemoteCamera_Instances[selectedInstance].triggerFunction)
+  end
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setSWTriggerEvent', setSWTriggerEvent)
+
 local function setAcquisitionMode(mode)
-  _G.logger:info(nameOfModule .. ": Set acquisition mode = " .. tostring(mode))
+  _G.logger:fine(nameOfModule .. ": Set acquisition mode = " .. tostring(mode))
   multiRemoteCamera_Instances[selectedInstance].digTriggerStatus = false
   Script.notifyEvent("MultiRemoteCamera_OnNewStatusDigitalTriggerPause", false)
   checkTriggerMode(mode)
   multiRemoteCamera_Instances[selectedInstance]:setAcquisitionMode(mode)
+  setSWTriggerEvent(multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent)
   handleUpdateCameraOverviewPage()
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setAcquisitionMode", setAcquisitionMode)
@@ -546,7 +608,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getAcquisitionMode", getAcquisitionMode)
 
 local function setHardwareTriggerDelay(value)
-  _G.logger:info(nameOfModule .. ": Set hardware trigger delay = " .. tostring(value))
+  _G.logger:fine(nameOfModule .. ": Set hardware trigger delay = " .. tostring(value))
   multiRemoteCamera_Instances[selectedInstance].parameters.hardwareTriggerDelay = value
   if multiRemoteCamera_Instances[selectedInstance].parameters.triggerDelayBlockName ~= nil and cameraFlow ~= nil then
     cameraFlow:updateParameter(multiRemoteCamera_Instances[selectedInstance].parameters.triggerDelayBlockName, "DelayTime", value)
@@ -562,12 +624,12 @@ Script.serveFunction("CSK_MultiRemoteCamera.getHardwareTriggerDelay", getHardwar
 local function setDigitalTriggerPause()
   if multiRemoteCamera_Instances[selectedInstance].digTriggerStatus == true then
     multiRemoteCamera_Instances[selectedInstance].digTriggerStatus = false
-    _G.logger:info(nameOfModule .. ": Set trigger pause: false")
+    _G.logger:fine(nameOfModule .. ": Set trigger pause: false")
     Script.notifyEvent("MultiRemoteCamera_OnNewStatusDigitalTriggerPause", multiRemoteCamera_Instances[selectedInstance].digTriggerStatus)
     multiRemoteCamera_Instances[selectedInstance]:startCamera()
   else
     multiRemoteCamera_Instances[selectedInstance].digTriggerStatus = true
-    _G.logger:info(nameOfModule .. ": Set trigger pause: true")
+    _G.logger:fine(nameOfModule .. ": Set trigger pause: true")
     Script.notifyEvent("MultiRemoteCamera_OnNewStatusDigitalTriggerPause", multiRemoteCamera_Instances[selectedInstance].digTriggerStatus)
     multiRemoteCamera_Instances[selectedInstance]:stopCamera()
   end
@@ -575,7 +637,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.setDigitalTriggerPause", setDigitalTriggerPause)
 
 local function setFOVX(values)
-  _G.logger:info(nameOfModule .. ": Preset FOV X = " .. tostring(values[1]) .. " - " .. values[2])
+  _G.logger:fine(nameOfModule .. ": Preset FOV X = " .. tostring(values[1]) .. " - " .. values[2])
   multiRemoteCamera_Instances[selectedInstance].parameters.xStartFOV = values[1]
   multiRemoteCamera_Instances[selectedInstance].parameters.xEndFOV = values[2]
   Script.notifyEvent('MultiRemoteCamera_OnNewFOVX', values)
@@ -588,7 +650,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getFOVX", getFOVX)
 
 local function setFOVY(values)
-  _G.logger:info(nameOfModule .. ": Preset FOV Y = " .. tostring(values[1]) .. " - " .. values[2])
+  _G.logger:fine(nameOfModule .. ": Preset FOV Y = " .. tostring(values[1]) .. " - " .. values[2])
   multiRemoteCamera_Instances[selectedInstance].parameters.yStartFOV = values[1]
   multiRemoteCamera_Instances[selectedInstance].parameters.yEndFOV = values[2]
   Script.notifyEvent('MultiRemoteCamera_OnNewFOVY', values)
@@ -601,14 +663,14 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getFOVY", getFOVY)
 
 local function setFOV()
-  _G.logger:info(nameOfModule .. ": Set FOV")
+  _G.logger:fine(nameOfModule .. ": Set FOV")
   multiRemoteCamera_Instances[selectedInstance]:setFOV()
   Script.notifyEvent('MultiRemoteCamera_OnNewImageSizeToShare', "CSK_MultiRemoteCamera.OnNewImageCamera" .. tostring(selectedInstance))
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setFOV", setFOV)
 
 local function setShutterTime(shutterTime)
-  _G.logger:info(nameOfModule .. ": Set shutter time = " .. tostring(shutterTime))
+  _G.logger:fine(nameOfModule .. ": Set shutter time = " .. tostring(shutterTime))
   multiRemoteCamera_Instances[selectedInstance]:setShutterTime(shutterTime)
   handleUpdateCameraOverviewPage()
 end
@@ -620,7 +682,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getShutterTime", getShutterTime)
 
 local function setGain(gain)
-  _G.logger:info(nameOfModule .. ": Set gain = " .. tostring(gain))
+  _G.logger:fine(nameOfModule .. ": Set gain = " .. tostring(gain))
   multiRemoteCamera_Instances[selectedInstance]:setGain(gain)
   handleUpdateCameraOverviewPage()
 end
@@ -632,7 +694,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getGain", getGain)
 
 local function setFramerate(framerate)
-  _G.logger:info(nameOfModule .. ": Set framerate = " .. tostring(framerate))
+  _G.logger:fine(nameOfModule .. ": Set framerate = " .. tostring(framerate))
   multiRemoteCamera_Instances[selectedInstance]:setFramerate(framerate)
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setFramerate", setFramerate)
@@ -643,7 +705,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getFramerate", getFramerate)
 
 local function setResizeFactor(factor)
-  _G.logger:info(nameOfModule .. ": Set resize factor = " .. tostring(factor))
+  _G.logger:fine(nameOfModule .. ": Set resize factor = " .. tostring(factor))
   multiRemoteCamera_Instances[selectedInstance].parameters.resizeFactor = factor
   multiRemoteCamera_Instances[selectedInstance].imageProcessingParams:update('resizeFactor', multiRemoteCamera_Instances[selectedInstance].parameters.resizeFactor)
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'resizeFactor', multiRemoteCamera_Instances[selectedInstance].parameters.resizeFactor)
@@ -657,8 +719,9 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.getResizeFactor", getResizeFactor)
 
 local function setProcessingMode(mode)
-  _G.logger:info(nameOfModule .. ": Set processing mode = " .. tostring(mode))
+  _G.logger:fine(nameOfModule .. ": Set processing mode = " .. tostring(mode))
   multiRemoteCamera_Instances[selectedInstance].parameters.processingMode = mode
+  Script.notifyEvent('MultiRemoteCamera_OnNewProcessingMode', mode)
   multiRemoteCamera_Instances[selectedInstance].imageProcessingParams:update('mode', multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'mode', multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
 end
@@ -669,20 +732,8 @@ local function getProcessingMode()
 end
 Script.serveFunction("CSK_MultiRemoteCamera.getProcessingMode", getProcessingMode)
 
-local function cameraSoftwareTrigger()
-  _G.logger:info(nameOfModule .. ": SW trigger")
-  multiRemoteCamera_Instances[selectedInstance].CameraProvider:snapshot()
-end
-Script.serveFunction("CSK_MultiRemoteCamera.cameraSoftwareTrigger", cameraSoftwareTrigger)
-
-local function cameraSpecificSoftwareTrigger(cameraNo)
-  _G.logger:info(nameOfModule .. ": SW trigger camera no." .. tostring(cameraNo))
-  multiRemoteCamera_Instances[cameraNo].CameraProvider:snapshot()
-end
-Script.serveFunction("CSK_MultiRemoteCamera.cameraSpecificSoftwareTrigger", cameraSpecificSoftwareTrigger)
-
 local function setImageFilePrefix(prefix)
-  _G.logger:info(nameOfModule .. ": Set image file prefix: " .. tostring(prefix))
+  _G.logger:fine(nameOfModule .. ": Set image file prefix: " .. tostring(prefix))
   multiRemoteCamera_Instances[selectedInstance].parameters.imageFilePrefix = prefix
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'imageFilePrefix', prefix)
 end
@@ -691,7 +742,7 @@ Script.serveFunction("CSK_MultiRemoteCamera.setImageFilePrefix", setImageFilePre
 local function setSavingPath(path)
   if path == '/sdcard/0/' then
     if File.exists(path) then
-      _G.logger:info(nameOfModule .. ': Changed image saving path to SD Card for camera No.' .. tostring(selectedInstance))
+      _G.logger:fine(nameOfModule .. ': Changed image saving path to SD Card for camera No.' .. tostring(selectedInstance))
       multiRemoteCamera_Instances[selectedInstance].parameters.savingImagePath = path
       Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'savingImagePath', '/sdcard/0/')
     else
@@ -704,13 +755,13 @@ local function setSavingPath(path)
   else
     multiRemoteCamera_Instances[selectedInstance].parameters.savingImagePath = '/public/'
     Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'savingImagePath', '/public/')
-    _G.logger:info(nameOfModule .. ': Changed saving path to public folder for camera No.' .. tostring(selectedInstance))
+    _G.logger:fine(nameOfModule .. ': Changed saving path to public folder for camera No.' .. tostring(selectedInstance))
   end
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setSavingPath", setSavingPath)
 
 local function setImageSaveFormat(format)
-  _G.logger:info(nameOfModule .. ": Set image save formate: " .. tostring(format))
+  _G.logger:fine(nameOfModule .. ": Set image save formate: " .. tostring(format))
   multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat = format
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'imageSaveFormat', format)
   Script.notifyEvent('MultiRemoteCamera_OnNewImageSaveFormat', multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat)
@@ -723,7 +774,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.setImageSaveFormat", setImageSaveFormat)
 
 local function setImageSaveFormatCompression(comp)
-  _G.logger:info(nameOfModule .. ": Set image save compression: " .. tostring(comp))
+  _G.logger:fine(nameOfModule .. ": Set image save compression: " .. tostring(comp))
   if multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveFormat == 'jpg' then
     multiRemoteCamera_Instances[selectedInstance].parameters.imageSaveJpgFormatCompression = comp
     Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'imageSaveJpgFormatCompression', comp)
@@ -741,14 +792,14 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.triggerImageSaving", triggerImageSaving)
 
 local function setSaveAllImages(status)
-  _G.logger:info(nameOfModule .. ": Save all images: " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": Save all images: " .. tostring(status))
   multiRemoteCamera_Instances[selectedInstance].parameters.saveAllImages = status
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'saveAllImages', status)
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setSaveAllImages", setSaveAllImages)
 
 local function setTempImageActive(status)
-  _G.logger:info(nameOfModule .. ": Save temporarily latest images: " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": Save temporarily latest images: " .. tostring(status))
   multiRemoteCamera_Instances[selectedInstance].parameters.tempSaveImage = status
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'tempSaveImage', status)
   Script.notifyEvent('MultiRemoteCamera_OnNewStatusTempImageActive', status)
@@ -756,20 +807,20 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.setTempImageActive", setTempImageActive)
 
 local function setViewerActive(status)
-  _G.logger:info(nameOfModule .. ": Viewer active: " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": Viewer active: " .. tostring(status))
   viewerActive = status
   Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'viewerActive', viewerActive)
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setViewerActive", setViewerActive)
 
 local function updateConfig()
-  _G.logger:info(nameOfModule .. ": Update config.")
+  _G.logger:fine(nameOfModule .. ": Update config.")
   multiRemoteCamera_Instances[selectedInstance]:setNewConfig()
 end
 Script.serveFunction("CSK_MultiRemoteCamera.updateConfig", updateConfig)
 
 local function addGigEVisionConfig()
-  _G.logger:info(nameOfModule .. ": Add custom GigE Vision parameter value.")
+  _G.logger:fine(nameOfModule .. ": Add custom GigE Vision parameter value.")
   local newConfig = {}
   newConfig.parameter = multiRemoteCamera_Instances[selectedInstance].gigEVisionCurrentParameter
   newConfig.type = multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterType
@@ -782,7 +833,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.addGigEVisionConfig", addGigEVisionConfig)
 
 local function removeGigEVisionConfig()
-  _G.logger:info(nameOfModule .. ": Remove custom GigE Vision parameter value.")
+  _G.logger:fine(nameOfModule .. ": Remove custom GigE Vision parameter value.")
   if multiRemoteCamera_Instances[selectedInstance].gigEVisionSelectedConfig then
     table.remove(multiRemoteCamera_Instances[selectedInstance].parameters.customGigEVisionConfig, multiRemoteCamera_Instances[selectedInstance].gigEVisionSelectedConfig)
     multiRemoteCamera_Instances[selectedInstance].gigEVisionConfigUITable = multiRemoteCamera_Instances[selectedInstance].helperFuncs.createModuleJsonList('gigEConfig', multiRemoteCamera_Instances[selectedInstance].parameters.customGigEVisionConfig)
@@ -792,7 +843,7 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.removeGigEVisionConfig", removeGigEVisionConfig)
 
 local function setGigEVisionParameterName(name)
-  _G.logger:info(nameOfModule .. ": Set GigE Vision parameter name: " .. tostring(name))
+  _G.logger:fine(nameOfModule .. ": Set GigE Vision parameter name: " .. tostring(name))
   multiRemoteCamera_Instances[selectedInstance].gigEVisionCurrentParameter = name
   multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterType = multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterAllTypes[name]
   multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterValue = multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterAllValues[name]
@@ -828,7 +879,7 @@ local function setSelection(selection, pattern)
 end
 
 local function selectGigEVisionConfig(selection)
-  _G.logger:info(nameOfModule .. ": Select GigE Vision config no." .. tostring(selection))
+  _G.logger:fine(nameOfModule .. ": Select GigE Vision config no." .. tostring(selection))
   multiRemoteCamera_Instances[selectedInstance].gigEVisionSelectedConfig = selection
 end
 Script.serveFunction("CSK_MultiRemoteCamera.selectGigEVisionConfig", selectGigEVisionConfig)
@@ -836,7 +887,7 @@ Script.serveFunction("CSK_MultiRemoteCamera.selectGigEVisionConfig", selectGigEV
 local function selectGigEVisionConfigViaUITable(selection)
   local selected = setSelection(selection, '"No":"')
   if selected ~= "" then
-    _G.logger:info(nameOfModule .. ": Select GigE Vision config no." .. tostring(selected))
+    _G.logger:fine(nameOfModule .. ": Select GigE Vision config no." .. tostring(selected))
     multiRemoteCamera_Instances[selectedInstance].gigEVisionSelectedConfig = tonumber(selected)
   else
     _G.logger:info(nameOfModule .. ": Selection error.")
@@ -856,14 +907,16 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.selectGigEVisionParameterNameViaUITable", selectGigEVisionParameterNameViaUITable)
 
 local function setGigEVisionParameterValue(value)
-  _G.logger:info(nameOfModule .. ": Set GigE Vision parameter value: " .. tostring(value))
+  _G.logger:fine(nameOfModule .. ": Set GigE Vision parameter value: " .. tostring(value))
   multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterValue = value
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setGigEVisionParameterValue", setGigEVisionParameterValue)
 
 --- Function to update processing parameters within the processing threads
 local function updateImageProcessingParameter()
-  _G.logger:info(nameOfModule .. ": Update image processing parameter.")
+  _G.logger:fine(nameOfModule .. ": Update image processing parameter.")
+
+  setSWTriggerEvent(multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent)
   setProcessingMode(multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
   setResizeFactor(multiRemoteCamera_Instances[selectedInstance].parameters.resizeFactor)
   setSaveAllImages(multiRemoteCamera_Instances[selectedInstance].parameters.saveAllImages)
@@ -899,17 +952,36 @@ local function restartAllCameras()
 end
 Script.serveFunction('CSK_MultiRemoteCamera.restartAllCameras', restartAllCameras)
 
+local function getStatusModuleActive()
+  return _G.availableAPIs.default and _G.availableAPIs.imageProvider
+end
+Script.serveFunction('CSK_MultiRemoteCamera.getStatusModuleActive', getStatusModuleActive)
+
+local function clearFlowConfigRelevantConfiguration()
+  -- Nothing to do so far
+end
+Script.serveFunction('CSK_MultiRemoteCamera.clearFlowConfigRelevantConfiguration', clearFlowConfigRelevantConfiguration)
+
+local function getParameters(instanceNo)
+  if instanceNo <= #multiRemoteCamera_Instances then
+    return multiRemoteCamera_Instances[instanceNo].helperFuncs.json.encode(multiRemoteCamera_Instances[instanceNo].parameters)
+  else
+    return ''
+  end
+end
+Script.serveFunction('CSK_MultiRemoteCamera.getParameters', getParameters)
+
 -- *****************************************************************
 -- Following function can be adapted for CSK_PersistentData module usage
 -- *****************************************************************
 
 local function setParameterName(name)
-  _G.logger:info(nameOfModule .. ": Set parameter name: " .. tostring(name))
+  _G.logger:fine(nameOfModule .. ": Set parameter name: " .. tostring(name))
   multiRemoteCamera_Instances[selectedInstance].parametersName = name
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setParameterName", setParameterName)
 
-local function sendParameters()
+local function sendParameters(noDataSave)
   if multiRemoteCamera_Instances[selectedInstance].persistentModuleAvailable then
     CSK_PersistentData.addParameter(helperFuncs.convertTable2Container(multiRemoteCamera_Instances[selectedInstance].parameters), multiRemoteCamera_Instances[selectedInstance].parametersName)
 
@@ -919,8 +991,10 @@ local function sendParameters()
     else
       CSK_PersistentData.setModuleParameterName(nameOfModule, multiRemoteCamera_Instances[selectedInstance].parametersName, multiRemoteCamera_Instances[selectedInstance].parameterLoadOnReboot, tostring(selectedInstance))
     end
-    _G.logger:info(nameOfModule .. ": Send camera parameters with name '" .. multiRemoteCamera_Instances[selectedInstance].parametersName .. "' to CSK_PersistentData module.")
-    CSK_PersistentData.saveData()
+    _G.logger:fine(nameOfModule .. ": Send camera parameters with name '" .. multiRemoteCamera_Instances[selectedInstance].parametersName .. "' to CSK_PersistentData module.")
+    if not noDataSave then
+      CSK_PersistentData.saveData()
+    end
   else
     _G.logger:warning(nameOfModule .. ": CSK_PersistentData module not available.")
   end
@@ -935,31 +1009,44 @@ local function loadParameters()
       multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.convertContainer2Table(data)
       multiRemoteCamera_Instances[selectedInstance]:setNewConfig()
       updateImageProcessingParameter()
+      pageCalled()
+      return true
     else
       _G.logger:warning(nameOfModule .. ": Loading parameters from CSK_PersistentData module did not work.")
+      pageCalled()
+      return false
     end
   else
     _G.logger:warning(nameOfModule .. ": CSK_PersistentData module not available.")
+    pageCalled()
+    return false
   end
-  pageCalled()
 end
 Script.serveFunction("CSK_MultiRemoteCamera.loadParameters", loadParameters)
 
 local function setLoadOnReboot(status)
   multiRemoteCamera_Instances[selectedInstance].parameterLoadOnReboot = status
-  _G.logger:info(nameOfModule .. ": Set new status to load setting on reboot: " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": Set new status to load setting on reboot: " .. tostring(status))
+  Script.notifyEvent("MultiRemoteCamera_OnNewStatusLoadParameterOnReboot", status)
   handleUpdateCameraOverviewPage()
 end
 Script.serveFunction("CSK_MultiRemoteCamera.setLoadOnReboot", setLoadOnReboot)
 
+local function setFlowConfigPriority(status)
+  multiRemoteCamera_Instances[selectedInstance].parameters.flowConfigPriority = status
+  _G.logger:fine(nameOfModule .. ": Set new status of FlowConfig priority: " .. tostring(status))
+  Script.notifyEvent("MultiRemoteCamera_OnNewStatusFlowConfigPriority", multiRemoteCamera_Instances[selectedInstance].parameters.flowConfigPriority)
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setFlowConfigPriority', setFlowConfigPriority)
+
 --- Function to setup cameras after bootup
 local function setupCamerasAfterBootUp()
-  _G.logger:info(nameOfModule .. ': Setup camera after bootUp.')
+  _G.logger:fine(nameOfModule .. ': Setup camera after bootUp.')
   local isOneConnected = false
   for i = 1, #multiRemoteCamera_Instances do
 
     if multiRemoteCamera_Instances[i].parameterLoadOnReboot then
-      CSK_MultiRemoteCamera.setSelectedCam(i)
+      CSK_MultiRemoteCamera.setSelectedInstance(i)
       CSK_MultiRemoteCamera.loadParameters()
       CSK_MultiRemoteCamera.connectCamera()
       updateImageProcessingParameter()
@@ -976,61 +1063,79 @@ Timer.register(tmrCameraBootUp, 'OnExpired', setupCamerasAfterBootUp)
 
 --- Function to react on initial load of persistent parameters
 local function handleOnInitialDataLoaded()
+  if _G.availableAPIs.default and _G.availableAPIs.imageProvider then
 
-  _G.logger:info(nameOfModule .. ': Try to initially load parameter from CSK_PersistentData module.')
-  -- Check if CSK_PersistentData version is > 1.x.x
-  if string.sub(CSK_PersistentData.getVersion(), 1, 1) == '1' then
+    _G.logger:fine(nameOfModule .. ': Try to initially load parameter from CSK_PersistentData module.')
+    -- Check if CSK_PersistentData version is > 1.x.x
+    if string.sub(CSK_PersistentData.getVersion(), 1, 1) == '1' then
 
-    _G.logger:warning(nameOfModule .. ': CSK_PersistentData module is too old and will not work. Please update CSK_PersistentData module.')
+      _G.logger:warning(nameOfModule .. ': CSK_PersistentData module is too old and will not work. Please update CSK_PersistentData module.')
 
-    for j = 1, #multiRemoteCamera_Instances do
-      multiRemoteCamera_Instances[j].persistentModuleAvailable = false
-    end
-  else
+      for j = 1, #multiRemoteCamera_Instances do
+        multiRemoteCamera_Instances[j].persistentModuleAvailable = false
+      end
+    else
 
-    local bootUpBreak = false
+      local bootUpBreak = false
 
-    -- Check if CSK_PersistentData version is >= 3.0.0
-    if tonumber(string.sub(CSK_PersistentData.getVersion(), 1, 1)) >= 3 then
-      local parameterName, loadOnReboot, totalInstances = CSK_PersistentData.getModuleParameterName(nameOfModule, '1')
-      -- Check for amount if instances to create
-      if totalInstances then
-        local c = 2
-        while c <= totalInstances do
-          addInstance()
-          c = c+1
+      -- Check if CSK_PersistentData version is >= 3.0.0
+      if tonumber(string.sub(CSK_PersistentData.getVersion(), 1, 1)) >= 3 then
+        local parameterName, loadOnReboot, totalInstances = CSK_PersistentData.getModuleParameterName(nameOfModule, '1')
+        -- Check for amount if instances to create
+        if totalInstances then
+          local c = 2
+          while c <= totalInstances do
+            addInstance()
+            c = c+1
+          end
         end
       end
-    end
 
-    for i = 1, #multiRemoteCamera_Instances do
-      local parameterName, loadOnReboot = CSK_PersistentData.getModuleParameterName(nameOfModule, tostring(i))
-
-      if parameterName then
-        multiRemoteCamera_Instances[i].parametersName = parameterName
-        multiRemoteCamera_Instances[i].parameterLoadOnReboot = loadOnReboot
+      if not multiRemoteCamera_Instances then
+        return
       end
 
-      if multiRemoteCamera_Instances[i].parameterLoadOnReboot then
-        bootUpBreak = true
+      for i = 1, #multiRemoteCamera_Instances do
+        local parameterName, loadOnReboot = CSK_PersistentData.getModuleParameterName(nameOfModule, tostring(i))
+
+        if parameterName then
+          multiRemoteCamera_Instances[i].parametersName = parameterName
+          multiRemoteCamera_Instances[i].parameterLoadOnReboot = loadOnReboot
+        end
+
+        if multiRemoteCamera_Instances[i].parameterLoadOnReboot then
+          bootUpBreak = true
+        end
       end
-    end
 
-    if bootUpBreak then
-      _G.logger:info(nameOfModule .. ": Wait for camera(s) power bootUp")
+      if bootUpBreak then
+        _G.logger:info(nameOfModule .. ": Wait for camera(s) power bootUp")
 
-      tmrCameraBootUp:start()
-      bootUpStatus = true
-      Script.notifyEvent('MultiRemoteCamera_OnNewStatusWaitingForCameraBootUp', bootUpStatus)
+        tmrCameraBootUp:start()
+        bootUpStatus = true
+        Script.notifyEvent('MultiRemoteCamera_OnNewStatusWaitingForCameraBootUp', bootUpStatus)
 
-    else
-      setupCamerasAfterBootUp()
+      else
+        setupCamerasAfterBootUp()
+      end
     end
   end
 end
-if _G.availableAPIs.imageProvider then
+if _G.availableAPIs.default and _G.availableAPIs.imageProvider then
   Script.register("CSK_PersistentData.OnInitialDataLoaded", handleOnInitialDataLoaded)
 end
+
+local function resetModule()
+  if _G.availableAPIs.default and _G.availableAPIs.specific then
+    for i = 1, #multiRemoteCamera_Instances do
+      setSelectedInstance(i)
+      stopCamera()
+    end
+    pageCalled()
+  end
+end
+Script.serveFunction('CSK_MultiRemoteCamera.resetModule', resetModule)
+Script.register("CSK_PersistentData.OnResetAllModules", resetModule)
 
 -- *************************************************
 -- END of functions for CSK_PersistentData module usage

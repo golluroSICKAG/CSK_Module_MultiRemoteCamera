@@ -6,28 +6,55 @@
   margin: 6px;
 }
 
-.myCustomFrame_CSK_Module_MultiRemoteCamera {
-  border-style: solid;
-  border-width: 1px;
-  border-color: grey;
-  margin: 6px;
-}
-
 .myCustomSpacerVert10_CSK_Module_MultiRemoteCamera {
   min-height: 10px;
+}
+
+.myCustomSpacerVert20_CSK_Module_MultiRemoteCamera {
+  min-height: 20px;
+}
+
+.myCustomBorderLeft_CSK_Module_MultiRemoteCamera {
+  border-left: 1px solid lightgray;
+}
+
+.myCustomBorderBottom_CSK_Module_MultiRemoteCamera {
+  border-bottom: 1px solid lightgray;
+  margin-inline: calc(1rem);
+}
+
+.myCustomMarginInline1Rem_CSK_Module_MultiRemoteCamera {
+  margin-inline: calc(1rem);
+}
+
+.myCustomMarginFirstRow_CSK_Module_MultiRemoteCamera {
+  margin-top: -49px;
+}
+
+.myCustomMargin99Percent_CSK_Module_MultiRemoteCamera {
+  margin: calc(1rem);
+  margin-top: 20px;
+}
+
+.myCustomMarginLeft7PX_CSK_Module_MultiRemoteCamera {
+  margin-left: -7px;
+}
+
+.myCustomMarginLeft15PX_CSK_Module_MultiRemoteCamera {
+  margin-left: 15px;
 }
 
 .myCustomCircle_CSK_Module_MultiRemoteCamera {
   margin-top: -47px;
   z-index: 0;
-  margin-left: 20px;
+  margin-left: 20%;
   min-height: 50px;
   max-width: 30px;
 }
 
 .myViewer_CSK_Module_MultiRemoteCamera > div > div {
-  max-height: 800px;
-  min-height: 800px;
+  max-height: 600px;
+  min-height: 600px;
 }
 
 .myCustomSlider_CSK_Module_MultiRemoteCamera {
@@ -38,4 +65,62 @@
 
 .myCustomMaxWidth1600px_CSK_Module_MultiRemoteCamera {
   max-width: 1600px;
+}
+
+.myCustomFrameLabel_CSK_Module_MultiRemoteCamera {
+  background: white;
+  position:relative;
+  top: calc(-1.2rem);
+  left: calc(1rem);
+  font-size: medium;
+}
+
+.myCustomPersistentDataMargin_CSK_Module_MultiRemoteCamera {
+  margin-top: -53px;
+  margin-left: 130px;
+}
+
+.myCustomPersistentDataMarginBack_CSK_Module_MultiRemoteCamera {
+  margin-left: -127px;
+}
+
+.myCustomTabFrame_CSK_Module_MultiRemoteCamera {
+  width: 98%;
+  align-self: center;  
+}
+
+.myCustomLabel_CSK_Module_MultiRemoteCamera {
+  font-size:30px;
+  color: grey;
+  margin-top: 10px;
+}
+
+.myCustomFrameNoColor_CSK_Module_MultiRemoteCamera {
+  margin: 6px;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 0px;
+  border-color: 007CC1;
+  background-color: #FFFFFF;
+}
+
+.myCustomMarginTop7PX_CSK_Module_MultiRemoteCamera {
+  margin-top: 7px;
+}
+
+.myCustomFrame_CSK_Module_MultiRemoteCamera {
+  margin: 6px;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #007CC1;
+  background-color: white;
+}
+
+.myCustomBackground_CSK_Module_MultiRemoteCamera {
+}
+
+.myCustomButton_CSK_Module_MultiRemoteCamera {
+  border-radius: 30px;
+  padding-right: 0px;
 }
