@@ -602,6 +602,10 @@ According to the selected model it will use some predefined GigE Vision paramete
                     <desc>Function to limit the number of images which can be acquired and used at the same time</desc>
                     <param desc="Size of the internal image pool (default = 10)." multiplicity="1" name="size" type="int"/>
                 </function>
+                <function name="stopFlowConfigRelevantProvider">
+                    <desc>Function to stop FlowConfig relevant providers.</desc>
+                    <param desc="Instance of camera to stop." multiplicity="1" name="instance" type="int"/>
+                </function>
             </serves>
         </crown>
         <crown name="MultiRemoteCamera_FC">

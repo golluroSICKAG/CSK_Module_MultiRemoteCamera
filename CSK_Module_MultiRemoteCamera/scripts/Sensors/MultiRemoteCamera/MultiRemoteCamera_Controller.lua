@@ -965,6 +965,12 @@ local function getStatusModuleActive()
 end
 Script.serveFunction('CSK_MultiRemoteCamera.getStatusModuleActive', getStatusModuleActive)
 
+local function stopFlowConfigRelevantProvider(instance)
+  setSelectedInstance(instance)
+  stopCamera()
+end
+Script.serveFunction('CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider', stopFlowConfigRelevantProvider)
+
 local function clearFlowConfigRelevantConfiguration()
   -- Nothing to do so far
 end
