@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### New features
 - Function to set image pool size
 - Check if persistent data to load provides all relevant parameters. Otherwise add default values.
-- React on "OnStopFlowConfigProviders" event of FlowConfig module to stop cameras
+- React on "OnStopFlowConfigProviders" event of FlowConfig module to stop cameras if in "Continuous Mode"
 
 ### Improvements
 - Prevent to change camera type via UI if camera is already connected
