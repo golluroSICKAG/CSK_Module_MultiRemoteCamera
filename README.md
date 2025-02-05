@@ -19,6 +19,7 @@ Tested on
 |Device|Firmware|Module version|
 |--|--|--|
 |SIM2x00|V1.8.0|V6.1.0|
+|SIM1012|V2.4.2|V6.1.0|
 |SIM1012|V2.4.2|V6.0.0|
 |SIM1012|V2.2.0|<V6.0.0|
 |SIM2500|V1.3.0|<V6.0.0|
