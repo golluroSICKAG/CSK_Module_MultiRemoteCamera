@@ -966,8 +966,10 @@ end
 Script.serveFunction('CSK_MultiRemoteCamera.getStatusModuleActive', getStatusModuleActive)
 
 local function stopFlowConfigRelevantProvider(instance)
-  setSelectedInstance(instance)
-  stopCamera()
+  if multiRemoteCamera_Instances[instance].parameters.acquisitionMode == 'FIXED_FREQUENCY' then
+    setSelectedInstance(instance)
+    stopCamera()
+  end
 end
 Script.serveFunction('CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider', stopFlowConfigRelevantProvider)
 
@@ -1153,7 +1155,6 @@ local function resetModule()
 end
 Script.serveFunction('CSK_MultiRemoteCamera.resetModule', resetModule)
 Script.register("CSK_PersistentData.OnResetAllModules", resetModule)
-Script.register('CSK_FlowConfig.OnStopFlowConfigProviders', resetModule)
 
 -- *************************************************
 -- END of functions for CSK_PersistentData module usage
