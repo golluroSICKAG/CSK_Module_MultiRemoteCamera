@@ -508,6 +508,11 @@
                                                                                             path="param/args/status"
                                                                                             auto-commit>
                                                                                         </crown-binding>
+                                                                                        <crown-edpws-binding
+                                                                                            property="disabled"
+                                                                                            name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                            update-on-resume>
+                                                                                        </crown-edpws-binding>
                                                                                     </davinci-toggle-switch>
                                                                                 </layout-row>
                                                                                 <stacked-view id="SV_GigEVision">
@@ -560,6 +565,11 @@
                                                                                                             protocol="crownMSGPACK"
                                                                                                             crown-path="camModel">
                                                                                                         </crown-set>
+                                                                                                        <crown-edpws-binding
+                                                                                                            property="disabled"
+                                                                                                            name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                                            update-on-resume>
+                                                                                                        </crown-edpws-binding>
                                                                                                     </davinci-drop-down>
                                                                                                 </layout-column>
                                                                                             </layout-row>
@@ -630,6 +640,45 @@
                                                                                         update-on-resume>
                                                                                     </crown-edpws-binding>
                                                                                 </stacked-view>
+                                                                                <layout-row id="RowLayout63"
+                                                                                    style="align-items: center">
+                                                                                    <layout-column id="ColumnLayout18"
+                                                                                        style="align-items: stretch">
+                                                                                        <davinci-value-display
+                                                                                            id="VD_ImagePoolSize"
+                                                                                            value="Image pool size:"
+                                                                                            title="Limits the number of images which can be acquired and used at the same time.">
+                                                                                        </davinci-value-display>
+                                                                                    </layout-column>
+                                                                                    <layout-column id="ColumnLayout19"
+                                                                                        style="align-items: stretch">
+                                                                                        <davinci-numeric-field
+                                                                                            id="NF_ImagePoolSize"
+                                                                                            type="outline" min="1"
+                                                                                            max="100" ticks="1"
+                                                                                            group-separator=","
+                                                                                            decimal-separator="."
+                                                                                            format-pattern="0"
+                                                                                            title="Limits the number of images which can be acquired and used at the same time.">
+                                                                                            <crown-binding
+                                                                                                event="change"
+                                                                                                name="CSK_MultiRemoteCamera/setImagePoolSize"
+                                                                                                path="param/args/size"
+                                                                                                auto-commit>
+                                                                                            </crown-binding>
+                                                                                            <crown-edpws-binding
+                                                                                                property="value"
+                                                                                                name="CSK_MultiRemoteCamera/OnNewImagePoolSize"
+                                                                                                update-on-resume>
+                                                                                            </crown-edpws-binding>
+                                                                                            <crown-edpws-binding
+                                                                                                property="disabled"
+                                                                                                name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                                update-on-resume>
+                                                                                            </crown-edpws-binding>
+                                                                                        </davinci-numeric-field>
+                                                                                    </layout-column>
+                                                                                </layout-row>
                                                                                 <layout-row id="RowLayout38"
                                                                                     style="align-items: center">
                                                                                     <layout-column id="ColumnLayout52"

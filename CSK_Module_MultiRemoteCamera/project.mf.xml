@@ -326,6 +326,10 @@ INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific
                     <desc>Notify if module can be used on device.</desc>
                     <param desc="Status" multiplicity="1" name="status" type="bool"/>
                 </event>
+                <event name="OnNewImagePoolSize">
+                    <desc>Notfiy image pool size to use for camera.</desc>
+                    <param desc="Size" multiplicity="1" name="size" type="int"/>
+                </event>
                 <function name="pageCalled">
                     <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
                     <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="emptyString" type="string"/>
@@ -594,6 +598,10 @@ According to the selected model it will use some predefined GigE Vision paramete
                 <function name="resetModule">
                     <desc>Function to reset main configuration of module.</desc>
                 </function>
+                <function name="setImagePoolSize">
+                    <desc>Function to limit the number of images which can be acquired and used at the same time</desc>
+                    <param desc="Size of the internal image pool (default = 10)." multiplicity="1" name="size" type="int"/>
+                </function>
             </serves>
         </crown>
         <crown name="MultiRemoteCamera_FC">
@@ -628,7 +636,7 @@ According to the selected model it will use some predefined GigE Vision paramete
             </crown>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">6.0.0</meta>
+        <meta key="version">6.1.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
