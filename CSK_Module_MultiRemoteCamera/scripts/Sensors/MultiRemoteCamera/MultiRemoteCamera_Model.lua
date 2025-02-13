@@ -233,7 +233,9 @@ end
 
 --- Function to stop the camera
 function multiRemoteCamera:stopCamera()
-  self.CameraProvider:stop()
+  if self.CameraProvider then
+    self.CameraProvider:stop()
+  end
 end
 
 --- Function to set new camera config

@@ -8,12 +8,12 @@ local nameOfModule = 'CSK_MultiRemoteCamera'
 -- Required to keep track of already allocated resource
 local instanceTable = {}
 
---- Timer to start camera if in CONTINUOUS mode
+--- Timer to start camera via FlowConfig if in CONTINUOUS (FIXED_FREQUENCY) mode
 local tmrStartCamera = Timer.create()
 tmrStartCamera:setExpirationTime(5000)
 tmrStartCamera:setPeriodic(false)
 
---- Function to start periocic timer for readMessages
+--- Function to start camera via FlowConig
 local function handleOnExpired()
   local amount = CSK_MultiRemoteCamera.getInstancesAmount()
   for i=1, amount do
