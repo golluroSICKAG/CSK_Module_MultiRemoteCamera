@@ -87,45 +87,12 @@ function multiRemoteCamera.create(cameraNo)
   self.triggerFunction = nil -- Internally used function to SW trigger the camera
 
   self.parameters = {}
-  self.parameters.flowConfigPriority = CSK_FlowConfig ~= nil or false -- Status if FlowConfig should have priority for FlowConfig relevant configurations
+  self.parameters = require('Sensors/MultiRemoteCamera/MultiRemoteCamera_Parameters') -- Load default parameters
+
+  -- Instance specific parameters
   self.parameters.cameraNo = cameraNo -- Instance no of this camera
   self.parameters.camSum = cameraNo -- Amount of all cameras
-  self.parameters.switchMode = false -- Is camera connected via switch to SIM?
-  -- gigEvision or false -- GigE Vision camera?
-  if _G.availableAPIs.GigEVision == true then
-    self.parameters.gigEvision = true
-  else
-    self.parameters.gigEvision = false
-  end
   self.parameters.cameraIP = '192.168.1.10' .. tostring(cameraNo-1) -- IP of camera
-  self.parameters.shutterTime = 20000 -- Shutter time to use
-  self.parameters.gain = 1.0 -- Gain
-  self.parameters.framerate = 1 -- Frame rate in "FIXED_FREQUENCY" mode
-  self.parameters.acquisitionMode = 'SOFTWARE_TRIGGER' -- 'FIXED_FREQUENCY' / 'SOFTWARE_TRIGGER' / 'HARDWARE_TRIGGER'
-  self.parameters.swTriggerEvent = '' -- Opt. event to trigger camera in SW mode
-  self.parameters.hardwareTriggerDelay = 0 -- Opt. delay for HW trigger
-  self.parameters.triggerDelayBlockName = nil -- Name of specific delay bock within cFlow
-  self.parameters.colorMode = 'MONO8' --'COLOR8' / 'MONO8' / 'RAW8'
-  self.parameters.xStartFOV = 0 -- Field of view xStart
-  self.parameters.xEndFOV = 100 -- Field of view xEnd
-  self.parameters.yStartFOV = 0 -- Field of view yStart
-  self.parameters.yEndFOV = 100 -- Field of view yEnd
-  self.parameters.processingFile = 'CSK_MultiRemoteCamera_ImageProcessing' -- Script to use for processing in thread
-  self.parameters.monitorCamera = false -- Opt. monitor camera status in "CameraOverview" UI
-  self.parameters.customGigEVisionConfig = {} -- Custom GigEVision setting, content are 3 tables ".parameter", ".type", ".value"
-  self.parameters.cameraModel = "PicoMidiCam2" -- 'a2A1920-51gcBAS', 'CustomConfig'
-
-  -- Image processing parameters
-  self.parameters.processingMode = "BOTH" -- 'SCRIPT', 'APP', 'BOTH' --> see "setProcessingMode"
-  self.parameters.maxImageQueueSize = 5 -- max. size of image queue
-  self.parameters.savingImagePath = '/public/' -- path of images to save (SD or public)
-  self.parameters.imageFilePrefix = 'Image_' -- prefix for images to be saved
-  self.parameters.saveAllImages = false -- Save all incoming images
-  self.parameters.tempSaveImage = false -- Save latest image to opt. save it later
-  self.parameters.resizeFactor = 1.0 -- factor to resize the incoming image, 0.1 - 1.0
-  self.parameters.imageSaveFormat = 'bmp' -- bmp / jpg / png
-  self.parameters.imageSaveJpgFormatCompression = 90
-  self.parameters.imageSavePngFormatCompression = 6
 
   Script.serveEvent("CSK_MultiRemoteCamera.OnRegisterCamera" .. tostring(cameraNo), "MultiRemoteCamera_OnRegisterCamera" .. tostring(cameraNo), 'handle:1:Image.Provider.RemoteCamera')
   Script.serveEvent("CSK_MultiRemoteCamera.OnDeregisterCamera" .. tostring(cameraNo), "MultiRemoteCamera_OnDeregisterCamera" .. tostring(cameraNo), 'handle:1:Image.Provider.RemoteCamera')
@@ -201,6 +168,7 @@ end
 function multiRemoteCamera:connectCamera()
 
   self.CameraProvider = Image.Provider.RemoteCamera.create()
+  Image.Provider.RemoteCamera.setImagePoolSize(self.CameraProvider, self.parameters.imagePoolSize)
 
   if self.parameters.gigEvision then
     self.CameraProvider:setType('GIGE_VISIONCAM')
@@ -265,7 +233,9 @@ end
 
 --- Function to stop the camera
 function multiRemoteCamera:stopCamera()
-  self.CameraProvider:stop()
+  if self.CameraProvider then
+    self.CameraProvider:stop()
+  end
 end
 
 --- Function to set new camera config
@@ -280,7 +250,7 @@ function multiRemoteCamera:setNewConfig()
       _G.logger:fine(nameOfModule .. ": GigEVision Config")
       _G.logger:fine(nameOfModule .. ": Camera-Model: " .. self.parameters.cameraModel)
       _G.logger:fine(nameOfModule .. ": Mode = " .. self.parameters.acquisitionMode)
-      
+
       if self.parameters.cameraModel ~= "CustomConfig" then
         self.customCameraActive = false
       _G.logger:fine(nameOfModule .. ": Camera-Model: " .. self.parameters.cameraModel)

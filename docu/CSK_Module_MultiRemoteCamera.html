@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
 <meta name="author" content="SICK AG">
-<title>Documentation - CSK_Module_MultiRemoteCamera 6.0.0</title>
+<title>Documentation - CSK_Module_MultiRemoteCamera 6.1.0</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 /* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
@@ -615,11 +615,11 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Documentation - CSK_Module_MultiRemoteCamera 6.0.0</h1>
+<h1>Documentation - CSK_Module_MultiRemoteCamera 6.1.0</h1>
 <div class="details">
 <span id="author" class="author">SICK AG</span><br>
-<span id="revnumber">version 6.0.0,</span>
-<span id="revdate">2024-08-14</span>
+<span id="revnumber">version 6.1.0,</span>
+<span id="revdate">2025-02-05</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -688,6 +688,7 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 <li><a href="#API:Function:CSK_MultiRemoteCamera.setGigEVisionParameterValue"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setGigEVisionParameterValue()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.setHardwareTriggerDelay"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setHardwareTriggerDelay()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.setImageFilePrefix"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImageFilePrefix()</span></a></li>
+<li><a href="#API:Function:CSK_MultiRemoteCamera.setImagePoolSize"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImagePoolSize()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.setImageSaveFormat"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImageSaveFormat()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.setImageSaveFormatCompression"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImageSaveFormatCompression()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.setLoadOnReboot"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setLoadOnReboot()</span></a></li>
@@ -705,6 +706,7 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 <li><a href="#API:Function:CSK_MultiRemoteCamera.setViewerActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setViewerActive()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.startCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">startCamera()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.stopCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">stopCamera()</span></a></li>
+<li><a href="#API:Function:CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">stopFlowConfigRelevantProvider()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.triggerImageSaving"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">triggerImageSaving()</span></a></li>
 <li><a href="#API:Function:CSK_MultiRemoteCamera.updateConfig"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">updateConfig()</span></a></li>
 </ul>
@@ -736,6 +738,7 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 <li><a href="#API:Event:CSK_MultiRemoteCamera.OnNewHardwareTriggerDelay"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewHardwareTriggerDelay</span></a></li>
 <li><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImageCameraNUM"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageCameraNUM</span></a></li>
 <li><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImageFilePrefix"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageFilePrefix</span></a></li>
+<li><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImagePoolSize"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImagePoolSize</span></a></li>
 <li><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImageProcessingParameter"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageProcessingParameter</span></a></li>
 <li><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImageQueueCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageQueueCamera</span></a></li>
 <li><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImageSaveFormat"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageSaveFormat</span></a></li>
@@ -781,13 +784,13 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 </li>
 <li><a href="#API:Crown:MultiRemoteCamera_FC"><span class="api-crown">MultiRemoteCamera_FC</span></a>
 <ul class="sectlevel3">
-<li><a href="#_short_description_136">Short description</a></li>
+<li><a href="#_short_description_139">Short description</a></li>
 <li><a href="#_overview_2">Overview</a></li>
 </ul>
 </li>
 <li><a href="#API:Crown:MultiRemoteCamera_FC.OnNewImage"><span class="api-crown">MultiRemoteCamera_FC.OnNewImage</span></a>
 <ul class="sectlevel3">
-<li><a href="#_short_description_137">Short description</a></li>
+<li><a href="#_short_description_140">Short description</a></li>
 <li><a href="#_overview_3">Overview</a></li>
 <li><a href="#_functions_2">Functions</a>
 <ul class="sectlevel4">
@@ -832,11 +835,11 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Version</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">6.0.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.1.0</p></td>
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Date</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2024-08-14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-02-05</p></td>
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Author</p></th>
@@ -1065,6 +1068,9 @@ There is also the possibility to edit GigE Vision camera parameters (check also 
 <p><a href="#API:Function:CSK_MultiRemoteCamera.setImageFilePrefix">setImageFilePrefix()</a></p>
 </li>
 <li>
+<p><a href="#API:Function:CSK_MultiRemoteCamera.setImagePoolSize">setImagePoolSize()</a></p>
+</li>
+<li>
 <p><a href="#API:Function:CSK_MultiRemoteCamera.setImageSaveFormat">setImageSaveFormat()</a></p>
 </li>
 <li>
@@ -1114,6 +1120,9 @@ There is also the possibility to edit GigE Vision camera parameters (check also 
 </li>
 <li>
 <p><a href="#API:Function:CSK_MultiRemoteCamera.stopCamera">stopCamera()</a></p>
+</li>
+<li>
+<p><a href="#API:Function:CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider">stopFlowConfigRelevantProvider()</a></p>
 </li>
 <li>
 <p><a href="#API:Function:CSK_MultiRemoteCamera.triggerImageSaving">triggerImageSaving()</a></p>
@@ -1195,6 +1204,9 @@ There is also the possibility to edit GigE Vision camera parameters (check also 
 </li>
 <li>
 <p><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImageFilePrefix">OnNewImageFilePrefix</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImagePoolSize">OnNewImagePoolSize</a></p>
 </li>
 <li>
 <p><a href="#API:Event:CSK_MultiRemoteCamera.OnNewImageProcessingParameter">OnNewImageProcessingParameter</a></p>
@@ -3229,15 +3241,59 @@ Needs to be activated via "setFOV" after this.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Function:CSK_MultiRemoteCamera.setImageSaveFormat"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImageSaveFormat()</span></h5>
+<h5 id="API:Function:CSK_MultiRemoteCamera.setImagePoolSize"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImagePoolSize()</span></h5>
 <div class="sect5">
 <h6 id="_short_description_53">Short description</h6>
+<div class="paragraph">
+<p>Function to limit the number of images which can be acquired and used at the same time</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_22">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size of the internal image pool (default = 10).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_51">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setImagePoolSize(size)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Function:CSK_MultiRemoteCamera.setImageSaveFormat"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImageSaveFormat()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_54">Short description</h6>
 <div class="paragraph">
 <p>Set format to store images with.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_22">Parameters</h6>
+<h6 id="_parameters_23">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3265,7 +3321,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_51">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_52">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setImageSaveFormat(format)</code></pre>
@@ -3276,13 +3332,13 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setImageSaveFormatCompression"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setImageSaveFormatCompression()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_54">Short description</h6>
+<h6 id="_short_description_55">Short description</h6>
 <div class="paragraph">
 <p>Set compression to save images (depends on format type).</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_23">Parameters</h6>
+<h6 id="_parameters_24">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3309,7 +3365,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_52">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_53">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setImageSaveFormatCompression(comp)</code></pre>
@@ -3320,13 +3376,13 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setLoadOnReboot"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setLoadOnReboot()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_55">Short description</h6>
+<h6 id="_short_description_56">Short description</h6>
 <div class="paragraph">
 <p>Configure if this module should load its saved parameters at app/device boot up.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_24">Parameters</h6>
+<h6 id="_parameters_25">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3353,7 +3409,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_53">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_54">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setLoadOnReboot(status)</code></pre>
@@ -3364,13 +3420,13 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setParameterName"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setParameterName()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_56">Short description</h6>
+<h6 id="_short_description_57">Short description</h6>
 <div class="paragraph">
 <p>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_25">Parameters</h6>
+<h6 id="_parameters_26">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3397,7 +3453,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_54">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_55">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setParameterName(name)</code></pre>
@@ -3408,13 +3464,13 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setProcessingMode"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setProcessingMode()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_57">Short description</h6>
+<h6 id="_short_description_58">Short description</h6>
 <div class="paragraph">
 <p>ProcessingMode to define processing in this app or in a other app.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_26">Parameters</h6>
+<h6 id="_parameters_27">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3442,7 +3498,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_55">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_56">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setProcessingMode(mode)</code></pre>
@@ -3453,13 +3509,13 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setResizeFactor"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setResizeFactor()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_58">Short description</h6>
+<h6 id="_short_description_59">Short description</h6>
 <div class="paragraph">
 <p>Set resize factor used in module internal image processing of currently selected camera instance (see "setSelectedInstance").</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_27">Parameters</h6>
+<h6 id="_parameters_28">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3486,7 +3542,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_56">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_57">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setResizeFactor(factor)</code></pre>
@@ -3497,13 +3553,13 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setSaveAllImages"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setSaveAllImages()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_59">Short description</h6>
+<h6 id="_short_description_60">Short description</h6>
 <div class="paragraph">
 <p>Set if all incoming images should be saved for currently selected camera.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_28">Parameters</h6>
+<h6 id="_parameters_29">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3530,7 +3586,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_57">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_58">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setSaveAllImages(status)</code></pre>
@@ -3541,13 +3597,13 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setSavingPath"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setSavingPath()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_60">Short description</h6>
+<h6 id="_short_description_61">Short description</h6>
 <div class="paragraph">
 <p>Set path to save images via "saveImage".</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_29">Parameters</h6>
+<h6 id="_parameters_30">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3574,7 +3630,7 @@ Needs to be activated via "setFOV" after this.</p>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_58">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_59">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setSavingPath(path)</code></pre>
@@ -3585,54 +3641,10 @@ Needs to be activated via "setFOV" after this.</p>
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setSelectedCam"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setSelectedCam()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_61">Short description</h6>
+<h6 id="_short_description_62">Short description</h6>
 <div class="paragraph">
 <p>[DEPRECATED] See 'setSelectedInstance'.<br>
 Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_parameters_30">Parameters</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">camNo</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">camera intance no. to select.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_59">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setSelectedCam(camNo)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Function:CSK_MultiRemoteCamera.setSelectedInstance"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setSelectedInstance()</span></h5>
-<div class="sect5">
-<h6 id="_short_description_62">Short description</h6>
-<div class="paragraph">
-<p>Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</p>
 </div>
 </div>
 <div class="sect5">
@@ -3666,6 +3678,50 @@ Select single camera instance (first select a instance, after that other functio
 <h6 id="_sample_auto_generated_60">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setSelectedCam(camNo)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Function:CSK_MultiRemoteCamera.setSelectedInstance"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setSelectedInstance()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_63">Short description</h6>
+<div class="paragraph">
+<p>Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_32">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">camNo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">camera intance no. to select.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_61">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setSelectedInstance(camNo)</code></pre>
 </div>
 </div>
@@ -3674,13 +3730,13 @@ Select single camera instance (first select a instance, after that other functio
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setShutterTime"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setShutterTime()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_63">Short description</h6>
+<h6 id="_short_description_64">Short description</h6>
 <div class="paragraph">
 <p>Set shutter time of currently selected camera instance (see "setSelectedInstance").</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_32">Parameters</h6>
+<h6 id="_parameters_33">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3707,7 +3763,7 @@ Select single camera instance (first select a instance, after that other functio
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_61">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_62">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setShutterTime(shutterTime)</code></pre>
@@ -3718,14 +3774,14 @@ Select single camera instance (first select a instance, after that other functio
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setSwitchMode"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setSwitchMode()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_64">Short description</h6>
+<h6 id="_short_description_65">Short description</h6>
 <div class="paragraph">
 <p>Set Switch-Mode for using multiple cameras via switch. This parameter will influence the "DeviceLinkThroughputLimit"-Parameter.<br>
 INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) after adding new camera instances, so that the "DeviceLinkThroughputLimit" can be recalculated by the total amount of used cameras.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_33">Parameters</h6>
+<h6 id="_parameters_34">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3752,7 +3808,7 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_62">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_63">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setSwitchMode(status)</code></pre>
@@ -3763,13 +3819,13 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setSWTriggerEvent"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setSWTriggerEvent()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_65">Short description</h6>
+<h6 id="_short_description_66">Short description</h6>
 <div class="paragraph">
 <p>Function to set event to trigger new image in SW mode.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_34">Parameters</h6>
+<h6 id="_parameters_35">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3796,7 +3852,7 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_63">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_64">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setSWTriggerEvent(event)</code></pre>
@@ -3807,13 +3863,13 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setTempImageActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setTempImageActive()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_66">Short description</h6>
+<h6 id="_short_description_67">Short description</h6>
 <div class="paragraph">
 <p>Set status if images should be temporarily be saved to save them later on via "saveImage".</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_35">Parameters</h6>
+<h6 id="_parameters_36">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3840,7 +3896,7 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_64">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_65">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setTempImageActive(status)</code></pre>
@@ -3851,13 +3907,13 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.setViewerActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">setViewerActive()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_67">Short description</h6>
+<h6 id="_short_description_68">Short description</h6>
 <div class="paragraph">
 <p>Set status if modules UI viewer should show the images.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_36">Parameters</h6>
+<h6 id="_parameters_37">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -3884,7 +3940,7 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_65">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_66">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.setViewerActive(status)</code></pre>
@@ -3895,13 +3951,13 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.startCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">startCamera()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_68">Short description</h6>
+<h6 id="_short_description_69">Short description</h6>
 <div class="paragraph">
 <p>Start currently selected camera (see "setSelectedInstance").</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_66">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_67">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.startCamera()</code></pre>
@@ -3912,13 +3968,13 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.stopCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">stopCamera()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_69">Short description</h6>
+<h6 id="_short_description_70">Short description</h6>
 <div class="paragraph">
 <p>Stop currently selected camera (see "setSelectedInstance").</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_67">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_68">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.stopCamera()</code></pre>
@@ -3927,15 +3983,59 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 </div>
 </div>
 <div class="sect4">
+<h5 id="API:Function:CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">stopFlowConfigRelevantProvider()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_71">Short description</h6>
+<div class="paragraph">
+<p>Function to stop FlowConfig relevant providers.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_38">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance of camera to stop.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_69">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider(instance)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.triggerImageSaving"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">triggerImageSaving()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_70">Short description</h6>
+<h6 id="_short_description_72">Short description</h6>
 <div class="paragraph">
 <p>Notify event for selected camera to trigger the saving of the latest temporarily saved image.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_68">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_70">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.triggerImageSaving()</code></pre>
@@ -3946,13 +4046,13 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 <div class="sect4">
 <h5 id="API:Function:CSK_MultiRemoteCamera.updateConfig"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-function">updateConfig()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_71">Short description</h6>
+<h6 id="_short_description_73">Short description</h6>
 <div class="paragraph">
 <p>Update camera config (e.g. to activate new custom GigE Vision config).</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_69">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_71">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_MultiRemoteCamera.updateConfig()</code></pre>
@@ -3966,7 +4066,7 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnCameraConnected"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnCameraConnected</span></h5>
 <div class="sect5">
-<h6 id="_short_description_72">Short description</h6>
+<h6 id="_short_description_74">Short description</h6>
 <div class="paragraph">
 <p>Notify camera connection status.</p>
 </div>
@@ -3999,7 +4099,7 @@ INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_70">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_72">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnCameraConnected</span>(status)
@@ -4014,7 +4114,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnCurrentCameraIP"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnCurrentCameraIP</span></h5>
 <div class="sect5">
-<h6 id="_short_description_73">Short description</h6>
+<h6 id="_short_description_75">Short description</h6>
 <div class="paragraph">
 <p>Notify IP of currently selected camera.</p>
 </div>
@@ -4047,7 +4147,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_71">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_73">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnCurrentCameraIP</span>(ip)
@@ -4062,7 +4162,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnDeregisterCameraNUM"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnDeregisterCameraNUM</span></h5>
 <div class="sect5">
-<h6 id="_short_description_74">Short description</h6>
+<h6 id="_short_description_76">Short description</h6>
 <div class="paragraph">
 <p>Example of dynamically created event to deregister camera intsance to image processing function.<br>
 NUM will be replaced by the number of instance (e.g. "OnDeregisterCamera1").<br>
@@ -4098,7 +4198,7 @@ INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_72">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_74">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnDeregisterCameraNUM</span>(camera)
@@ -4113,7 +4213,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnHWTriggerActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnHWTriggerActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_75">Short description</h6>
+<h6 id="_short_description_77">Short description</h6>
 <div class="paragraph">
 <p>Notify if hardware trigger is active for currently selected camera.</p>
 </div>
@@ -4146,7 +4246,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_73">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_75">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnHWTriggerActive</span>(status)
@@ -4161,7 +4261,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewAcquisitionMode"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewAcquisitionMode</span></h5>
 <div class="sect5">
-<h6 id="_short_description_76">Short description</h6>
+<h6 id="_short_description_78">Short description</h6>
 <div class="paragraph">
 <p>Notify acquisition mode of currently selected camera.</p>
 </div>
@@ -4194,7 +4294,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_74">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_76">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewAcquisitionMode</span>(mode)
@@ -4209,7 +4309,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewCameraList"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewCameraList</span></h5>
 <div class="sect5">
-<h6 id="_short_description_77">Short description</h6>
+<h6 id="_short_description_79">Short description</h6>
 <div class="paragraph">
 <p>Notify list of camera instances.</p>
 </div>
@@ -4242,7 +4342,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_75">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_77">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewCameraList</span>(list)
@@ -4257,7 +4357,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewCameraModel"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewCameraModel</span></h5>
 <div class="sect5">
-<h6 id="_short_description_78">Short description</h6>
+<h6 id="_short_description_80">Short description</h6>
 <div class="paragraph">
 <p>Camera-Model which is connected. Like Midicam2 or Basler-Camera.</p>
 </div>
@@ -4290,7 +4390,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_76">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_78">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewCameraModel</span>(cameraModel)
@@ -4305,7 +4405,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewCameraOverviewTable"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewCameraOverviewTable</span></h5>
 <div class="sect5">
-<h6 id="_short_description_79">Short description</h6>
+<h6 id="_short_description_81">Short description</h6>
 <div class="paragraph">
 <p>Notify content for camera overview in UI.</p>
 </div>
@@ -4338,7 +4438,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_77">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_79">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewCameraOverviewTable</span>(data)
@@ -4353,7 +4453,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewColorMode"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewColorMode</span></h5>
 <div class="sect5">
-<h6 id="_short_description_80">Short description</h6>
+<h6 id="_short_description_82">Short description</h6>
 <div class="paragraph">
 <p>Notify color mode of currently selected camera.</p>
 </div>
@@ -4386,7 +4486,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_78">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_80">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewColorMode</span>(mode)
@@ -4401,7 +4501,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewFormatCompression"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewFormatCompression</span></h5>
 <div class="sect5">
-<h6 id="_short_description_81">Short description</h6>
+<h6 id="_short_description_83">Short description</h6>
 <div class="paragraph">
 <p>Notify value of compression for image compression.</p>
 </div>
@@ -4434,7 +4534,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_79">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_81">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewFormatCompression</span>(compression)
@@ -4449,7 +4549,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewFOVX"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewFOVX</span></h5>
 <div class="sect5">
-<h6 id="_short_description_82">Short description</h6>
+<h6 id="_short_description_84">Short description</h6>
 <div class="paragraph">
 <p>Notify field of view in x-direction of currently selected camera.</p>
 </div>
@@ -4482,7 +4582,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_80">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_82">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewFOVX</span>(range)
@@ -4497,7 +4597,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewFOVY"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewFOVY</span></h5>
 <div class="sect5">
-<h6 id="_short_description_83">Short description</h6>
+<h6 id="_short_description_85">Short description</h6>
 <div class="paragraph">
 <p>Notify field of view in y-direction of currently selected camera.</p>
 </div>
@@ -4530,7 +4630,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_81">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_83">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewFOVY</span>(range)
@@ -4545,7 +4645,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewFPSCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewFPSCamera</span></h5>
 <div class="sect5">
-<h6 id="_short_description_84">Short description</h6>
+<h6 id="_short_description_86">Short description</h6>
 <div class="paragraph">
 <p>Notify latest calculated FPS of currently selected camera.</p>
 </div>
@@ -4578,7 +4678,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_82">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_84">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewFPSCamera</span>(fps)
@@ -4593,7 +4693,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewFramerate"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewFramerate</span></h5>
 <div class="sect5">
-<h6 id="_short_description_85">Short description</h6>
+<h6 id="_short_description_87">Short description</h6>
 <div class="paragraph">
 <p>Notify framerate of currently selected camera instance.</p>
 </div>
@@ -4626,7 +4726,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_83">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_85">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewFramerate</span>(framerate)
@@ -4641,7 +4741,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGain"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGain</span></h5>
 <div class="sect5">
-<h6 id="_short_description_86">Short description</h6>
+<h6 id="_short_description_88">Short description</h6>
 <div class="paragraph">
 <p>Notify gain of currently selected camera instance.</p>
 </div>
@@ -4674,7 +4774,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_84">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_86">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGain</span>(gain)
@@ -4689,7 +4789,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGigEVisionConfigTableContent"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGigEVisionConfigTableContent</span></h5>
 <div class="sect5">
-<h6 id="_short_description_87">Short description</h6>
+<h6 id="_short_description_89">Short description</h6>
 <div class="paragraph">
 <p>Notify list of custom GigE Vision configs (for UI table view).</p>
 </div>
@@ -4722,7 +4822,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_85">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_87">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGigEVisionConfigTableContent</span>(content)
@@ -4737,7 +4837,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGigEVisionCurrentParameter"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGigEVisionCurrentParameter</span></h5>
 <div class="sect5">
-<h6 id="_short_description_88">Short description</h6>
+<h6 id="_short_description_90">Short description</h6>
 <div class="paragraph">
 <p>Notify currently selected GigEVision parameter name to edit.</p>
 </div>
@@ -4770,7 +4870,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_86">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_88">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGigEVisionCurrentParameter</span>(name)
@@ -4785,7 +4885,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGigEVisionParameters"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGigEVisionParameters</span></h5>
 <div class="sect5">
-<h6 id="_short_description_89">Short description</h6>
+<h6 id="_short_description_91">Short description</h6>
 <div class="paragraph">
 <p>Notify available GigEVision parameter list received from connected camera.</p>
 </div>
@@ -4818,7 +4918,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_87">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_89">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGigEVisionParameters</span>(parameters)
@@ -4833,7 +4933,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGigEVisionParameterType"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGigEVisionParameterType</span></h5>
 <div class="sect5">
-<h6 id="_short_description_90">Short description</h6>
+<h6 id="_short_description_92">Short description</h6>
 <div class="paragraph">
 <p>Notify type of currently selected GigEVision parameter.</p>
 </div>
@@ -4866,7 +4966,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_88">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_90">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGigEVisionParameterType</span>(valueType)
@@ -4881,7 +4981,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGigEVisionStatus"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGigEVisionStatus</span></h5>
 <div class="sect5">
-<h6 id="_short_description_91">Short description</h6>
+<h6 id="_short_description_93">Short description</h6>
 <div class="paragraph">
 <p>Notify if currently selected camera is GigEVision.</p>
 </div>
@@ -4914,7 +5014,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_89">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_91">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGigEVisionStatus</span>(status)
@@ -4929,7 +5029,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGigEVisionTableContent"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGigEVisionTableContent</span></h5>
 <div class="sect5">
-<h6 id="_short_description_92">Short description</h6>
+<h6 id="_short_description_94">Short description</h6>
 <div class="paragraph">
 <p>Notify list of available GigE Vision parameters (for UI table view).</p>
 </div>
@@ -4962,7 +5062,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_90">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_92">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGigEVisionTableContent</span>(list)
@@ -4977,7 +5077,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewGigEVisionValue"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewGigEVisionValue</span></h5>
 <div class="sect5">
-<h6 id="_short_description_93">Short description</h6>
+<h6 id="_short_description_95">Short description</h6>
 <div class="paragraph">
 <p>Notify value of currently selected GigEVision parameter.</p>
 </div>
@@ -5010,7 +5110,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_91">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_93">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewGigEVisionValue</span>(value)
@@ -5025,7 +5125,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewHardwareTriggerDelay"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewHardwareTriggerDelay</span></h5>
 <div class="sect5">
-<h6 id="_short_description_94">Short description</h6>
+<h6 id="_short_description_96">Short description</h6>
 <div class="paragraph">
 <p>Notify hardware trigger delay of currently selected camera instance.</p>
 </div>
@@ -5058,7 +5158,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_92">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_94">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewHardwareTriggerDelay</span>(value)
@@ -5073,7 +5173,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewImageCameraNUM"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageCameraNUM</span></h5>
 <div class="sect5">
-<h6 id="_short_description_95">Short description</h6>
+<h6 id="_short_description_97">Short description</h6>
 <div class="paragraph">
 <p>Example of dynamically created event to transfer incoming image of camera instance.<br>
 NUM will be replaced by the number of instance (e.g. "OnNewImageCamera1").<br>
@@ -5115,7 +5215,7 @@ INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_93">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_95">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImageCameraNUM</span>(image, timestamp)
@@ -5130,7 +5230,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewImageFilePrefix"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageFilePrefix</span></h5>
 <div class="sect5">
-<h6 id="_short_description_96">Short description</h6>
+<h6 id="_short_description_98">Short description</h6>
 <div class="paragraph">
 <p>Notify image file prefix to use.</p>
 </div>
@@ -5163,7 +5263,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_94">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_96">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImageFilePrefix</span>(prefix)
@@ -5176,15 +5276,63 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </div>
 </div>
 <div class="sect4">
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewImagePoolSize"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImagePoolSize</span></h5>
+<div class="sect5">
+<h6 id="_short_description_99">Short description</h6>
+<div class="paragraph">
+<p>Notfiy image pool size to use for camera.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_26">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_97">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImagePoolSize</span>(size)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewImagePoolSize</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewImagePoolSize</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewImageProcessingParameter"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageProcessingParameter</span></h5>
 <div class="sect5">
-<h6 id="_short_description_97">Short description</h6>
+<h6 id="_short_description_100">Short description</h6>
 <div class="paragraph">
 <p>Event to share processing parameters to the instances.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_26">Callback arguments</h6>
+<h6 id="_callback_arguments_27">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5223,7 +5371,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_95">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_98">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImageProcessingParameter</span>(cameraNo, parameter, value)
@@ -5238,13 +5386,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewImageQueueCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageQueueCamera</span></h5>
 <div class="sect5">
-<h6 id="_short_description_98">Short description</h6>
+<h6 id="_short_description_101">Short description</h6>
 <div class="paragraph">
 <p>Notify queue size of module internal image processing function of currently selected camera.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_27">Callback arguments</h6>
+<h6 id="_callback_arguments_28">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5271,7 +5419,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_96">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_99">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImageQueueCamera</span>(value)
@@ -5286,13 +5434,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewImageSaveFormat"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageSaveFormat</span></h5>
 <div class="sect5">
-<h6 id="_short_description_99">Short description</h6>
+<h6 id="_short_description_102">Short description</h6>
 <div class="paragraph">
 <p>Notify format to save images.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_28">Callback arguments</h6>
+<h6 id="_callback_arguments_29">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5319,7 +5467,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_97">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_100">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImageSaveFormat</span>(format)
@@ -5334,13 +5482,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewImageSizeToShare"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewImageSizeToShare</span></h5>
 <div class="sect5">
-<h6 id="_short_description_100">Short description</h6>
+<h6 id="_short_description_103">Short description</h6>
 <div class="paragraph">
 <p>Notify if image size changed to other modules.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_29">Callback arguments</h6>
+<h6 id="_callback_arguments_30">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5367,7 +5515,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_98">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_101">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImageSizeToShare</span>(eventname)
@@ -5382,13 +5530,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewIPCheck"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewIPCheck</span></h5>
 <div class="sect5">
-<h6 id="_short_description_101">Short description</h6>
+<h6 id="_short_description_104">Short description</h6>
 <div class="paragraph">
 <p>Notify if inserted IP has correct format.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_30">Callback arguments</h6>
+<h6 id="_callback_arguments_31">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5415,7 +5563,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_99">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_102">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewIPCheck</span>(status)
@@ -5430,13 +5578,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewLoggingMessage"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewLoggingMessage</span></h5>
 <div class="sect5">
-<h6 id="_short_description_102">Short description</h6>
+<h6 id="_short_description_105">Short description</h6>
 <div class="paragraph">
 <p>Notify latest logging message of this module.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_31">Callback arguments</h6>
+<h6 id="_callback_arguments_32">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5463,7 +5611,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_100">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_103">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewLoggingMessage</span>(message)
@@ -5478,57 +5626,9 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewMonitoring"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewMonitoring</span></h5>
 <div class="sect5">
-<h6 id="_short_description_103">Short description</h6>
+<h6 id="_short_description_106">Short description</h6>
 <div class="paragraph">
 <p>Notify if currently selected camera is monitored.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_callback_arguments_32">Callback arguments</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">State</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_101">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewMonitoring</span>(state)
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewMonitoring</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewMonitoring</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewMonitoringState"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewMonitoringState</span></h5>
-<div class="sect5">
-<h6 id="_short_description_104">Short description</h6>
-<div class="paragraph">
-<p>Notify if currently selected camera is available or not.</p>
 </div>
 </div>
 <div class="sect5">
@@ -5559,7 +5659,55 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_102">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_104">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewMonitoring</span>(state)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewMonitoring</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewMonitoring</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewMonitoringState"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewMonitoringState</span></h5>
+<div class="sect5">
+<h6 id="_short_description_107">Short description</h6>
+<div class="paragraph">
+<p>Notify if currently selected camera is available or not.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_34">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">State</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_105">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewMonitoringState</span>(state)
@@ -5574,13 +5722,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewMonitoringStateCams"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewMonitoringStateCams</span></h5>
 <div class="sect5">
-<h6 id="_short_description_105">Short description</h6>
+<h6 id="_short_description_108">Short description</h6>
 <div class="paragraph">
 <p>Notify if the cameras is available or not.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_34">Callback arguments</h6>
+<h6 id="_callback_arguments_35">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5613,7 +5761,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_103">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_106">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewMonitoringStateCams</span>(cameraNr, state)
@@ -5628,13 +5776,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewNumberOfCameras"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewNumberOfCameras</span></h5>
 <div class="sect5">
-<h6 id="_short_description_106">Short description</h6>
+<h6 id="_short_description_109">Short description</h6>
 <div class="paragraph">
 <p>Notify number of camera instances.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_35">Callback arguments</h6>
+<h6 id="_callback_arguments_36">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5661,7 +5809,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_104">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_107">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewNumberOfCameras</span>(numberOfCameras)
@@ -5676,13 +5824,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewParameterName"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewParameterName</span></h5>
 <div class="sect5">
-<h6 id="_short_description_107">Short description</h6>
+<h6 id="_short_description_110">Short description</h6>
 <div class="paragraph">
 <p>Notify name of the parameters if saved/loaded via the CSK_PersistentData module for currently selected camera instance.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_36">Callback arguments</h6>
+<h6 id="_callback_arguments_37">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5709,7 +5857,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_105">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_108">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewParameterName</span>(parametersName)
@@ -5724,13 +5872,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewProcessingMode"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewProcessingMode</span></h5>
 <div class="sect5">
-<h6 id="_short_description_108">Short description</h6>
+<h6 id="_short_description_111">Short description</h6>
 <div class="paragraph">
 <p>Notify processing mode of currently selected camera.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_37">Callback arguments</h6>
+<h6 id="_callback_arguments_38">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5757,7 +5905,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_106">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_109">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewProcessingMode</span>(mode)
@@ -5772,13 +5920,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewResizeFactor"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewResizeFactor</span></h5>
 <div class="sect5">
-<h6 id="_short_description_109">Short description</h6>
+<h6 id="_short_description_112">Short description</h6>
 <div class="paragraph">
 <p>Notify resize factor of internal image processing function of currently selected camera.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_38">Callback arguments</h6>
+<h6 id="_callback_arguments_39">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5805,7 +5953,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_107">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_110">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewResizeFactor</span>(factor)
@@ -5820,13 +5968,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewSavingImagesPath"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewSavingImagesPath</span></h5>
 <div class="sect5">
-<h6 id="_short_description_110">Short description</h6>
+<h6 id="_short_description_113">Short description</h6>
 <div class="paragraph">
 <p>Notify path to save images of currently selected camera.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_39">Callback arguments</h6>
+<h6 id="_callback_arguments_40">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5853,7 +6001,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_108">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_111">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewSavingImagesPath</span>(path)
@@ -5868,13 +6016,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewSelectedCam"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewSelectedCam</span></h5>
 <div class="sect5">
-<h6 id="_short_description_111">Short description</h6>
+<h6 id="_short_description_114">Short description</h6>
 <div class="paragraph">
 <p>Notify no. of currently selected camera instance.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_40">Callback arguments</h6>
+<h6 id="_callback_arguments_41">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5901,7 +6049,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_109">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_112">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewSelectedCam</span>(cameraNo)
@@ -5916,13 +6064,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewShutterTime"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewShutterTime</span></h5>
 <div class="sect5">
-<h6 id="_short_description_112">Short description</h6>
+<h6 id="_short_description_115">Short description</h6>
 <div class="paragraph">
 <p>Notify shutter time of currently selected camera instance.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_41">Callback arguments</h6>
+<h6 id="_callback_arguments_42">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5949,7 +6097,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_110">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_113">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewShutterTime</span>(shutterTime)
@@ -5964,13 +6112,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusCSKStyle"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusCSKStyle</span></h5>
 <div class="sect5">
-<h6 id="_short_description_113">Short description</h6>
+<h6 id="_short_description_116">Short description</h6>
 <div class="paragraph">
 <p>Notify UI style to use for CSK modules.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_42">Callback arguments</h6>
+<h6 id="_callback_arguments_43">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -5997,7 +6145,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_111">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_114">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusCSKStyle</span>(theme)
@@ -6012,58 +6160,9 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusCustomCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusCustomCamera</span></h5>
 <div class="sect5">
-<h6 id="_short_description_114">Short description</h6>
+<h6 id="_short_description_117">Short description</h6>
 <div class="paragraph">
 <p>Notify if camera model 'Custom' is selected.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_callback_arguments_43">Callback arguments</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_112">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusCustomCamera</span>(status)
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusCustomCamera</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusCustomCamera</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusDigitalTriggerPause"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusDigitalTriggerPause</span></h5>
-<div class="sect5">
-<h6 id="_short_description_115">Short description</h6>
-<div class="paragraph">
-<p>Notify if digital trigger input should be ignored for currently selected camera instance.
-(e.g. used to freeze/inspect latest incoming image).</p>
 </div>
 </div>
 <div class="sect5">
@@ -6094,24 +6193,25 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_113">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_115">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusDigitalTriggerPause</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusCustomCamera</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusDigitalTriggerPause</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusDigitalTriggerPause</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusCustomCamera</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusCustomCamera</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusFlowConfigPriority"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusFlowConfigPriority</span></h5>
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusDigitalTriggerPause"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusDigitalTriggerPause</span></h5>
 <div class="sect5">
-<h6 id="_short_description_116">Short description</h6>
+<h6 id="_short_description_118">Short description</h6>
 <div class="paragraph">
-<p>Notify if FlowConfig should have priority for FlowConfig relevant configurations.</p>
+<p>Notify if digital trigger input should be ignored for currently selected camera instance.
+(e.g. used to freeze/inspect latest incoming image).</p>
 </div>
 </div>
 <div class="sect5">
@@ -6142,24 +6242,24 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_114">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_116">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusFlowConfigPriority</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusDigitalTriggerPause</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusFlowConfigPriority</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusFlowConfigPriority</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusDigitalTriggerPause</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusDigitalTriggerPause</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusLoadParameterOnReboot"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusLoadParameterOnReboot</span></h5>
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusFlowConfigPriority"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusFlowConfigPriority</span></h5>
 <div class="sect5">
-<h6 id="_short_description_117">Short description</h6>
+<h6 id="_short_description_119">Short description</h6>
 <div class="paragraph">
-<p>Notify status if parameters should be loaded on app/device boot up.</p>
+<p>Notify if FlowConfig should have priority for FlowConfig relevant configurations.</p>
 </div>
 </div>
 <div class="sect5">
@@ -6190,24 +6290,24 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_115">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_117">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusLoadParameterOnReboot</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusFlowConfigPriority</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusLoadParameterOnReboot</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusLoadParameterOnReboot</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusFlowConfigPriority</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusFlowConfigPriority</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusModuleIsActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusModuleIsActive</span></h5>
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusLoadParameterOnReboot"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusLoadParameterOnReboot</span></h5>
 <div class="sect5">
-<h6 id="_short_description_118">Short description</h6>
+<h6 id="_short_description_120">Short description</h6>
 <div class="paragraph">
-<p>Notify if module can be used on device.</p>
+<p>Notify status if parameters should be loaded on app/device boot up.</p>
 </div>
 </div>
 <div class="sect5">
@@ -6238,76 +6338,28 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_116">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_118">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleIsActive</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusLoadParameterOnReboot</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusLoadParameterOnReboot</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusLoadParameterOnReboot</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusModuleVersion"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusModuleVersion</span></h5>
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusModuleIsActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusModuleIsActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_119">Short description</h6>
+<h6 id="_short_description_121">Short description</h6>
 <div class="paragraph">
-<p>Notify version of module.</p>
+<p>Notify if module can be used on device.</p>
 </div>
 </div>
 <div class="sect5">
 <h6 id="_callback_arguments_48">Callback arguments</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">version</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Version</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_117">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleVersion</span>(version)
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusSaveAllImagesActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusSaveAllImagesActive</span></h5>
-<div class="sect5">
-<h6 id="_short_description_120">Short description</h6>
-<div class="paragraph">
-<p>Notify if all images should be saved.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_callback_arguments_49">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6334,24 +6386,72 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_118">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_119">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSaveAllImagesActive</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleIsActive</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusSaveAllImagesActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSaveAllImagesActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusTempImageActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusTempImageActive</span></h5>
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusModuleVersion"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusModuleVersion</span></h5>
 <div class="sect5">
-<h6 id="_short_description_121">Short description</h6>
+<h6 id="_short_description_122">Short description</h6>
 <div class="paragraph">
-<p>Notify if latest image of currently selected camera instance should be temporarily be saved to store them eventually.</p>
+<p>Notify version of module.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_49">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_120">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleVersion</span>(version)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusSaveAllImagesActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusSaveAllImagesActive</span></h5>
+<div class="sect5">
+<h6 id="_short_description_123">Short description</h6>
+<div class="paragraph">
+<p>Notify if all images should be saved.</p>
 </div>
 </div>
 <div class="sect5">
@@ -6382,24 +6482,24 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_119">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_121">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusTempImageActive</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSaveAllImagesActive</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusTempImageActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusTempImageActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusSaveAllImagesActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSaveAllImagesActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusViewerActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusViewerActive</span></h5>
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusTempImageActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusTempImageActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_122">Short description</h6>
+<h6 id="_short_description_124">Short description</h6>
 <div class="paragraph">
-<p>Notify if UI viewer of currently selected camera instance should show image.</p>
+<p>Notify if latest image of currently selected camera instance should be temporarily be saved to store them eventually.</p>
 </div>
 </div>
 <div class="sect5">
@@ -6430,24 +6530,24 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_120">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_122">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusViewerActive</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusTempImageActive</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusViewerActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusViewerActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusTempImageActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusTempImageActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusWaitingForCameraBootUp"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusWaitingForCameraBootUp</span></h5>
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusViewerActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusViewerActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_123">Short description</h6>
+<h6 id="_short_description_125">Short description</h6>
 <div class="paragraph">
-<p>Notify if module is curently waiting for camera boot up.</p>
+<p>Notify if UI viewer of currently selected camera instance should show image.</p>
 </div>
 </div>
 <div class="sect5">
@@ -6478,7 +6578,55 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_121">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_123">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusViewerActive</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnNewStatusViewerActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusViewerActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnNewStatusWaitingForCameraBootUp"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewStatusWaitingForCameraBootUp</span></h5>
+<div class="sect5">
+<h6 id="_short_description_126">Short description</h6>
+<div class="paragraph">
+<p>Notify if module is curently waiting for camera boot up.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_53">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_124">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusWaitingForCameraBootUp</span>(status)
@@ -6493,13 +6641,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewSwitchMode"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewSwitchMode</span></h5>
 <div class="sect5">
-<h6 id="_short_description_124">Short description</h6>
+<h6 id="_short_description_127">Short description</h6>
 <div class="paragraph">
 <p>Notify if currently selected camera is in SwitchMode.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_53">Callback arguments</h6>
+<h6 id="_callback_arguments_54">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6526,7 +6674,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_122">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_125">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewSwitchMode</span>(state)
@@ -6541,13 +6689,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewSWTriggerEvent"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewSWTriggerEvent</span></h5>
 <div class="sect5">
-<h6 id="_short_description_125">Short description</h6>
+<h6 id="_short_description_128">Short description</h6>
 <div class="paragraph">
 <p>Notify event to trigger camera if in SW mode.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_54">Callback arguments</h6>
+<h6 id="_callback_arguments_55">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6574,7 +6722,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_123">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_126">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewSWTriggerEvent</span>(eventName)
@@ -6589,7 +6737,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewValueToForwardNUM"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewValueToForwardNUM</span></h5>
 <div class="sect5">
-<h6 id="_short_description_126">Short description</h6>
+<h6 id="_short_description_129">Short description</h6>
 <div class="paragraph">
 <p>Example of dynamically created event to Forward thread internal values to e.g. be notified with single event related to UI.<br>
 NUM will be replaced by the number of instance (e.g. "OnNewValueToForward1").<br>
@@ -6597,7 +6745,7 @@ INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_55">Callback arguments</h6>
+<h6 id="_callback_arguments_56">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6630,7 +6778,7 @@ INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_124">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_127">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewValueToForwardNUM</span>(event, value)
@@ -6645,13 +6793,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnNewViewerID"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnNewViewerID</span></h5>
 <div class="sect5">
-<h6 id="_short_description_127">Short description</h6>
+<h6 id="_short_description_130">Short description</h6>
 <div class="paragraph">
 <p>Notify currently used viewerID (e.g. to show correct viewer in UI).</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_56">Callback arguments</h6>
+<h6 id="_callback_arguments_57">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6678,7 +6826,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_125">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_128">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewViewerID</span>(viewerID)
@@ -6693,160 +6841,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnPersistentDataModuleAvailable"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnPersistentDataModuleAvailable</span></h5>
 <div class="sect5">
-<h6 id="_short_description_128">Short description</h6>
+<h6 id="_short_description_131">Short description</h6>
 <div class="paragraph">
 <p>Notify status if features of CSK_PersistentData module are available.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_57">Callback arguments</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_126">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnPersistentDataModuleAvailable</span>(status)
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnPersistentDataModuleAvailable</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnPersistentDataModuleAvailable</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnRegisterCameraNUM"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnRegisterCameraNUM</span></h5>
-<div class="sect5">
-<h6 id="_short_description_129">Short description</h6>
-<div class="paragraph">
-<p>Example of dynamically created event to register camera intsance to image processing function.<br>
-NUM will be replaced by the number of instance (e.g. "OnRegisterCamera1").<br>
-INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</p>
-</div>
-</div>
-<div class="sect5">
 <h6 id="_callback_arguments_58">Callback arguments</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">camera</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">HANDLE<br>
-<a href="#API:Crown:Image.Provider.RemoteCamera">Image.Provider.RemoteCamera</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Camera instance to register.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_127">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnRegisterCameraNUM</span>(camera)
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnRegisterCameraNUM</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnRegisterCameraNUM</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnScanCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnScanCamera</span></h5>
-<div class="sect5">
-<h6 id="_short_description_130">Short description</h6>
-<div class="paragraph">
-<p>Notify if scanning for connected camera is active.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_callback_arguments_59">Callback arguments</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">active</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_128">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnScanCamera</span>(active)
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnScanCamera</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnScanCamera</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_MultiRemoteCamera.OnSWTriggerActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnSWTriggerActive</span></h5>
-<div class="sect5">
-<h6 id="_short_description_131">Short description</h6>
-<div class="paragraph">
-<p>Notify if SOFTWARE_TRIGGER camera mode is active (e.g. to visualize relevant UI elements).</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_callback_arguments_60">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6876,6 +6877,153 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <h6 id="_sample_auto_generated_129">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnPersistentDataModuleAvailable</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnPersistentDataModuleAvailable</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnPersistentDataModuleAvailable</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnRegisterCameraNUM"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnRegisterCameraNUM</span></h5>
+<div class="sect5">
+<h6 id="_short_description_132">Short description</h6>
+<div class="paragraph">
+<p>Example of dynamically created event to register camera intsance to image processing function.<br>
+NUM will be replaced by the number of instance (e.g. "OnRegisterCamera1").<br>
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_59">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">camera</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HANDLE<br>
+<a href="#API:Crown:Image.Provider.RemoteCamera">Image.Provider.RemoteCamera</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Camera instance to register.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_130">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnRegisterCameraNUM</span>(camera)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnRegisterCameraNUM</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnRegisterCameraNUM</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnScanCamera"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnScanCamera</span></h5>
+<div class="sect5">
+<h6 id="_short_description_133">Short description</h6>
+<div class="paragraph">
+<p>Notify if scanning for connected camera is active.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_60">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">active</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_131">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnScanCamera</span>(active)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_MultiRemoteCamera.OnScanCamera</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnScanCamera</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_MultiRemoteCamera.OnSWTriggerActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnSWTriggerActive</span></h5>
+<div class="sect5">
+<h6 id="_short_description_134">Short description</h6>
+<div class="paragraph">
+<p>Notify if SOFTWARE_TRIGGER camera mode is active (e.g. to visualize relevant UI elements).</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_61">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_132">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnSWTriggerActive</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
@@ -6888,13 +7036,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnUserLevelAdminActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnUserLevelAdminActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_132">Short description</h6>
+<h6 id="_short_description_135">Short description</h6>
 <div class="paragraph">
 <p>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_61">Callback arguments</h6>
+<h6 id="_callback_arguments_62">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6921,7 +7069,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_130">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_133">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelAdminActive</span>(status)
@@ -6936,13 +7084,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnUserLevelMaintenanceActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnUserLevelMaintenanceActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_133">Short description</h6>
+<h6 id="_short_description_136">Short description</h6>
 <div class="paragraph">
 <p>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_62">Callback arguments</h6>
+<h6 id="_callback_arguments_63">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -6969,7 +7117,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_131">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_134">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelMaintenanceActive</span>(status)
@@ -6984,13 +7132,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnUserLevelOperatorActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnUserLevelOperatorActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_134">Short description</h6>
+<h6 id="_short_description_137">Short description</h6>
 <div class="paragraph">
 <p>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_63">Callback arguments</h6>
+<h6 id="_callback_arguments_64">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -7017,7 +7165,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_132">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_135">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelOperatorActive</span>(status)
@@ -7032,13 +7180,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_MultiRemoteCamera.OnUserLevelServiceActive"><span class="breadcrumb">CSK_MultiRemoteCamera.</span><span class="api-event">OnUserLevelServiceActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_135">Short description</h6>
+<h6 id="_short_description_138">Short description</h6>
 <div class="paragraph">
 <p>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_64">Callback arguments</h6>
+<h6 id="_callback_arguments_65">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -7065,7 +7213,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_133">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_136">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelServiceActive</span>(status)
@@ -7082,7 +7230,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect2">
 <h3 id="API:Crown:MultiRemoteCamera_FC"><span class="api-crown">MultiRemoteCamera_FC</span></h3>
 <div class="sect3">
-<h4 id="_short_description_136">Short description</h4>
+<h4 id="_short_description_139">Short description</h4>
 <div class="paragraph">
 <p>Crown to provide CSK_FlowConfig relevant features.</p>
 </div>
@@ -7095,7 +7243,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect2">
 <h3 id="API:Crown:MultiRemoteCamera_FC.OnNewImage"><span class="api-crown">MultiRemoteCamera_FC.OnNewImage</span></h3>
 <div class="sect3">
-<h4 id="_short_description_137">Short description</h4>
+<h4 id="_short_description_140">Short description</h4>
 <div class="paragraph">
 <p>Provide image acquired by camera.</p>
 </div>
@@ -7121,13 +7269,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Function:MultiRemoteCamera_FC.OnNewImage.create"><span class="breadcrumb">MultiRemoteCamera_FC.OnNewImage.</span><span class="api-function">create()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_138">Short description</h6>
+<h6 id="_short_description_141">Short description</h6>
 <div class="paragraph">
 <p>Internally used CSK_FlowConfig create function.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_37">Parameters</h6>
+<h6 id="_parameters_39">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -7148,7 +7296,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Instance</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric identifier of camera instance (must be &gt;=1).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numeric identifier of camera instance.</p></td>
 </tr>
 </tbody>
 </table>
@@ -7181,7 +7329,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_134">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_137">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">handle = MultiRemoteCamera_FC.OnNewImage.create(Instance)</code></pre>
@@ -7192,13 +7340,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Function:MultiRemoteCamera_FC.OnNewImage.register"><span class="breadcrumb">MultiRemoteCamera_FC.OnNewImage.</span><span class="api-function">register()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_139">Short description</h6>
+<h6 id="_short_description_142">Short description</h6>
 <div class="paragraph">
 <p>Internally used CSK_FlowConfig register function.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_38">Parameters</h6>
+<h6 id="_parameters_40">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -7264,7 +7412,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_135">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_138">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">success = MultiRemoteCamera_FC.OnNewImage.register(handle, eventname, callback)</code></pre>
@@ -7278,13 +7426,13 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:MultiRemoteCamera_FC.OnNewImage.OnNewImage"><span class="breadcrumb">MultiRemoteCamera_FC.OnNewImage.</span><span class="api-event">OnNewImage</span></h5>
 <div class="sect5">
-<h6 id="_short_description_140">Short description</h6>
+<h6 id="_short_description_143">Short description</h6>
 <div class="paragraph">
 <p>Provide image acquired by camera.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_65">Callback arguments</h6>
+<h6 id="_callback_arguments_66">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -7320,7 +7468,7 @@ Parameter:
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_136">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_139">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewImage</span>(handle, OnNewImage)
@@ -7560,8 +7708,8 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 6.0.0<br>
-Last updated 2024-08-14 16:21:35 +0200
+Version 6.1.0<br>
+Last updated 2025-02-05 15:50:14 +0100
 </div>
 </div>
 <script type="text/javascript">

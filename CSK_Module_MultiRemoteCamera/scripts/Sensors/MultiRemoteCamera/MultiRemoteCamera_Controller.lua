@@ -93,6 +93,7 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusSaveAllImagesActive", "Multi
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusTempImageActive", "MultiRemoteCamera_OnNewStatusTempImageActive")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewCameraOverviewTable", "MultiRemoteCamera_OnNewCameraOverviewTable")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewProcessingMode", "MultiRemoteCamera_OnNewProcessingMode")
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewImagePoolSize', 'MultiRemoteCamera_OnNewImagePoolSize')
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewSwitchMode", "MultiRemoteCamera_OnNewSwitchMode")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoring", "MultiRemoteCamera_OnNewMonitoring")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoringState", "MultiRemoteCamera_OnNewMonitoringState") --for UI
@@ -304,6 +305,7 @@ local function handleOnExpiredTmrCamera()
         Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionConfigTableContent', multiRemoteCamera_Instances[selectedInstance].gigEVisionConfigUITable)
       end
     end
+    Script.notifyEvent('MultiRemoteCamera_OnNewImagePoolSize', multiRemoteCamera_Instances[selectedInstance].parameters.imagePoolSize)
     Script.notifyEvent('MultiRemoteCamera_OnNewMonitoring', multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera)
     Script.notifyEvent('MultiRemoteCamera_OnNewSwitchMode', multiRemoteCamera_Instances[selectedInstance].parameters.switchMode)
 
@@ -521,6 +523,12 @@ local function getGigEVision()
   return multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision
 end
 Script.serveFunction("CSK_MultiRemoteCamera.getGigEVision", getGigEVision)
+
+local function setImagePoolSize(size)
+  _G.logger:fine(nameOfModule .. ": Set image pool size = " .. tostring(size))
+  multiRemoteCamera_Instances[selectedInstance].parameters.imagePoolSize = size
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setImagePoolSize', setImagePoolSize)
 
 local function setSwitchMode (status)
   for i = 1, #multiRemoteCamera_Instances do
@@ -957,6 +965,14 @@ local function getStatusModuleActive()
 end
 Script.serveFunction('CSK_MultiRemoteCamera.getStatusModuleActive', getStatusModuleActive)
 
+local function stopFlowConfigRelevantProvider(instance)
+  if multiRemoteCamera_Instances[instance].parameters.acquisitionMode == 'FIXED_FREQUENCY' then
+    setSelectedInstance(instance)
+    stopCamera()
+  end
+end
+Script.serveFunction('CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider', stopFlowConfigRelevantProvider)
+
 local function clearFlowConfigRelevantConfiguration()
   -- Nothing to do so far
 end
@@ -1007,6 +1023,9 @@ local function loadParameters()
     if data then
       _G.logger:info(nameOfModule .. ": Loaded parameters from CSK_PersistentData module.")
       multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.convertContainer2Table(data)
+
+      multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.checkParameters(multiRemoteCamera_Instances[selectedInstance].parameters, helperFuncs.defaultParameters)
+
       multiRemoteCamera_Instances[selectedInstance]:setNewConfig()
       updateImageProcessingParameter()
       pageCalled()

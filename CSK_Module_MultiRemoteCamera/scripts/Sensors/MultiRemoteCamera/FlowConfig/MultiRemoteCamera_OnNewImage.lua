@@ -8,6 +8,24 @@ local nameOfModule = 'CSK_MultiRemoteCamera'
 -- Required to keep track of already allocated resource
 local instanceTable = {}
 
+--- Timer to start camera via FlowConfig if in CONTINUOUS (FIXED_FREQUENCY) mode
+local tmrStartCamera = Timer.create()
+tmrStartCamera:setExpirationTime(5000)
+tmrStartCamera:setPeriodic(false)
+
+--- Function to start camera via FlowConig
+local function handleOnExpired()
+  local amount = CSK_MultiRemoteCamera.getInstancesAmount()
+  for i=1, amount do
+    CSK_MultiRemoteCamera.setSelectedInstance(i)
+    local mode = CSK_MultiRemoteCamera.getAcquisitionMode()
+    if mode == 'FIXED_FREQUENCY' then
+      CSK_MultiRemoteCamera.startCamera()
+    end
+  end
+end
+Timer.register(tmrStartCamera, 'OnExpired', handleOnExpired)
+
 local function register(handle, _ , callback)
 
   Container.remove(handle, "CB_Function")
@@ -34,6 +52,8 @@ local function register(handle, _ , callback)
     end
   end
   Script.register('CSK_FlowConfig.OnNewFlowConfig', localCallback)
+
+  tmrStartCamera:start()
 
   return true
 end
