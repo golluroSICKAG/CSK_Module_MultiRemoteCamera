@@ -87,7 +87,7 @@ function multiRemoteCamera.create(cameraNo)
   self.triggerFunction = nil -- Internally used function to SW trigger the camera
 
   self.parameters = {}
-  self.parameters = require('Sensors/MultiRemoteCamera/MultiRemoteCamera_Parameters') -- Load default parameters
+  self.parameters = self.helperFuncs.defaultParameters.getParameters() -- Load default parameters
 
   -- Instance specific parameters
   self.parameters.cameraNo = cameraNo -- Instance no of this camera
