@@ -17,7 +17,7 @@ local function getParameters()
   if _G.availableAPIs.GigEVision == true then
     multiRemoteCameraParameters.gigEvision = true -- Use GigE Vision camera
   else
-    multiRemoteCameraParameters.gigEvision = false -- Use GigE Vision camera
+    multiRemoteCameraParameters.gigEvision = false -- Do not use GigE Vision camera
   end
 
   multiRemoteCameraParameters.flowConfigPriority = CSK_FlowConfig ~= nil or false -- Status if FlowConfig should have priority for FlowConfig relevant configurations
