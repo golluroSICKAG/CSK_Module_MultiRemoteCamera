@@ -212,6 +212,8 @@ local function handleOnNewImageProcessingParameter(cameraNo, parameter, value)
     end
   elseif parameter == 'activeInUI' then
     imageProcessingParams[parameter] = false
+    viewer:clear()
+    viewer:present()
   end
 end
 Script.register("CSK_MultiRemoteCamera.OnNewImageProcessingParameter", handleOnNewImageProcessingParameter)
