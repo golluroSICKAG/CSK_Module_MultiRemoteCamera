@@ -1024,7 +1024,7 @@ local function loadParameters()
       _G.logger:info(nameOfModule .. ": Loaded parameters from CSK_PersistentData module.")
       multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.convertContainer2Table(data)
 
-      multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.checkParameters(multiRemoteCamera_Instances[selectedInstance].parameters, helperFuncs.defaultParameters)
+      multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.checkParameters(multiRemoteCamera_Instances[selectedInstance].parameters, helperFuncs.defaultParameters.getParameters())
 
       multiRemoteCamera_Instances[selectedInstance]:setNewConfig()
       updateImageProcessingParameter()

@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 6.1.1
+
+### Bugfix
+- Issue to create new instances (introduced with v6.1.0)
+
 ## Release 6.1.0
 
 ### New features

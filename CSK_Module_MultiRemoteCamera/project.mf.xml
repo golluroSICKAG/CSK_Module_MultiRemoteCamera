@@ -640,7 +640,7 @@ According to the selected model it will use some predefined GigE Vision paramete
             </crown>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">6.1.0</meta>
+        <meta key="version">6.1.1</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
