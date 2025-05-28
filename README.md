@@ -12,6 +12,14 @@ The app includes an intuitive GUI to setup the camera(s).
 It requires a pico-/midiCam ver1 or ver2 or other GigE Vision compatible cameras.  
 For further information check out the [documentation](https://raw.githack.com/SICKAppSpaceCodingStarterKit/CSK_Module_MultiRemoteCamera/main/CSK_Module_MultiRemoteCamera.html) in the folder "docu".
 
+## Dependencies
+Following CSK modules are necessary if you want to run it with SEC cameras:
+
+|Module|Version|Remark
+|--|--|--|
+|CSK_Module_MultiHTTPClient|[V2.2.0](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_MultiHTTPClient/releases/tag/v2.2.0)|
+|CSK_Module_MultiWebSocketClient|[V1.0.0](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_MultiWebSocketClient/releases/tag/v1.0.0)|
+
 ## Information
 
 Tested on  
