@@ -25,6 +25,7 @@ Tested on
 |SIM1012|V2.2.0|<V6.0.0|
 |SIM2500|V1.3.0|<V6.0.0|
 |SIM4000|V1.10.2|<V6.0.0|
+|SICK AppEngine|V1.7.0|V6.2.0|
 |SICK AppEngine|V1.7.0|V6.0.0|
 |SICK AppEngine|V1.3.2|<V6.0.0|
 

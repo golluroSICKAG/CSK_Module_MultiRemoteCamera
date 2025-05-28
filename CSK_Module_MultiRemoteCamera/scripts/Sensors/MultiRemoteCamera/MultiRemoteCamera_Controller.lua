@@ -24,7 +24,7 @@ tmrMonitorCameras:setPeriodic(true)
 
 -- Timer to wait for camera bootUp
 local tmrCameraBootUp = Timer.create()
-tmrCameraBootUp:setExpirationTime(12000)
+tmrCameraBootUp:setExpirationTime(20000)
 tmrCameraBootUp:setPeriodic(false)
 
 local multiRemoteCamera_Model -- Reference to model handle
@@ -61,6 +61,7 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnScanCamera", "MultiRemoteCamera_OnSca
 Script.serveEvent("CSK_MultiRemoteCamera.OnCurrentCameraIP", "MultiRemoteCamera_OnCurrentCameraIP")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewIPCheck", "MultiRemoteCamera_OnNewIPCheck")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusViewerActive", "MultiRemoteCamera_OnNewStatusViewerActive")
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewCameraType', 'MultiRemoteCamera_OnNewCameraType')
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewGigEVisionStatus", "MultiRemoteCamera_OnNewGigEVisionStatus")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewGigEVisionParameters", "MultiRemoteCamera_OnNewGigEVisionParameters")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewColorMode", "MultiRemoteCamera_OnNewColorMode")
@@ -98,6 +99,16 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnNewSwitchMode", "MultiRemoteCamera_On
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoring", "MultiRemoteCamera_OnNewMonitoring")
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoringState", "MultiRemoteCamera_OnNewMonitoringState") --for UI
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewMonitoringStateCams", "MultiRemoteCamera_OnNewMonitoringStateCams")
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewHTTPClientInstance', "MultiRemoteCamera_OnNewHTTPClientInstance")
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewEthernetInterfaceList', 'MultiRemoteCamera_OnNewEthernetInterfaceList')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewHTTPClientInterface', 'MultiRemoteCamera_OnNewHTTPClientInterface')
+
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewUsernameSEC', 'MultiRemoteCamera_OnNewUsernameSEC')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewPasswordSEC', 'MultiRemoteCamera_OnNewPasswordSEC')
+
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusSECMode', 'MultiRemoteCamera_OnNewStatusSECMode')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewWebSocketClientInstance', 'MultiRemoteCamera_OnNewWebSocketClientInstance')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusSECStreamIsActive', 'MultiRemoteCamera_OnNewStatusSECStreamIsActive')
 
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusFlowConfigPriority', 'MultiRemoteCamera_OnNewStatusFlowConfigPriority')
 Script.serveEvent("CSK_MultiRemoteCamera.OnNewStatusLoadParameterOnReboot", "MultiRemoteCamera_OnNewStatusLoadParameterOnReboot")
@@ -110,6 +121,7 @@ Script.serveEvent("CSK_MultiRemoteCamera.OnUserLevelServiceActive", "MultiRemote
 Script.serveEvent("CSK_MultiRemoteCamera.OnUserLevelAdminActive", "MultiRemoteCamera_OnUserLevelAdminActive")
 
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewCameraModel', 'MultiRemoteCamera_OnNewCameraModel')
+Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusCameraParameters', 'MultiRemoteCamera_OnNewStatusCameraParameters')
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewStatusCustomCamera', 'MultiRemoteCamera_OnNewStatusCustomCamera')
 
 Script.serveEvent('CSK_MultiRemoteCamera.OnNewNumberOfCameras', 'MultiRemoteCamera_OnNewNumberOfCameras')
@@ -270,6 +282,18 @@ local function updateUserLevel()
   end
 end
 
+--- Function to check camera type so that UI react on it
+---@param camType string Type of camera
+local function checkCameraType(camType)
+  if camType == 'SEC100' then
+    Script.notifyEvent("MultiRemoteCamera_OnNewCameraType", "SEC100")
+  elseif camType == 'PicoMidiCam' then
+    Script.notifyEvent("MultiRemoteCamera_OnNewCameraType", "NO_GIGE_VISION")
+  else
+    Script.notifyEvent("MultiRemoteCamera_OnNewCameraType", "GIGE_VISION")
+  end
+end
+
 --- Function to send all relevant values to UI on resume
 local function handleOnExpiredTmrCamera()
 
@@ -292,6 +316,7 @@ local function handleOnExpiredTmrCamera()
     Script.notifyEvent('MultiRemoteCamera_OnNewColorMode', multiRemoteCamera_Instances[selectedInstance].parameters.colorMode)
     Script.notifyEvent('MultiRemoteCamera_OnNewStatusViewerActive', viewerActive)
     Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'viewerActive', viewerActive)
+    checkCameraType(multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
     Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionStatus', multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision)
     if multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision then
       Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionParameters', multiRemoteCamera_Instances[selectedInstance].gigEVisionParameterList)
@@ -305,9 +330,19 @@ local function handleOnExpiredTmrCamera()
         Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionConfigTableContent', multiRemoteCamera_Instances[selectedInstance].gigEVisionConfigUITable)
       end
     end
+    Script.notifyEvent('MultiRemoteCamera_OnNewHTTPClientInstance', multiRemoteCamera_Instances[selectedInstance].parameters.httpClientInstance)
+    Script.notifyEvent('MultiRemoteCamera_OnNewEthernetInterfaceList', helperFuncs.createStringListFromList(multiRemoteCamera_Model.interfaces))
+    Script.notifyEvent('MultiRemoteCamera_OnNewHTTPClientInterface', multiRemoteCamera_Instances[selectedInstance].parameters.httpClientInterface)
+
+    Script.notifyEvent('MultiRemoteCamera_OnNewUsernameSEC', multiRemoteCamera_Instances[selectedInstance].parameters.secUser)
+    Script.notifyEvent('MultiRemoteCamera_OnNewPasswordSEC', '')
     Script.notifyEvent('MultiRemoteCamera_OnNewImagePoolSize', multiRemoteCamera_Instances[selectedInstance].parameters.imagePoolSize)
     Script.notifyEvent('MultiRemoteCamera_OnNewMonitoring', multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera)
     Script.notifyEvent('MultiRemoteCamera_OnNewSwitchMode', multiRemoteCamera_Instances[selectedInstance].parameters.switchMode)
+
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECMode', multiRemoteCamera_Instances[selectedInstance].parameters.secMode)
+    Script.notifyEvent('MultiRemoteCamera_OnNewWebSocketClientInstance', multiRemoteCamera_Instances[selectedInstance].parameters.secWebSocketClientInstance)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECStreamIsActive', multiRemoteCamera_Instances[selectedInstance].secWebSocketStreamIsActive)
 
     Script.notifyEvent('MultiRemoteCamera_OnNewShutterTime', multiRemoteCamera_Instances[selectedInstance].parameters.shutterTime)
     Script.notifyEvent('MultiRemoteCamera_OnNewGain', multiRemoteCamera_Instances[selectedInstance].parameters.gain)
@@ -341,6 +376,7 @@ local function handleOnExpiredTmrCamera()
     Script.notifyEvent('MultiRemoteCamera_OnNewProcessingMode', multiRemoteCamera_Instances[selectedInstance].parameters.processingMode)
     Script.notifyEvent('MultiRemoteCamera_OnNewMonitoringState', multiRemoteCamera_Instances[selectedInstance].cameraIsPingAble)
     Script.notifyEvent('MultiRemoteCamera_OnNewCameraModel', multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusCameraParameters', multiRemoteCamera_Instances[selectedInstance].cameraParameters)
     Script.notifyEvent('MultiRemoteCamera_OnNewStatusCustomCamera', multiRemoteCamera_Instances[selectedInstance].customCameraActive)
     handleUpdateCameraOverviewPage()
   end
@@ -445,63 +481,6 @@ Script.serveFunction('CSK_MultiRemoteCamera.resetInstances', resetInstances)
 
 -- ********************* UI Setting / Submit Functions Start ********************
 
-local function setCameraModel (camModel)
-  _G.logger:fine(nameOfModule .. ": Set camera model = " .. tostring(camModel))
-  multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel = camModel
-  if camModel == 'CustomConfig' then
-    multiRemoteCamera_Instances[selectedInstance].customCameraActive = true
-  else
-    multiRemoteCamera_Instances[selectedInstance].customCameraActive = false
-  end
-  Script.notifyEvent('MultiRemoteCamera_OnNewStatusCustomCamera', multiRemoteCamera_Instances[selectedInstance].customCameraActive)
-end
-Script.serveFunction('CSK_MultiRemoteCamera.setCameraModel', setCameraModel )
-
-local function setCameraIP(ip)
-  _G.logger:fine(nameOfModule .. ": Setting new IP = " .. ip .. ' for camera No.' .. tostring(selectedInstance))
-  if checkIP(ip) == true then
-    multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP = ip
-    Script.notifyEvent('MultiRemoteCamera_OnNewIPCheck', false)
-  else
-    Script.notifyEvent('MultiRemoteCamera_OnNewIPCheck', true)
-  end
-end
-Script.serveFunction("CSK_MultiRemoteCamera.setCameraIP", setCameraIP)
-
-local function getCameraIP()
-  return multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP
-end
-Script.serveFunction("CSK_MultiRemoteCamera.getCameraIP", getCameraIP)
-
-local function connectCamera()
-  -- Try to connect the camera
-  _G.logger:info(nameOfModule .. ": Try to connect to camera no. " .. tostring(selectedInstance))
-  multiRemoteCamera_Instances[selectedInstance]:connectCamera()
-  if multiRemoteCamera_Instances[selectedInstance].isConnected and multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera then
-    handleOnExpiredTmrMonitorCameras ()
-    tmrMonitorCameras:start() --Timer wird einmal inital gestartet.
-  end
-end
-Script.serveFunction("CSK_MultiRemoteCamera.connectCamera", connectCamera)
-
-local function disconnectCamera()
-  _G.logger:info(nameOfModule .. ": Disconnect camera no. " .. tostring(selectedInstance))
-  multiRemoteCamera_Instances[selectedInstance]:disconnectCamera()
-end
-Script.serveFunction("CSK_MultiRemoteCamera.disconnectCamera", disconnectCamera)
-
-local function startCamera()
-  _G.logger:info(nameOfModule .. ": Start camera no. " .. tostring(selectedInstance))
-  multiRemoteCamera_Instances[selectedInstance]:startCamera()
-end
-Script.serveFunction("CSK_MultiRemoteCamera.startCamera", startCamera)
-
-local function stopCamera()
-  _G.logger:info(nameOfModule .. ": Stop camera no. " .. tostring(selectedInstance))
-  multiRemoteCamera_Instances[selectedInstance]:stopCamera()
-end
-Script.serveFunction("CSK_MultiRemoteCamera.stopCamera", stopCamera)
-
 local function setGigEVision(status)
   -- Check if GigEVision / I2D is supported on device
   if status == true and _G.availableAPIs.GigEVision == true then
@@ -523,6 +502,124 @@ local function getGigEVision()
   return multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision
 end
 Script.serveFunction("CSK_MultiRemoteCamera.getGigEVision", getGigEVision)
+
+local function setCameraModel (camModel)
+  _G.logger:fine(nameOfModule .. ": Set camera model = " .. tostring(camModel))
+
+  if camModel == 'SEC100' then
+    if CSK_MultiHTTPClient and _G.availableAPIs.SEC100 then
+      multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel = camModel
+      multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision = false
+      Script.notifyEvent('MultiRemoteCamera_OnNewGigEVisionStatus', multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision)
+
+      multiRemoteCamera_Instances[selectedInstance].customCameraActive = false
+      multiRemoteCamera_Instances[selectedInstance].cameraParameters = 'SEC100'
+    else
+      _G.logger:warning(nameOfModule .. ": SEC100 features not available.")
+      Script.notifyEvent('MultiRemoteCamera_OnNewCameraModel', multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
+    end
+  else
+    if camModel == 'PicoMidiCam' then
+      setGigEVision(false)
+      if multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision == false then
+        multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel = camModel
+      else
+        _G.logger:warning(nameOfModule .. ": Features of camera model '" .. camModel .. "'' not available.")
+      end
+      Script.notifyEvent('MultiRemoteCamera_OnNewCameraModel', multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
+      multiRemoteCamera_Instances[selectedInstance].customCameraActive = false
+      multiRemoteCamera_Instances[selectedInstance].cameraParameters = 'Others'
+    else
+      setGigEVision(true)
+      if multiRemoteCamera_Instances[selectedInstance].parameters.gigEvision == true then
+        multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel = camModel
+        if camModel == 'CustomConfig' then
+          multiRemoteCamera_Instances[selectedInstance].customCameraActive = true
+          multiRemoteCamera_Instances[selectedInstance].cameraParameters = 'Custom'
+        else
+          multiRemoteCamera_Instances[selectedInstance].customCameraActive = false
+          multiRemoteCamera_Instances[selectedInstance].cameraParameters = 'Others'
+        end
+      else
+        _G.logger:warning(nameOfModule .. ": Features of camera model '" .. camModel .. "'' not available.")
+        Script.notifyEvent('MultiRemoteCamera_OnNewCameraModel', multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
+      end
+    end
+  end
+  Script.notifyEvent('MultiRemoteCamera_OnNewStatusCameraParameters', multiRemoteCamera_Instances[selectedInstance].cameraParameters)
+  Script.notifyEvent('MultiRemoteCamera_OnNewStatusCustomCamera', multiRemoteCamera_Instances[selectedInstance].customCameraActive)
+  checkCameraType(multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel)
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setCameraModel', setCameraModel )
+
+local function setCameraIP(ip)
+  _G.logger:fine(nameOfModule .. ": Setting new IP = " .. ip .. ' for camera No.' .. tostring(selectedInstance))
+  if checkIP(ip) == true then
+    multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP = ip
+    Script.notifyEvent('MultiRemoteCamera_OnNewIPCheck', false)
+  else
+    Script.notifyEvent('MultiRemoteCamera_OnNewIPCheck', true)
+  end
+end
+Script.serveFunction("CSK_MultiRemoteCamera.setCameraIP", setCameraIP)
+
+local function getCameraIP()
+  return multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP
+end
+Script.serveFunction("CSK_MultiRemoteCamera.getCameraIP", getCameraIP)
+
+local function setSEC100HTTPClientInstance(instance)
+  _G.logger:fine(nameOfModule .. ": Set instance of CSK_MultiHTTPClient module to use for SEC100 camera connection = " .. tostring(instance))
+  multiRemoteCamera_Instances[selectedInstance].parameters.httpClientInstance = instance
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setSEC100HTTPClientInstance', setSEC100HTTPClientInstance)
+
+local function setSEC100HTTPClientInterface(interface)
+  _G.logger:fine(nameOfModule .. ": Set interface of CSK_MultiHTTPClient module to use for SEC100 camera connection = " .. tostring(interface))
+  multiRemoteCamera_Instances[selectedInstance].parameters.httpClientInterface = interface
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setSEC100HTTPClientInterface', setSEC100HTTPClientInterface)
+
+local function setSEC100Username(user)
+  _G.logger:fine(nameOfModule .. ": Set username to login to SEC camera to = " .. user)
+  multiRemoteCamera_Instances[selectedInstance].parameters.secUser = user
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setSEC100Username', setSEC100Username)
+
+local function setSEC100UserPassword(password)
+  _G.logger:fine(nameOfModule .. ": Set password for user to login to SEC camera.")
+  multiRemoteCamera_Instances[selectedInstance].parameters.secUserPassword = password
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setSEC100UserPassword', setSEC100UserPassword)
+
+local function connectCamera()
+  -- Try to connect the camera
+  _G.logger:info(nameOfModule .. ": Try to connect to camera no. " .. tostring(selectedInstance))
+  multiRemoteCamera_Instances[selectedInstance]:connectCamera()
+  if multiRemoteCamera_Instances[selectedInstance].isConnected and multiRemoteCamera_Instances[selectedInstance].parameters.monitorCamera then
+    handleOnExpiredTmrMonitorCameras ()
+    tmrMonitorCameras:start() -- Initially starting timer
+  end
+end
+Script.serveFunction("CSK_MultiRemoteCamera.connectCamera", connectCamera)
+
+local function disconnectCamera()
+  _G.logger:info(nameOfModule .. ": Disconnect camera no. " .. tostring(selectedInstance))
+  multiRemoteCamera_Instances[selectedInstance]:disconnectCamera()
+end
+Script.serveFunction("CSK_MultiRemoteCamera.disconnectCamera", disconnectCamera)
+
+local function startCamera()
+  _G.logger:info(nameOfModule .. ": Start camera no. " .. tostring(selectedInstance))
+  multiRemoteCamera_Instances[selectedInstance]:startCamera()
+end
+Script.serveFunction("CSK_MultiRemoteCamera.startCamera", startCamera)
+
+local function stopCamera()
+  _G.logger:info(nameOfModule .. ": Stop camera no. " .. tostring(selectedInstance))
+  multiRemoteCamera_Instances[selectedInstance]:stopCamera()
+end
+Script.serveFunction("CSK_MultiRemoteCamera.stopCamera", stopCamera)
 
 local function setImagePoolSize(size)
   _G.logger:fine(nameOfModule .. ": Set image pool size = " .. tostring(size))
@@ -574,13 +671,25 @@ Script.serveFunction("CSK_MultiRemoteCamera.getColorMode", getColorMode)
 
 local function cameraSoftwareTrigger()
   _G.logger:info(nameOfModule .. ": SW trigger")
-  multiRemoteCamera_Instances[selectedInstance].CameraProvider:snapshot()
+  if multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel == 'SEC100' then
+    if multiRemoteCamera_Instances[selectedInstance].isConnected then
+      Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'SEC100_Trigger')
+    end
+  else
+    multiRemoteCamera_Instances[selectedInstance].CameraProvider:snapshot()
+  end
 end
 Script.serveFunction("CSK_MultiRemoteCamera.cameraSoftwareTrigger", cameraSoftwareTrigger)
 
 local function cameraSpecificSoftwareTrigger(cameraNo)
   _G.logger:info(nameOfModule .. ": SW trigger camera no." .. tostring(cameraNo))
-  multiRemoteCamera_Instances[cameraNo].CameraProvider:snapshot()
+  if multiRemoteCamera_Instances[cameraNo].parameters.cameraModel == 'SEC100' then
+    if multiRemoteCamera_Instances[cameraNo].isConnected then
+      Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', cameraNo, 'SEC100_Trigger')
+    end
+  else
+    multiRemoteCamera_Instances[cameraNo].CameraProvider:snapshot()
+  end
 end
 Script.serveFunction("CSK_MultiRemoteCamera.cameraSpecificSoftwareTrigger", cameraSpecificSoftwareTrigger)
 
@@ -598,6 +707,66 @@ local function setSWTriggerEvent(event)
   end
 end
 Script.serveFunction('CSK_MultiRemoteCamera.setSWTriggerEvent', setSWTriggerEvent)
+
+local function setSECStreamStatus(status)
+  if multiRemoteCamera_Instances[selectedInstance].parameters.secMode == 'Stream' then
+    if CSK_MultiWebSocketClient and _G.availableAPIs.SEC100Stream then
+      CSK_MultiWebSocketClient.setSelectedInstance(multiRemoteCamera_Instances[selectedInstance].parameters.secWebSocketClientInstance)
+      CSK_MultiWebSocketClient.setServerURL('ws://' .. tostring(multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP) .. ':8888/ws')
+      CSK_MultiWebSocketClient.setConnectionStatus(status)
+      multiRemoteCamera_Instances[selectedInstance].secWebSocketStreamIsActive = status
+      Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'secStream', multiRemoteCamera_Instances[selectedInstance].secWebSocketStreamIsActive)
+    else
+      _G.logger:fine(nameOfModule .. ": No WebSocket support for streaming mode.")
+    end
+  else
+    _G.logger:fine(nameOfModule .. ": SEC camera not in stream mode.")
+  end
+  Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECStreamIsActive', multiRemoteCamera_Instances[selectedInstance].secWebSocketStreamIsActive)
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setSECStreamStatus', setSECStreamStatus)
+
+local function startSECStream()
+  setSECStreamStatus(true)
+end
+Script.serveFunction('CSK_MultiRemoteCamera.startSECStream', startSECStream)
+
+local function stopSECStream()
+  setSECStreamStatus(false)
+end
+Script.serveFunction('CSK_MultiRemoteCamera.stopSECStream', stopSECStream)
+
+local function setSECMode(mode)
+  _G.logger:fine(nameOfModule .. ": Set SEC mode to = " .. tostring(mode))
+
+  if mode == 'Stream' then
+    if CSK_MultiWebSocketClient and _G.availableAPIs.SEC100Stream then
+      --CSK_MultiWebSocketClient.setSelectedInstance(multiRemoteCamera_Instances[selectedInstance].parameters.secWebSocketClientInstance)
+      --CSK_MultiWebSocketClient.setServerURL('ws://' .. tostring(multiRemoteCamera_Instances[selectedInstance].parameters.cameraIP) .. ':8888/ws')
+      --CSK_MultiWebSocketClient.setConnectionStatus(true)
+      multiRemoteCamera_Instances[selectedInstance].parameters.secMode = mode
+      --Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECMode', multiRemoteCamera_Instances[selectedInstance].parameters.secMode)
+    else
+      _G.logger:fine(nameOfModule .. ": No WebSocket support for streaming mode.")
+      --Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECMode', multiRemoteCamera_Instances[selectedInstance].parameters.secMode)
+    end
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECMode', multiRemoteCamera_Instances[selectedInstance].parameters.secMode)
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECStreamIsActive', multiRemoteCamera_Instances[selectedInstance].secWebSocketStreamIsActive)
+  elseif mode == 'Snapshot' then
+    multiRemoteCamera_Instances[selectedInstance].parameters.secMode = mode
+    Script.notifyEvent('MultiRemoteCamera_OnNewStatusSECMode', multiRemoteCamera_Instances[selectedInstance].parameters.secMode)
+    CSK_MultiWebSocketClient.setConnectionStatus(false)
+  end
+  Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'secMode', multiRemoteCamera_Instances[selectedInstance].parameters.secMode)
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setSECMode', setSECMode)
+
+local function setWebSocketClientInstance(instance)
+  _G.logger:fine(nameOfModule .. ": Set WebSocket client instance for SEC stream to = " .. tostring(instance))
+  multiRemoteCamera_Instances[selectedInstance].parameters.secWebSocketClientInstance = instance
+  Script.notifyEvent('MultiRemoteCamera_OnNewImageProcessingParameter', selectedInstance, 'secWebSocketClientInstance', multiRemoteCamera_Instances[selectedInstance].parameters.secWebSocketClientInstance)
+end
+Script.serveFunction('CSK_MultiRemoteCamera.setWebSocketClientInstance', setWebSocketClientInstance)
 
 local function setAcquisitionMode(mode)
   _G.logger:fine(nameOfModule .. ": Set acquisition mode = " .. tostring(mode))
@@ -1025,6 +1194,17 @@ local function loadParameters()
       multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.convertContainer2Table(data)
 
       multiRemoteCamera_Instances[selectedInstance].parameters = helperFuncs.checkParameters(multiRemoteCamera_Instances[selectedInstance].parameters, helperFuncs.defaultParameters.getParameters())
+
+      if multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel == 'SEC100' then
+        multiRemoteCamera_Instances[selectedInstance].cameraParameters = 'SEC100'
+        multiRemoteCamera_Instances[selectedInstance].customCameraActive = false
+      elseif multiRemoteCamera_Instances[selectedInstance].parameters.cameraModel == 'CustomConfig' then
+        multiRemoteCamera_Instances[selectedInstance].cameraParameters = 'Custom'
+        multiRemoteCamera_Instances[selectedInstance].customCameraActive = true
+      else
+        multiRemoteCamera_Instances[selectedInstance].cameraParameters = 'Others'
+        multiRemoteCamera_Instances[selectedInstance].customCameraActive = false
+      end
 
       multiRemoteCamera_Instances[selectedInstance]:setNewConfig()
       updateImageProcessingParameter()

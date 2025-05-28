@@ -7,13 +7,12 @@
         <layout-row id="RowLayout72" style="flex-grow: 0; flex-shrink: 0">
             <layout-column id="ColumnLayout21" style="align-items: stretch">
                 <layout-row id="RowLayout01" style="align-items: baseline; flex-grow: 0; flex-shrink: 0">
-                    <davinci-value-display id="VD_Title" class="myCustomLabel_CSK_Module_MultiRemoteCamera"
-                        value="Remote Camera">
-                    </davinci-value-display>
+                    <h1 id="Heading_Title" class="myCustomLabel_CSK_Module_MultiRemoteCamera">
+                        Remote Camera
+                    </h1>
                     <davinci-value-display id="VD_Version">
-                        <crown-edpws-binding property="value" name="CSK_MultiRemoteCamera/OnNewStatusModuleVersion"
-                            update-on-resume>
-                        </crown-edpws-binding>
+                        <crown-on property="value" crown-event="CSK_MultiRemoteCamera/OnNewStatusModuleVersion">
+                        </crown-on>
                     </davinci-value-display>
                 </layout-row>
             </layout-column>
@@ -63,8 +62,9 @@
                                                             style="align-items: center; justify-content: center">
                                                             <davinci-button id="B_AddInstance"
                                                                 class="myCustomButton_CSK_Module_MultiRemoteCamera"
-                                                                type="outline" icon-position="append" icon="content/add"
-                                                                title="Add camera instance">
+                                                                type="outline" title="Add camera instance">
+                                                                <davinci-icon icon="content/add">
+                                                                </davinci-icon>
                                                                 <span></span>
                                                                 <crown-binding event="submit"
                                                                     name="CSK_MultiRemoteCamera/addInstance"
@@ -77,9 +77,10 @@
                                                             </davinci-button>
                                                             <davinci-button id="B_ResetCameras"
                                                                 class="myCustomButton_CSK_Module_MultiRemoteCamera"
-                                                                type="outline" icon-position="append"
-                                                                icon="action/delete"
+                                                                type="outline"
                                                                 title="Reset instances to one single instance. New setup needs to be saved and restart app to clear old threads.">
+                                                                <davinci-icon icon="action/delete">
+                                                                </davinci-icon>
                                                                 <span></span>
                                                                 <crown-on property="disabled"
                                                                     crown-event="CSK_MultiRemoteCamera/OnUserLevelOperatorActive"
@@ -139,9 +140,10 @@
                                                                             style="align-items: center; justify-content: center">
                                                                             <davinci-button id="B_LoadConfig"
                                                                                 class="myCustomButton_CSK_Module_MultiRemoteCamera"
-                                                                                type="outline" icon-position="append"
-                                                                                title="Load configured parameters from CSK_PersistentData module."
-                                                                                icon="action/history">
+                                                                                type="outline"
+                                                                                title="Load configured parameters from CSK_PersistentData module.">
+                                                                                <davinci-icon icon="action/history">
+                                                                                </davinci-icon>
                                                                                 <span></span>
                                                                                 <crown-set event="submit"
                                                                                     crown-function="CSK_MultiRemoteCamera/loadParameters"
@@ -155,9 +157,10 @@
                                                                             </davinci-button>
                                                                             <davinci-button id="B_SaveConfig"
                                                                                 class="myCustomButton_CSK_Module_MultiRemoteCamera"
-                                                                                type="outline" icon-position="append"
-                                                                                title="Save current configured parameters of this module within CSK_PersistentData module."
-                                                                                icon="content/save">
+                                                                                type="outline"
+                                                                                title="Save current configured parameters of this module within CSK_PersistentData module.">
+                                                                                <davinci-icon icon="content/save">
+                                                                                </davinci-icon>
                                                                                 <span></span>
                                                                                 <crown-binding event="submit"
                                                                                     name="CSK_MultiRemoteCamera/sendParameters"
@@ -490,100 +493,85 @@
                                                                         <layout-row id="RowLayout49">
                                                                             <layout-column id="ColumnLayout9"
                                                                                 style="align-items: stretch">
-                                                                                <layout-row id="RowLayout4"
-                                                                                    style="justify-content: space-between; align-items: center">
-                                                                                    <davinci-value-display
-                                                                                        id="VD_GigEVision"
-                                                                                        value="GigEVision:">
-                                                                                    </davinci-value-display>
-                                                                                    <davinci-toggle-switch
-                                                                                        id="TS_GigEVision" tabindex="0">
-                                                                                        <crown-edpws-binding
-                                                                                            property="checked"
-                                                                                            name="CSK_MultiRemoteCamera/OnNewGigEVisionStatus"
-                                                                                            update-on-resume>
-                                                                                        </crown-edpws-binding>
-                                                                                        <crown-binding event="change"
-                                                                                            name="CSK_MultiRemoteCamera/setGigEVision"
-                                                                                            path="param/args/status"
-                                                                                            auto-commit>
-                                                                                        </crown-binding>
-                                                                                        <crown-edpws-binding
-                                                                                            property="disabled"
-                                                                                            name="CSK_MultiRemoteCamera/OnCameraConnected"
-                                                                                            update-on-resume>
-                                                                                        </crown-edpws-binding>
-                                                                                    </davinci-toggle-switch>
+                                                                                <layout-row id="RowLayout6"
+                                                                                    style="align-items: center; justify-content: space-between">
+                                                                                    <layout-column id="ColumnLayout40">
+                                                                                        <davinci-value-display
+                                                                                            id="VD_CameraModel"
+                                                                                            value="Camera Model:"
+                                                                                            title="Select camera to use. For some camera models it will internally use some predefined configurations.">
+                                                                                        </davinci-value-display>
+                                                                                    </layout-column>
+                                                                                    <layout-column id="ColumnLayout41"
+                                                                                        style="align-items: stretch">
+                                                                                        <davinci-drop-down
+                                                                                            id="DD_CameraModel"
+                                                                                            title="Select camera to use. For some camera models it will internally use some predefined configurations.">
+                                                                                            <davinci-option
+                                                                                                id="Option_picoMidi"
+                                                                                                value="PicoMidiCam"
+                                                                                                title="Use SICK Pico/MidiCam (No GigE Vision)">
+                                                                                                <span>SICK Pico/MidiCam Ver1</span>
+                                                                                            </davinci-option>
+                                                                                            <davinci-option
+                                                                                                id="Option_picoMidi2"
+                                                                                                value="PicoMidiCam2"
+                                                                                                title="Use SICK Pico/MidiCam2 with specific GigE Vision parameters.">
+                                                                                                <span>SICK Pico/MidiCam Ver2</span>
+                                                                                            </davinci-option>
+                                                                                            <davinci-option
+                                                                                                id="Option_SEC100"
+                                                                                                value="SEC100"
+                                                                                                title="Acquire images from SEC100 via HTTP / Websocket.">
+                                                                                                <span>SEC100</span>
+                                                                                            </davinci-option>
+                                                                                            <davinci-option
+                                                                                                id="Option_Bas"
+                                                                                                value="a2A1920-51gcBAS"
+                                                                                                title="Use Basler a2A1920-51gc with specific GigE Vision parameters.">
+                                                                                                <span>Basler a2A1920-51gc</span>
+                                                                                            </davinci-option>
+                                                                                            <davinci-option
+                                                                                                id="Option_Custom"
+                                                                                                value="CustomConfig"
+                                                                                                title="Custom GigE Vision camera. ONLY custom GigE Vision config will be used.">
+                                                                                                <span>Custom</span>
+                                                                                            </davinci-option>
+                                                                                            <crown-on property="value"
+                                                                                                crown-event="CSK_MultiRemoteCamera/OnNewCameraModel">
+                                                                                            </crown-on>
+                                                                                            <crown-set event="change"
+                                                                                                crown-function="CSK_MultiRemoteCamera/setCameraModel"
+                                                                                                protocol="crownMSGPACK"
+                                                                                                crown-path="camModel">
+                                                                                            </crown-set>
+                                                                                            <crown-edpws-binding
+                                                                                                property="disabled"
+                                                                                                name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                                update-on-resume>
+                                                                                            </crown-edpws-binding>
+                                                                                        </davinci-drop-down>
+                                                                                    </layout-column>
                                                                                 </layout-row>
-                                                                                <stacked-view id="SV_GigEVision">
+                                                                                <stacked-view id="SV_CameraType">
                                                                                     <stacked-pane id="SP_GigEVision"
-                                                                                        value="true">
-                                                                                        <layout-column
-                                                                                            id="ColumnLayout48"
-                                                                                            style="align-items: stretch">
-                                                                                            <layout-row id="RowLayout6"
-                                                                                                style="align-items: center; justify-content: space-between">
-                                                                                                <layout-column
-                                                                                                    id="ColumnLayout40">
-                                                                                                    <davinci-value-display
-                                                                                                        id="VD_CameraModel"
-                                                                                                        value="Camera Model:"
-                                                                                                        title="For some camera models it will internally use some predefined GigE Vision parameters. Otherwise select ' Custom'.">
-                                                                                                    </davinci-value-display>
-                                                                                                </layout-column>
-                                                                                                <layout-column
-                                                                                                    id="ColumnLayout41"
-                                                                                                    style="align-items: stretch">
-                                                                                                    <davinci-drop-down
-                                                                                                        id="DD_CameraModel"
-                                                                                                        title="For some camera models it will internally use some predefined GigE Vision parameters. Otherwise select 'Custom'.">
-                                                                                                        <davinci-option
-                                                                                                            id="Option_picoMidi2"
-                                                                                                            value="PicoMidiCam2"
-                                                                                                            title="Use SICK Pico/MidiCam2 specific GigE Vision parameters.">
-                                                                                                            <span>SICK Pico/MidiCam2</span>
-                                                                                                        </davinci-option>
-                                                                                                        <davinci-option
-                                                                                                            id="Option_Bas"
-                                                                                                            value="a2A1920-51gcBAS"
-                                                                                                            title="Use Basler a2A1920-51gc specific GigE Vision parameters.">
-                                                                                                            <span>Basler a2A1920-51gc</span>
-                                                                                                        </davinci-option>
-                                                                                                        <davinci-option
-                                                                                                            id="Option_Custom"
-                                                                                                            value="CustomConfig"
-                                                                                                            title="ONLY custom GigE Vision config will be used.">
-                                                                                                            <span>Custom</span>
-                                                                                                        </davinci-option>
-                                                                                                        <crown-on
-                                                                                                            property="value"
-                                                                                                            crown-event="CSK_MultiRemoteCamera/OnNewCameraModel">
-                                                                                                        </crown-on>
-                                                                                                        <crown-set
-                                                                                                            event="change"
-                                                                                                            crown-function="CSK_MultiRemoteCamera/setCameraModel"
-                                                                                                            protocol="crownMSGPACK"
-                                                                                                            crown-path="camModel">
-                                                                                                        </crown-set>
-                                                                                                        <crown-edpws-binding
-                                                                                                            property="disabled"
-                                                                                                            name="CSK_MultiRemoteCamera/OnCameraConnected"
-                                                                                                            update-on-resume>
-                                                                                                        </crown-edpws-binding>
-                                                                                                    </davinci-drop-down>
-                                                                                                </layout-column>
-                                                                                            </layout-row>
-                                                                                            <davinci-link
-                                                                                                id="L_GigEVisionParameters"
-                                                                                                icon-position="append"
-                                                                                                target="_blank"
-                                                                                                href="/#!msdd=CSK_Module_MultiRemoteCamera&page=CSK_Module_MultiRemoteCamera_GigE_VisionParameter">
-                                                                                                <span>GigE Vision parameters</span>
-                                                                                            </davinci-link>
-                                                                                        </layout-column>
+                                                                                        value="GIGE_VISION">
+                                                                                        <layout-row id="RowLayout4">
+                                                                                            <layout-column
+                                                                                                id="ColumnLayout48"
+                                                                                                style="align-items: stretch">
+                                                                                                <davinci-link
+                                                                                                    id="L_GigEVisionParameters"
+                                                                                                    icon-position="append"
+                                                                                                    target="_blank"
+                                                                                                    href="/#!msdd=CSK_Module_MultiRemoteCamera&page=CSK_Module_MultiRemoteCamera_GigE_VisionParameter">
+                                                                                                    <span>GigE Vision parameters</span>
+                                                                                                </davinci-link>
+                                                                                            </layout-column>
+                                                                                        </layout-row>
                                                                                     </stacked-pane>
                                                                                     <stacked-pane id="SP_NoGigEVIsion"
-                                                                                        value="false">
+                                                                                        value="NO_GIGE_VISION">
                                                                                         <layout-row id="RowLayout37"
                                                                                             style="align-items: center">
                                                                                             <layout-column
@@ -634,9 +622,170 @@
                                                                                             </layout-column>
                                                                                         </layout-row>
                                                                                     </stacked-pane>
+                                                                                    <stacked-pane id="SP_SEC100"
+                                                                                        value="SEC100">
+                                                                                        <layout-row id="RowLayout70"
+                                                                                            style="align-items: center">
+                                                                                            <layout-column
+                                                                                                id="ColumnLayout83"
+                                                                                                style="align-items: stretch">
+                                                                                                <layout-row
+                                                                                                    id="RowLayout80"
+                                                                                                    style="align-items: center">
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout84">
+                                                                                                        <davinci-value-display
+                                                                                                            id="VD_CredentialsSEC"
+                                                                                                            value="SEC credentials"
+                                                                                                            title="Username + password to login to SEC camera.">
+                                                                                                        </davinci-value-display>
+                                                                                                    </layout-column>
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout85">
+                                                                                                        <layout-row
+                                                                                                            id="RowLayout81">
+                                                                                                            <layout-column
+                                                                                                                id="ColumnLayout86"
+                                                                                                                style="align-items: stretch">
+                                                                                                                <davinci-text-field
+                                                                                                                    id="TF_UserSEC"
+                                                                                                                    type="text"
+                                                                                                                    label="User"
+                                                                                                                    title="Username to login to SEC camera.">
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="value"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnNewUsernameSEC"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                    <crown-binding
+                                                                                                                        event="change"
+                                                                                                                        name="CSK_MultiRemoteCamera/setSEC100Username"
+                                                                                                                        path="param/args/user"
+                                                                                                                        auto-commit>
+                                                                                                                    </crown-binding>
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="disabled"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                </davinci-text-field>
+                                                                                                            </layout-column>
+                                                                                                            <layout-column
+                                                                                                                id="ColumnLayout87"
+                                                                                                                style="align-items: stretch">
+                                                                                                                <davinci-text-field
+                                                                                                                    id="TF_PasswordSEC"
+                                                                                                                    type="password"
+                                                                                                                    label="Password"
+                                                                                                                    title="Password to login to SEC camera.">
+                                                                                                                    <crown-binding
+                                                                                                                        event="change"
+                                                                                                                        name="CSK_MultiRemoteCamera/setSEC100UserPassword"
+                                                                                                                        path="param/args/password"
+                                                                                                                        auto-commit>
+                                                                                                                    </crown-binding>
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="disabled"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="value"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnNewPasswordSEC"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                </davinci-text-field>
+                                                                                                            </layout-column>
+                                                                                                        </layout-row>
+                                                                                                    </layout-column>
+                                                                                                </layout-row>
+                                                                                                <layout-row
+                                                                                                    id="RowLayout79"
+                                                                                                    style="align-items: center">
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout69"
+                                                                                                        style="align-items: stretch">
+                                                                                                        <davinci-value-display
+                                                                                                            id="VD_HTTPInstance"
+                                                                                                            value="Instance and interface of HTTP client"
+                                                                                                            title="Instance of CSK HTTP Client module to use for SEC100 camera connection. IMPORTANT: Make sure that the internal setup is correct (interface and active).">
+                                                                                                        </davinci-value-display>
+                                                                                                    </layout-column>
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout70"
+                                                                                                        style="align-items: stretch">
+                                                                                                        <layout-row
+                                                                                                            id="RowLayout90">
+                                                                                                            <layout-column
+                                                                                                                id="ColumnLayout98"
+                                                                                                                style="align-items: stretch">
+                                                                                                                <davinci-numeric-field
+                                                                                                                    id="NF_HTTPClient"
+                                                                                                                    type="outline"
+                                                                                                                    min="1"
+                                                                                                                    max="20"
+                                                                                                                    ticks="1"
+                                                                                                                    group-separator=","
+                                                                                                                    decimal-separator="."
+                                                                                                                    format-pattern="0"
+                                                                                                                    title="Instance of CSK HTTP Client module to use for SEC100 camera connection. IMPORTANT: Make sure that the internal setup is correct (interface and active).">
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="disabled"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="value"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnNewHTTPClientInstance"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                    <crown-binding
+                                                                                                                        event="change"
+                                                                                                                        name="CSK_MultiRemoteCamera/setSEC100HTTPClientInstance"
+                                                                                                                        path="param/args/instance"
+                                                                                                                        auto-commit>
+                                                                                                                    </crown-binding>
+                                                                                                                </davinci-numeric-field>
+                                                                                                            </layout-column>
+                                                                                                            <layout-column
+                                                                                                                id="ColumnLayout99"
+                                                                                                                style="align-items: stretch">
+                                                                                                                <davinci-drop-down
+                                                                                                                    id="DD_HTTPClientInterface"
+                                                                                                                    title="Set interface for selected HTTP client instance.">
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="data"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnNewEthernetInterfaceList"
+                                                                                                                        update-on-resume
+                                                                                                                        converter="convertToList">
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="value"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnNewHTTPClientInterface"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                    <crown-binding
+                                                                                                                        event="change"
+                                                                                                                        name="CSK_MultiRemoteCamera/setSEC100HTTPClientInterface"
+                                                                                                                        path="param/args/interface"
+                                                                                                                        auto-commit>
+                                                                                                                    </crown-binding>
+                                                                                                                    <crown-edpws-binding
+                                                                                                                        property="disabled"
+                                                                                                                        name="CSK_MultiRemoteCamera/OnCameraConnected"
+                                                                                                                        update-on-resume>
+                                                                                                                    </crown-edpws-binding>
+                                                                                                                </davinci-drop-down>
+                                                                                                            </layout-column>
+                                                                                                        </layout-row>
+                                                                                                    </layout-column>
+                                                                                                </layout-row>
+                                                                                            </layout-column>
+                                                                                        </layout-row>
+                                                                                    </stacked-pane>
                                                                                     <crown-edpws-binding
                                                                                         property="value"
-                                                                                        name="CSK_MultiRemoteCamera/OnNewGigEVisionStatus"
+                                                                                        name="CSK_MultiRemoteCamera/OnNewCameraType"
                                                                                         update-on-resume>
                                                                                     </crown-edpws-binding>
                                                                                 </stacked-view>
@@ -831,10 +980,9 @@
                                                                     <davinci-value-display id="VD_FPS" value="FPS =">
                                                                     </davinci-value-display>
                                                                     <davinci-value-display id="VD_ValueFPS">
-                                                                        <crown-edpws-binding property="value"
-                                                                            name="CSK_MultiRemoteCamera/OnNewFPSCamera"
-                                                                            update-on-resume>
-                                                                        </crown-edpws-binding>
+                                                                        <crown-on property="value"
+                                                                            crown-event="CSK_MultiRemoteCamera/OnNewFPSCamera">
+                                                                        </crown-on>
                                                                     </davinci-value-display>
                                                                 </layout-row>
                                                                 <layout-row id="RowLayout9"
@@ -846,10 +994,9 @@
                                                                         value="Image queue size = ">
                                                                     </davinci-value-display>
                                                                     <davinci-value-display id="VD_ValueImageQueueSize">
-                                                                        <crown-edpws-binding property="value"
-                                                                            name="CSK_MultiRemoteCamera/OnNewImageQueueCamera"
-                                                                            update-on-resume>
-                                                                        </crown-edpws-binding>
+                                                                        <crown-on property="value"
+                                                                            crown-event="CSK_MultiRemoteCamera/OnNewImageQueueCamera">
+                                                                        </crown-on>
                                                                     </davinci-value-display>
                                                                 </layout-row>
                                                                 <layout-row id="RowLayout58"
@@ -860,10 +1007,10 @@
                                                                         <layout-row id="RowLayout36">
                                                                             <layout-column id="ColumnLayout37"
                                                                                 style="align-items: stretch">
-                                                                                <stacked-view id="SV_CustomCamera1">
+                                                                                <stacked-view id="SV_CameraParameters">
                                                                                     <stacked-pane
                                                                                         id="SP_CustomCameraNotActive1"
-                                                                                        value="false">
+                                                                                        value="Others">
                                                                                         <layout-row id="RowLayout19">
                                                                                             <layout-column
                                                                                                 id="ColumnLayout38"
@@ -958,10 +1105,11 @@
                                                                                                                                 id="B_SWTrigger"
                                                                                                                                 class="myCustomButton_CSK_Module_MultiRemoteCamera"
                                                                                                                                 type="outline"
-                                                                                                                                icon-position="append"
-                                                                                                                                icon="image/camera"
                                                                                                                                 title="Manual camera triiger"
                                                                                                                                 style="align-self: center; width: 32%">
+                                                                                                                                <davinci-icon
+                                                                                                                                    icon="image/camera">
+                                                                                                                                </davinci-icon>
                                                                                                                                 <span></span>
                                                                                                                                 <crown-binding
                                                                                                                                     event="submit"
@@ -1001,10 +1149,11 @@
                                                                                                                             id="B_TriggerPause"
                                                                                                                             class="myCustomButton_CSK_Module_MultiRemoteCamera"
                                                                                                                             type="outline"
-                                                                                                                            icon-position="append"
-                                                                                                                            icon="av/pause_circle_outline"
                                                                                                                             title="Temporarily ignore digital input trigger"
                                                                                                                             style="align-self: center; width: 32%">
+                                                                                                                            <davinci-icon
+                                                                                                                                icon="av/pause_circle_outline">
+                                                                                                                            </davinci-icon>
                                                                                                                             <span></span>
                                                                                                                             <crown-binding
                                                                                                                                 event="submit"
@@ -1279,10 +1428,11 @@
                                                                                                                         id="B_SetFOV"
                                                                                                                         class="myCustomButton_CSK_Module_MultiRemoteCamera"
                                                                                                                         type="outline"
-                                                                                                                        icon-position="append"
-                                                                                                                        icon="navigation/check"
                                                                                                                         title="Set preconfigured FOV"
                                                                                                                         style="align-self: center; width: 32%">
+                                                                                                                        <davinci-icon
+                                                                                                                            icon="navigation/check">
+                                                                                                                        </davinci-icon>
                                                                                                                         <span></span>
                                                                                                                         <crown-binding
                                                                                                                             event="submit"
@@ -1305,30 +1455,308 @@
                                                                                     </stacked-pane>
                                                                                     <stacked-pane
                                                                                         id="SP_CustomCameraActive1"
-                                                                                        value="true">
+                                                                                        value="Custom">
                                                                                         <layout-row id="RowLayout45">
                                                                                             <layout-column
                                                                                                 id="ColumnLayout13"
                                                                                                 style="align-items: stretch">
-                                                                                                <davinci-button
-                                                                                                    id="B_SWTrigger2"
-                                                                                                    type="primary"
-                                                                                                    icon-position="append">
-                                                                                                    <span>SW Image Trigger</span>
-                                                                                                    <crown-binding
-                                                                                                        event="submit"
-                                                                                                        name="CSK_MultiRemoteCamera/cameraSoftwareTrigger"
-                                                                                                        auto-commit>
-                                                                                                    </crown-binding>
-                                                                                                </davinci-button>
+                                                                                                <layout-row
+                                                                                                    id="RowLayout310">
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout158"
+                                                                                                        style="align-items: stretch">
+                                                                                                        <davinci-text-field
+                                                                                                            id="TF_SWTriggerEventCustom"
+                                                                                                            type="text"
+                                                                                                            label="SW trigger event"
+                                                                                                            placeholder="CSK_OtherModule.OnNewTrigger"
+                                                                                                            title="Name of event to trigger camera via SW.">
+                                                                                                            <crown-edpws-binding
+                                                                                                                property="value"
+                                                                                                                name="CSK_MultiRemoteCamera/OnNewSWTriggerEvent"
+                                                                                                                update-on-resume>
+                                                                                                            </crown-edpws-binding>
+                                                                                                            <crown-binding
+                                                                                                                event="change"
+                                                                                                                name="CSK_MultiRemoteCamera/setSWTriggerEvent"
+                                                                                                                path="param/args/event"
+                                                                                                                auto-commit>
+                                                                                                            </crown-binding>
+                                                                                                        </davinci-text-field>
+                                                                                                    </layout-column>
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout356"
+                                                                                                        style="align-items: stretch">
+                                                                                                        <layout-row
+                                                                                                            id="RowLayout667"
+                                                                                                            style="justify-content: center">
+                                                                                                            <davinci-button
+                                                                                                                id="B_SWTriggerCustom"
+                                                                                                                class="myCustomButton_CSK_Module_MultiRemoteCamera"
+                                                                                                                type="outline"
+                                                                                                                title="Manual camera triiger"
+                                                                                                                style="align-self: center; width: 32%">
+                                                                                                                <davinci-icon
+                                                                                                                    icon="image/camera">
+                                                                                                                </davinci-icon>
+                                                                                                                <span></span>
+                                                                                                                <crown-binding
+                                                                                                                    event="submit"
+                                                                                                                    name="CSK_MultiRemoteCamera/cameraSoftwareTrigger"
+                                                                                                                    auto-commit>
+                                                                                                                </crown-binding>
+                                                                                                            </davinci-button>
+                                                                                                        </layout-row>
+                                                                                                    </layout-column>
+                                                                                                </layout-row>
+                                                                                            </layout-column>
+                                                                                        </layout-row>
+                                                                                    </stacked-pane>
+                                                                                    <stacked-pane
+                                                                                        id="SP_SECCameraActive1"
+                                                                                        value="SEC100">
+                                                                                        <layout-row id="RowLayout451">
+                                                                                            <layout-column
+                                                                                                id="ColumnLayout133"
+                                                                                                style="align-items: stretch">
+                                                                                                <layout-row
+                                                                                                    id="RowLayout83"
+                                                                                                    style="align-items: center">
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout90"
+                                                                                                        style="align-items: stretch">
+                                                                                                        <davinci-value-display
+                                                                                                            id="VD_SECMode"
+                                                                                                            value="Acquisition mode:">
+                                                                                                        </davinci-value-display>
+                                                                                                    </layout-column>
+                                                                                                    <layout-column
+                                                                                                        id="ColumnLayout91"
+                                                                                                        style="align-items: stretch">
+                                                                                                        <davinci-drop-down
+                                                                                                            id="DD_SECMode">
+                                                                                                            <davinci-option
+                                                                                                                id="Option_Snapshot"
+                                                                                                                value="Snapshot">
+                                                                                                                <span>Snapshot</span>
+                                                                                                            </davinci-option>
+                                                                                                            <davinci-option
+                                                                                                                id="Option_Stream"
+                                                                                                                value="Stream">
+                                                                                                                <span>Stream</span>
+                                                                                                            </davinci-option>
+                                                                                                            <crown-edpws-binding
+                                                                                                                property="value"
+                                                                                                                name="CSK_MultiRemoteCamera/OnNewStatusSECMode"
+                                                                                                                update-on-resume>
+                                                                                                            </crown-edpws-binding>
+                                                                                                            <crown-binding
+                                                                                                                event="change"
+                                                                                                                name="CSK_MultiRemoteCamera/setSECMode"
+                                                                                                                path="param/args/mode"
+                                                                                                                auto-commit>
+                                                                                                            </crown-binding>
+                                                                                                        </davinci-drop-down>
+                                                                                                    </layout-column>
+                                                                                                </layout-row>
+                                                                                                <stacked-view
+                                                                                                    id="SV_SECMode">
+                                                                                                    <stacked-pane
+                                                                                                        id="SP_Snapshot"
+                                                                                                        value="Snapshot">
+                                                                                                        <layout-row
+                                                                                                            id="RowLayout84"
+                                                                                                            style="align-items: center">
+                                                                                                            <layout-column
+                                                                                                                id="ColumnLayout92"
+                                                                                                                style="align-items: stretch">
+                                                                                                                <layout-row
+                                                                                                                    id="RowLayout313"
+                                                                                                                    style="align-items: center">
+                                                                                                                    <layout-column
+                                                                                                                        id="ColumnLayout154"
+                                                                                                                        style="align-items: stretch">
+                                                                                                                        <davinci-text-field
+                                                                                                                            id="TF_SWTriggerSEC"
+                                                                                                                            type="text"
+                                                                                                                            label="SW trigger event"
+                                                                                                                            placeholder="CSK_OtherModule.OnNewTrigger"
+                                                                                                                            title="Name of event to trigger camera via SW.">
+                                                                                                                            <crown-edpws-binding
+                                                                                                                                property="value"
+                                                                                                                                name="CSK_MultiRemoteCamera/OnNewSWTriggerEvent"
+                                                                                                                                update-on-resume>
+                                                                                                                            </crown-edpws-binding>
+                                                                                                                            <crown-binding
+                                                                                                                                event="change"
+                                                                                                                                name="CSK_MultiRemoteCamera/setSWTriggerEvent"
+                                                                                                                                path="param/args/event"
+                                                                                                                                auto-commit>
+                                                                                                                            </crown-binding>
+                                                                                                                        </davinci-text-field>
+                                                                                                                    </layout-column>
+                                                                                                                    <layout-column
+                                                                                                                        id="ColumnLayout326"
+                                                                                                                        style="align-items: stretch">
+                                                                                                                        <layout-row
+                                                                                                                            id="RowLayout627"
+                                                                                                                            style="justify-content: center">
+                                                                                                                            <davinci-button
+                                                                                                                                id="B_SWTriggerSEC"
+                                                                                                                                class="myCustomButton_CSK_Module_MultiRemoteCamera"
+                                                                                                                                type="outline"
+                                                                                                                                title="Manual camera triiger"
+                                                                                                                                style="align-self: center; width: 32%">
+                                                                                                                                <davinci-icon
+                                                                                                                                    icon="image/camera">
+                                                                                                                                </davinci-icon>
+                                                                                                                                <span></span>
+                                                                                                                                <crown-binding
+                                                                                                                                    event="submit"
+                                                                                                                                    name="CSK_MultiRemoteCamera/cameraSoftwareTrigger"
+                                                                                                                                    auto-commit>
+                                                                                                                                </crown-binding>
+                                                                                                                            </davinci-button>
+                                                                                                                        </layout-row>
+                                                                                                                    </layout-column>
+                                                                                                                </layout-row>
+                                                                                                            </layout-column>
+                                                                                                        </layout-row>
+                                                                                                    </stacked-pane>
+                                                                                                    <stacked-pane
+                                                                                                        id="SP_Stream"
+                                                                                                        value="Stream">
+                                                                                                        <layout-row
+                                                                                                            id="RowLayout85">
+                                                                                                            <layout-column
+                                                                                                                id="ColumnLayout93"
+                                                                                                                style="align-items: stretch">
+                                                                                                                <layout-row
+                                                                                                                    id="RowLayout86"
+                                                                                                                    style="align-items: center">
+                                                                                                                    <layout-column
+                                                                                                                        id="ColumnLayout94"
+                                                                                                                        style="align-items: stretch">
+                                                                                                                        <davinci-value-display
+                                                                                                                            id="VD_WebsocketInstance"
+                                                                                                                            value="WebSocket client instance:">
+                                                                                                                        </davinci-value-display>
+                                                                                                                    </layout-column>
+                                                                                                                    <layout-column
+                                                                                                                        id="ColumnLayout95"
+                                                                                                                        style="align-items: stretch">
+                                                                                                                        <layout-row
+                                                                                                                            id="RowLayout87"
+                                                                                                                            style="align-items: center">
+                                                                                                                            <layout-column
+                                                                                                                                id="ColumnLayout96"
+                                                                                                                                style="align-items: stretch">
+                                                                                                                                <davinci-numeric-field
+                                                                                                                                    id="NF_WebsocketInstance"
+                                                                                                                                    type="outline"
+                                                                                                                                    min="1"
+                                                                                                                                    max="99"
+                                                                                                                                    ticks="1"
+                                                                                                                                    group-separator=","
+                                                                                                                                    decimal-separator="."
+                                                                                                                                    format-pattern="0"
+                                                                                                                                    title="Instance of CSK WebSocketClient module to use for SEC100 camera stream.">
+                                                                                                                                    <crown-binding
+                                                                                                                                        event="change"
+                                                                                                                                        name="CSK_MultiRemoteCamera/setWebSocketClientInstance"
+                                                                                                                                        path="param/args/instance"
+                                                                                                                                        auto-commit>
+                                                                                                                                    </crown-binding>
+                                                                                                                                    <crown-edpws-binding
+                                                                                                                                        property="value"
+                                                                                                                                        name="CSK_MultiRemoteCamera/OnNewWebSocketClientInstance"
+                                                                                                                                        update-on-resume>
+                                                                                                                                    </crown-edpws-binding>
+                                                                                                                                    <crown-edpws-binding
+                                                                                                                                        property="disabled"
+                                                                                                                                        name="CSK_MultiRemoteCamera/OnNewStatusSECStreamIsActive"
+                                                                                                                                        update-on-resume>
+                                                                                                                                    </crown-edpws-binding>
+                                                                                                                                </davinci-numeric-field>
+                                                                                                                            </layout-column>
+                                                                                                                            <layout-column
+                                                                                                                                id="ColumnLayout97"
+                                                                                                                                style="align-items: stretch">
+                                                                                                                                <stacked-view
+                                                                                                                                    id="SV_SECStreamNotActive">
+                                                                                                                                    <stacked-pane
+                                                                                                                                        id="SP_SECStreamNotActive"
+                                                                                                                                        value="false">
+                                                                                                                                        <layout-row
+                                                                                                                                            id="RowLayout88"
+                                                                                                                                            style="align-items: center; justify-content: center">
+                                                                                                                                            <davinci-button
+                                                                                                                                                id="Button_StartStream"
+                                                                                                                                                class="myCustomButton_CSK_Module_MultiRemoteCamera"
+                                                                                                                                                type="outline"
+                                                                                                                                                title="Start SEC stream">
+                                                                                                                                                <davinci-icon
+                                                                                                                                                    icon="av/play_arrow">
+                                                                                                                                                </davinci-icon>
+                                                                                                                                                <span></span>
+                                                                                                                                                <crown-binding
+                                                                                                                                                    event="submit"
+                                                                                                                                                    name="CSK_MultiRemoteCamera/startSECStream"
+                                                                                                                                                    auto-commit>
+                                                                                                                                                </crown-binding>
+                                                                                                                                            </davinci-button>
+                                                                                                                                        </layout-row>
+                                                                                                                                    </stacked-pane>
+                                                                                                                                    <stacked-pane
+                                                                                                                                        id="SP_SECStreamActive"
+                                                                                                                                        value="true">
+                                                                                                                                        <layout-row
+                                                                                                                                            id="RowLayout89"
+                                                                                                                                            style="align-items: center; justify-content: center">
+                                                                                                                                            <davinci-button
+                                                                                                                                                id="Button_StopSECStream"
+                                                                                                                                                class="myCustomButton_CSK_Module_MultiRemoteCamera"
+                                                                                                                                                type="outline"
+                                                                                                                                                title="Stop SEC stream">
+                                                                                                                                                <davinci-icon
+                                                                                                                                                    icon="av/stop">
+                                                                                                                                                </davinci-icon>
+                                                                                                                                                <span></span>
+                                                                                                                                                <crown-binding
+                                                                                                                                                    event="submit"
+                                                                                                                                                    name="CSK_MultiRemoteCamera/stopSECStream"
+                                                                                                                                                    auto-commit>
+                                                                                                                                                </crown-binding>
+                                                                                                                                            </davinci-button>
+                                                                                                                                        </layout-row>
+                                                                                                                                    </stacked-pane>
+                                                                                                                                    <crown-edpws-binding
+                                                                                                                                        property="value"
+                                                                                                                                        name="CSK_MultiRemoteCamera/OnNewStatusSECStreamIsActive"
+                                                                                                                                        update-on-resume
+                                                                                                                                        converter="function(value) {return value.toString();}">
+                                                                                                                                    </crown-edpws-binding>
+                                                                                                                                </stacked-view>
+                                                                                                                            </layout-column>
+                                                                                                                        </layout-row>
+                                                                                                                    </layout-column>
+                                                                                                                </layout-row>
+                                                                                                            </layout-column>
+                                                                                                        </layout-row>
+                                                                                                    </stacked-pane>
+                                                                                                    <crown-edpws-binding
+                                                                                                        property="value"
+                                                                                                        name="CSK_MultiRemoteCamera/OnNewStatusSECMode"
+                                                                                                        update-on-resume>
+                                                                                                    </crown-edpws-binding>
+                                                                                                </stacked-view>
                                                                                             </layout-column>
                                                                                         </layout-row>
                                                                                     </stacked-pane>
                                                                                     <crown-edpws-binding
                                                                                         property="value"
-                                                                                        name="CSK_MultiRemoteCamera/OnNewStatusCustomCamera"
-                                                                                        update-on-resume
-                                                                                        converter="function(value) {return value.toString();}">
+                                                                                        name="CSK_MultiRemoteCamera/OnNewStatusCameraParameters"
+                                                                                        update-on-resume>
                                                                                     </crown-edpws-binding>
                                                                                 </stacked-view>
                                                                                 <layout-row id="RowLayout57"
@@ -1469,10 +1897,11 @@
                                                                                     <davinci-button id="B_SaveLastImage"
                                                                                         class="myCustomButton_CSK_Module_MultiRemoteCamera"
                                                                                         type="outline"
-                                                                                        icon-position="append"
-                                                                                        icon="image/filter"
                                                                                         title="Save Last Image"
                                                                                         style="width: 32%">
+                                                                                        <davinci-icon
+                                                                                            icon="image/filter">
+                                                                                        </davinci-icon>
                                                                                         <span></span>
                                                                                         <crown-edpws-binding
                                                                                             property="disabled"

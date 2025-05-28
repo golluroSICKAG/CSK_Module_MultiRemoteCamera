@@ -38,7 +38,10 @@ local function getParameters()
   multiRemoteCameraParameters.processingFile = 'CSK_MultiRemoteCamera_ImageProcessing' -- Script to use for processing in thread
   multiRemoteCameraParameters.monitorCamera = false -- Opt. monitor camera status in "CameraOverview" UI
   multiRemoteCameraParameters.customGigEVisionConfig = {} -- Custom GigEVision setting, content are 3 tables ".parameter", ".type", ".value"
-  multiRemoteCameraParameters.cameraModel = "PicoMidiCam2" -- 'a2A1920-51gcBAS', 'CustomConfig'
+  multiRemoteCameraParameters.cameraModel = "PicoMidiCam2" -- 'a2A1920-51gcBAS', 'CustomConfig', 'SEC100'
+  multiRemoteCameraParameters.secUser = 'Service' -- User to login to SEC camera
+  multiRemoteCameraParameters.secUserPassword = '' -- User password to login to SEC camera
+  multiRemoteCameraParameters.secMode = 'Snapshot' -- Mode to run SEC camera
 
   -- Image processing parameters
   multiRemoteCameraParameters.processingMode = "BOTH" -- 'SCRIPT', 'APP', 'BOTH' --> see "setProcessingMode"
@@ -51,6 +54,9 @@ local function getParameters()
   multiRemoteCameraParameters.imageSaveFormat = 'bmp' -- bmp / jpg / png
   multiRemoteCameraParameters.imageSaveJpgFormatCompression = 90
   multiRemoteCameraParameters.imageSavePngFormatCompression = 6
+  multiRemoteCameraParameters.httpClientInstance = 1 -- Instance of CSK_Module_MultiHTTPClient to use if running SEC100 camera
+  multiRemoteCameraParameters.httpClientInterface = 'Localhost' -- Interface to use for HTTP client
+  multiRemoteCameraParameters.secWebSocketClientInstance = 1 -- Instance of CSK_Module_MultiWebSocketClient to use if running SEC100 camera in stream mode
 
   return multiRemoteCameraParameters
 end

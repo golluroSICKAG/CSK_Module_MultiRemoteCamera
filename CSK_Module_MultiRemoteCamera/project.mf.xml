@@ -26,6 +26,7 @@ There is also the possibility to edit GigE Vision camera parameters (check also 
                 <item desc="Use SICK Pico/MidiCam2 specific GigE Vision parameters." name="SICK_Gen2">SICK Pico/MidiCam2</item>
                 <item desc="Use Basler a2A1920-51gc specific GigE Vision parameters." name="Basler">Basler a2A1920-51gc</item>
                 <item desc="Only custom GigE Vision config will be used. No camera / device specific predefined settings." name="Custom">CustomConfig</item>
+                <item desc="Acquire images from SEC100 via HTTP / Websocket." name="SEC100">SEC100</item>
             </enum>
             <enum name="ColorType" trait="released">
                 <desc>Camera color type.</desc>
@@ -330,6 +331,46 @@ INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific
                     <desc>Notfiy image pool size to use for camera.</desc>
                     <param desc="Size" multiplicity="1" name="size" type="int"/>
                 </event>
+                <event name="OnNewCameraType">
+                    <desc>Notify type of camera.</desc>
+                    <param desc="Type of camera." multiplicity="1" name="cameraType" type="string"/>
+                </event>
+                <event name="OnNewHTTPClientInstance">
+                    <desc>Notify instance of CSK_MultiHTTPClient module to use for SEC100 camera connection.</desc>
+                    <param desc="Instance" multiplicity="1" name="instance" type="int"/>
+                </event>
+                <event name="OnNewUsernameSEC">
+                    <desc>Notify username to login to SEC camera.</desc>
+                    <param desc="User" multiplicity="1" name="user" type="string"/>
+                </event>
+                <event name="OnNewStatusSECMode">
+                    <desc>Notify mode to run SEC camera.</desc>
+                    <param desc="Mode" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewWebSocketClientInstance">
+                    <desc>Notify instance of WebSocket client to use for SEC stream.</desc>
+                    <param desc="Instance" multiplicity="1" name="instance" type="int"/>
+                </event>
+                <event name="OnNewStatusCameraParameters">
+                    <desc>Notify selected camera type to show parameters within UI.</desc>
+                    <param desc="Camera type." multiplicity="1" name="camType" type="string"/>
+                </event>
+                <event name="OnNewPasswordSEC">
+                    <desc>Notify password for SEC user.</desc>
+                    <param desc="Password" multiplicity="1" name="password" type="string"/>
+                </event>
+                <event name="OnNewStatusSECStreamIsActive">
+                    <desc>Notify if SEC stream is currently active.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewEthernetInterfaceList">
+                    <desc>Notify list of available ethernet interfaces.</desc>
+                    <param desc="List" multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewHTTPClientInterface">
+                    <desc>Notfiy interface of HTTP client to use for SEC connection.</desc>
+                    <param desc="Interface" multiplicity="1" name="interface" type="string"/>
+                </event>
                 <function name="pageCalled">
                     <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
                     <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="emptyString" type="string"/>
@@ -606,6 +647,40 @@ According to the selected model it will use some predefined GigE Vision paramete
                     <desc>Function to stop FlowConfig relevant providers.</desc>
                     <param desc="Instance of camera to stop." multiplicity="1" name="instance" type="int"/>
                 </function>
+                <function name="setSEC100HTTPClientInstance">
+                    <desc>Function to set instance of CSK_MultiHTTPClient module to use for SEC100 camera connection.</desc>
+                    <param desc="Instance" multiplicity="1" name="instance" type="int"/>
+                </function>
+                <function name="setSEC100Username">
+                    <desc>Function to set username to login to SEC camera.</desc>
+                    <param desc="User" multiplicity="1" name="user" type="string"/>
+                </function>
+                <function name="setSEC100UserPassword">
+                    <desc>Function to set password of user to login to SEC camera.</desc>
+                    <param desc="Password" multiplicity="1" name="password" type="string"/>
+                </function>
+                <function name="setSECMode">
+                    <desc>Function to set acquisition mode of SEC camera.</desc>
+                    <param desc="Mode" multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="setWebSocketClientInstance">
+                    <desc>Function to set instance of WebSocket client module to use for SEC stream.</desc>
+                    <param desc="Instance" multiplicity="1" name="instance" type="int"/>
+                </function>
+                <function name="setSECStreamStatus">
+                    <desc>Function to set status of SEC camera stream.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="startSECStream">
+                    <desc>Function to start SEC stream.</desc>
+                </function>
+                <function name="stopSECStream">
+                    <desc>Function to stop SEC stream.</desc>
+                </function>
+                <function name="setSEC100HTTPClientInterface">
+                    <desc>Function to set interface of HTTP client to use for SEC100 connection.</desc>
+                    <param desc="Interface" multiplicity="1" name="interface" type="string"/>
+                </function>
             </serves>
         </crown>
         <crown name="MultiRemoteCamera_FC">
@@ -640,7 +715,7 @@ According to the selected model it will use some predefined GigE Vision paramete
             </crown>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">6.1.1</meta>
+        <meta key="version">6.2.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>

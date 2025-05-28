@@ -74,6 +74,22 @@ local function createStringListBySize(size)
 end
 funcs.createStringListBySize = createStringListBySize
 
+-- Function to create a string list for dropdown menu from list of strings
+local function createStringListFromList(list)
+  local stringList = "["
+  local first = true
+  for _, entity in ipairs(list) do
+    if not first then
+      stringList = stringList .. ", "
+    end
+    first = false
+    stringList = stringList .. '"' .. entity .. '"'
+  end
+  stringList = stringList .. "]"
+  return stringList
+end
+funcs.createStringListFromList = createStringListFromList
+
 --- Function to convert a table into a Container object
 ---@param content auto[] Lua Table to convert to Container
 ---@return Container cont Created Container
