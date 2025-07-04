@@ -66,12 +66,11 @@ local multiRemoteCameras_Instances = {} -- Handle all instances
 local multiRemoteCameraController = require('Sensors/MultiRemoteCamera/MultiRemoteCamera_Controller')
 
 -- Check if specific APIs are available on device
-if _G.availableAPIs.default and availableAPIs.imageProvider then
+if _G.availableAPIs.default and _G.availableAPIs.imageProvider then
   _G.logger:info("I2D Support = " .. tostring(_G.availableAPIs.I2D) .. ", GigEVision support = " .. tostring(_G.availableAPIs.GigEVision))
-  local setInstanceHandle = require('Sensors/MultiRemoteCamera/FlowConfig/MultiRemoteCamera_FlowConfig')
+  require('Sensors/MultiRemoteCamera/FlowConfig/MultiRemoteCamera_FlowConfig')
   table.insert(multiRemoteCameras_Instances, multiRemoteCamera_Model.create(1)) -- create(cameraNo:int)
   multiRemoteCameraController.setMultiRemoteCamera_Instances_Handle(multiRemoteCameras_Instances) -- share handle of instances
-  setInstanceHandle(multiRemoteCameras_Instances)
 else
   _G.logger:warning("CSK_MultiRemoteCamera : Relevant CROWN(s) not available on device. Module is not supported...")
 end

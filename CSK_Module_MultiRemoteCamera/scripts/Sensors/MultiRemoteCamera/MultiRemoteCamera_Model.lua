@@ -28,8 +28,18 @@ multiRemoteCamera.__index = multiRemoteCamera
 multiRemoteCamera.styleForUI = 'None' -- Optional parameter to set UI style
 multiRemoteCamera.version = Engine.getCurrentAppVersion() -- Version of module
 
-multiRemoteCamera.interfaces = Ethernet.Interface.getInterfaces()
-table.insert(multiRemoteCamera.interfaces, 'Localhost')
+multiRemoteCamera.swTriggerFunctions = {} -- Functions to handle custom camera SW trigger
+for i = 1, 10 do
+  local function triggerCamera()
+    CSK_MultiRemoteCamera.cameraSpecificSoftwareTrigger(i)
+  end
+  table.insert(multiRemoteCamera.swTriggerFunctions, triggerCamera)
+end
+
+if _G.availableAPIs.imageProvider then
+  multiRemoteCamera.interfaces = Ethernet.Interface.getInterfaces()
+  table.insert(multiRemoteCamera.interfaces, 'Localhost')
+end
 
 --**************************************************************************
 --********************** End Global Scope **********************************

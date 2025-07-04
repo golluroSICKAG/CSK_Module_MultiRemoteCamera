@@ -694,16 +694,12 @@ end
 Script.serveFunction("CSK_MultiRemoteCamera.cameraSpecificSoftwareTrigger", cameraSpecificSoftwareTrigger)
 
 local function setSWTriggerEvent(event)
-  Script.deregister(multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent, multiRemoteCamera_Instances[selectedInstance].triggerFunction)
+  Script.deregister(multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent, multiRemoteCamera_Model.swTriggerFunctions[selectedInstance])
   multiRemoteCamera_Instances[selectedInstance].parameters.swTriggerEvent = event
 
-  if multiRemoteCamera_Instances[selectedInstance].parameters.acquisitionMode == 'SOFTWARE_TRIGGER' then
+  if multiRemoteCamera_Instances[selectedInstance].parameters.acquisitionMode == 'SOFTWARE_TRIGGER' and event ~= '' then
     _G.logger:info(nameOfModule .. ": Set SW trigger event to " .. tostring(event))
-    local function triggerCamera()
-      cameraSpecificSoftwareTrigger(selectedInstance)
-    end
-    multiRemoteCamera_Instances[selectedInstance].triggerFunction = triggerCamera
-    Script.register(event, multiRemoteCamera_Instances[selectedInstance].triggerFunction)
+    Script.register(event, multiRemoteCamera_Model.swTriggerFunctions[selectedInstance])
   end
 end
 Script.serveFunction('CSK_MultiRemoteCamera.setSWTriggerEvent', setSWTriggerEvent)
@@ -1134,16 +1130,20 @@ local function getStatusModuleActive()
 end
 Script.serveFunction('CSK_MultiRemoteCamera.getStatusModuleActive', getStatusModuleActive)
 
-local function stopFlowConfigRelevantProvider(instance)
-  if multiRemoteCamera_Instances[instance].parameters.acquisitionMode == 'FIXED_FREQUENCY' then
-    setSelectedInstance(instance)
-    stopCamera()
+local function stopFlowConfigRelevantProvider()
+  for i = 1, #multiRemoteCamera_Instances do
+    if multiRemoteCamera_Instances[i].parameters.flowConfigPriority == true then
+      if multiRemoteCamera_Instances[i].parameters.acquisitionMode == 'FIXED_FREQUENCY' then
+        setSelectedInstance(i)
+        stopCamera()
+      end
+    end
   end
 end
 Script.serveFunction('CSK_MultiRemoteCamera.stopFlowConfigRelevantProvider', stopFlowConfigRelevantProvider)
 
 local function clearFlowConfigRelevantConfiguration()
-  -- Nothing to do so far
+  stopFlowConfigRelevantProvider()
 end
 Script.serveFunction('CSK_MultiRemoteCamera.clearFlowConfigRelevantConfiguration', clearFlowConfigRelevantConfiguration)
 

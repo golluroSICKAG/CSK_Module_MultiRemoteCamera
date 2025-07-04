@@ -645,7 +645,6 @@ According to the selected model it will use some predefined GigE Vision paramete
                 </function>
                 <function name="stopFlowConfigRelevantProvider">
                     <desc>Function to stop FlowConfig relevant providers.</desc>
-                    <param desc="Instance of camera to stop." multiplicity="1" name="instance" type="int"/>
                 </function>
                 <function name="setSEC100HTTPClientInstance">
                     <desc>Function to set instance of CSK_MultiHTTPClient module to use for SEC100 camera connection.</desc>
