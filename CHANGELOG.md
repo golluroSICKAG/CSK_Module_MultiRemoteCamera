@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 ### Bugfix
 - SW trigger binding did not work for multiple instances
 - Did not check properly for existing APIs
-- Legacy bindings of ValueDisplay elements and FileUpload feature within UI did not work if deployed with VS Code AppSpace SDK
+- Legacy bindings of ValueDisplay elements within UI did not work if deployed with VS Code AppSpace SDK
 - UI differs if deployed via Appstudio or VS Code AppSpace SDK
 - Fullscreen icon of iFrame was visible
 
